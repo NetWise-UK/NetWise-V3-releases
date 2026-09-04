@@ -1,0 +1,2360 @@
+<title>V3 Style Gallery</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&family=EB+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============ gallery shell (dev chrome, never part of any design) ============ */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#14171b;font-family:"Public Sans",system-ui,sans-serif;color:#c9d0d8}
+img,svg,iframe{max-width:100%}
+.shell{position:sticky;top:0;z-index:400;background:#14171b;border-bottom:1px solid #262c33;padding:8px 14px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.shell__brand{font:700 11.5px/1 "Public Sans";letter-spacing:.18em;color:#8b95a1;text-transform:uppercase;margin-right:2px;cursor:pointer;background:none;border:0;padding:6px 0}
+.shell__brand:hover{color:#fff}
+.shell__group{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.shell__label{font:700 10px/1 "Public Sans";letter-spacing:.14em;color:#5d6771;text-transform:uppercase;margin-right:2px}
+.shell button.sbtn{font:500 12.5px/1 "Public Sans";padding:7px 11px;border:1px solid #333b44;background:#1c2127;color:#c9d0d8;border-radius:3px;cursor:pointer}
+.shell button.sbtn:hover{background:#242b32;color:#fff}
+.shell button.sbtn[aria-pressed="true"]{background:#fff;color:#14171b;border-color:#fff;font-weight:700}
+.shell button:focus-visible,.shell select:focus-visible{outline:3px solid #7aa7ff;outline-offset:2px}
+.shell select{font:500 12.5px/1 "Public Sans";padding:7px 9px;border:1px solid #333b44;background:#1c2127;color:#c9d0d8;border-radius:3px}
+.shell__spacer{margin-left:auto;display:flex;gap:5px;align-items:center}
+@media (max-width:760px){.shell__spacer{margin-left:0}}
+body.embed .shell{display:none}
+body.embed{background:#fff}
+
+/* mobile preview drawer */
+.mprev{position:fixed;top:0;right:0;bottom:0;width:min(470px,100%);z-index:500;background:#14171b;border-left:1px solid #262c33;transform:translateX(102%);transition:transform .25s ease;display:flex;flex-direction:column;padding:12px}
+@media (prefers-reduced-motion:reduce){.mprev{transition:none}}
+.mprev.open{transform:none}
+.mprev__bar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.mprev__bar b{font:700 11px/1 "Public Sans";letter-spacing:.15em;color:#8b95a1;text-transform:uppercase}
+.mprev__bar button{margin-left:auto;font:600 12.5px/1 "Public Sans";padding:7px 11px;border:1px solid #333b44;background:#1c2127;color:#c9d0d8;border-radius:3px;cursor:pointer}
+.mprev__frame{flex:1;display:flex;justify-content:center;overflow:auto}
+.mprev iframe{width:390px;height:100%;min-height:600px;border:1px solid #333b44;border-radius:8px;background:#fff}
+
+/* ============ gallery landing ============ */
+.gal{max-width:1200px;margin:0 auto;padding:56px 24px 90px;color:#c9d0d8}
+.gal h1{font:800 clamp(30px,4.4vw,44px)/1.08 "Libre Franklin";color:#fff;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance}
+.gal .lede{font:400 16.5px/1.65 "Public Sans";color:#9aa4af;max-width:760px;margin:0 0 8px}
+.gal .lede b{color:#d7dde3;font-weight:600}
+.gal__hint{font:400 13.5px/1.6 "Public Sans";color:#707b86;max-width:760px;border-left:3px solid #333b44;padding-left:14px;margin:22px 0 44px}
+.gal__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:22px}
+.gcard{background:#1a1f25;border:1px solid #2a323b;border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+.gcard__prev{position:relative;height:250px;overflow:hidden;background:#fff;border-bottom:1px solid #2a323b}
+.gcard__prev iframe{width:1240px;max-width:none;height:1120px;transform:scale(.27);transform-origin:0 0;border:0;pointer-events:none}
+.gcard__body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.gcard h2{font:800 20px/1.15 "Libre Franklin";color:#fff;margin:0;letter-spacing:-.01em}
+.gcard h2 small{display:block;font:600 10.5px/1 "Public Sans";letter-spacing:.16em;text-transform:uppercase;color:#7d8894;margin-bottom:7px}
+.gcard p{font:400 13.5px/1.6 "Public Sans";color:#9aa4af;margin:0;flex:1}
+.gcard__meta{font:500 11.5px/1.5 "Public Sans";color:#68727d}
+.gcard__go{margin-top:10px}
+.gcard__go button{font:700 13px/1 "Public Sans";padding:10px 16px;border:0;border-radius:3px;background:#fff;color:#14171b;cursor:pointer}
+.gcard__go button:hover{background:#dfe5ea}
+.gcard__go button:focus-visible{outline:3px solid #7aa7ff;outline-offset:2px}
+.gal__foot{margin-top:50px;border-top:1px solid #262c33;padding-top:26px;font:400 13px/1.7 "Public Sans";color:#707b86;max-width:860px}
+.gal__foot h2{font:700 12px/1 "Public Sans";letter-spacing:.15em;text-transform:uppercase;color:#9aa4af;margin:0 0 10px}
+.gal__foot ul{margin:0;padding-left:18px}
+.gal__foot li{margin-bottom:6px}
+.gal__foot code{font:500 12px/1 ui-monospace,monospace;color:#b9c2cb;background:#20262d;padding:2px 6px;border-radius:3px}
+#app:focus{outline:0}
+.skip-shell{position:absolute;left:-9999px}
+</style>
+
+<div class="shell" id="shell">
+  <button class="shell__brand" id="brandBtn" title="Back to gallery">NetWise V3 · Style Gallery</button>
+  <div class="shell__group" role="group" aria-label="Style">
+    <span class="shell__label">Style</span>
+    <button class="sbtn" data-style="modern">Modern Civic</button>
+    <button class="sbtn" data-style="community">Community</button>
+    <button class="sbtn" data-style="editorial">Editorial</button>
+    <button class="sbtn" data-style="minimal">Minimal</button>
+    <button class="sbtn" data-style="classic">Contemporary Classic</button>
+  </div>
+  <div class="shell__group">
+    <label class="shell__label" for="pageSel">Page</label>
+    <select id="pageSel">
+      <option value="home">Homepage</option>
+      <option value="council">The Council (content page)</option>
+      <option value="news">News listing</option>
+      <option value="article">News article</option>
+      <option value="meetings">Meetings &amp; agendas</option>
+      <option value="documents">Documents</option>
+      <option value="contact">Contact</option>
+      <option value="search">Search results</option>
+      <option value="notfound">404</option>
+      <option value="components">Component sheet</option>
+    </select>
+  </div>
+  <div class="shell__spacer">
+    <button class="sbtn" id="mprevBtn" aria-expanded="false">Mobile preview</button>
+  </div>
+</div>
+
+<div class="mprev" id="mprev" aria-hidden="true">
+  <div class="mprev__bar"><b>390px mobile preview</b><button id="mprevClose">Close</button></div>
+  <div class="mprev__frame"><iframe id="mprevFrame" title="Mobile preview of the current page"></iframe></div>
+</div>
+
+<style id="activeStyleCSS"></style>
+<div id="app" tabindex="-1"></div>
+
+<script>
+/* ================= shared content model — identical for every style ================= */
+const C = {
+  council: "Little Wychford Parish Council",
+  councilShort: "Little Wychford",
+  strap: "Serving Little Wychford, Nether End and Wychford Green",
+  nav: ["Home","The Council","Councillors","Meetings","Agendas & Minutes","Planning","Documents","News","Contact"],
+  welcomeHead: "Welcome to Little Wychford Parish Council",
+  welcome: "The Parish Council is the first tier of local government for the village of Little Wychford and the hamlets of Nether End and Wychford Green. We manage the recreation ground, allotments, churchyard and village hall grounds, respond to planning applications, and represent residents to the district and county councils.",
+  quick: [
+    ["Meetings & agendas","When we meet and the papers for each meeting","cal"],
+    ["Agendas & minutes","Read the record of council decisions","doc"],
+    ["Planning applications","Current applications and our comments","map"],
+    ["Report a problem","Potholes, lighting, footpaths and more","warn"],
+    ["Book the village hall","Availability and hire charges","hall"],
+    ["Allotments","Waiting list and tenancy information","leaf"]
+  ],
+  nextMeeting: {
+    title:"Full Council Meeting", date:"Tuesday 9 September 2026", time:"7.30pm",
+    venue:"The Village Hall, Church Lane", agenda:true,
+    note:"Members of the public are welcome to attend. Fifteen minutes are set aside at the start of the meeting for public questions."
+  },
+  meetings: [
+    {t:"Full Council Meeting", d:"Tue 9 September 2026", time:"7.30pm", v:"The Village Hall", agenda:"Agenda (PDF, 184KB)"},
+    {t:"Planning Committee", d:"Tue 23 September 2026", time:"7.00pm", v:"The Village Hall (Committee Room)", agenda:null},
+    {t:"Finance & General Purposes Committee", d:"Tue 7 October 2026", time:"7.00pm", v:"The Village Hall (Committee Room)", agenda:null},
+    {t:"Full Council Meeting", d:"Tue 14 October 2026", time:"7.30pm", v:"The Village Hall", agenda:null}
+  ],
+  pastMeetings: [
+    {t:"Full Council Meeting", d:"8 July 2026", minutes:"Minutes (PDF, 210KB)", status:"Approved"},
+    {t:"Planning Committee", d:"24 June 2026", minutes:"Minutes (PDF, 132KB)", status:"Approved"},
+    {t:"Annual Meeting of the Parish Council", d:"20 May 2026", minutes:"Minutes (PDF, 246KB)", status:"Approved"},
+    {t:"Annual Parish Meeting", d:"20 May 2026", minutes:"Minutes (PDF, 198KB)", status:"Draft"}
+  ],
+  news: [
+    {t:"Wychford Brook footbridge to close for repairs from 2 September", d:"18 August 2026", img:"bridge", cat:"Highways",
+     x:"The timber footbridge between Church Meadow and the recreation ground will close for around three weeks while the deck boards and handrails are replaced."},
+    {t:"Annual Village Show returns to the Recreation Ground", d:"11 August 2026", img:"show", cat:"Events",
+     x:"Classes for vegetables, baking, flowers and children's crafts — entry forms are now available from the Parish Office and the village shop."},
+    {t:"Have your say: draft Neighbourhood Plan consultation opens", d:"4 August 2026", img:"village", cat:"Consultations",
+     x:"The six-week consultation on the draft Neighbourhood Plan runs until 15 September. Paper copies are available in the church and the village hall."},
+    {t:"New defibrillator installed outside the Village Hall", d:"28 July 2026", img:null, cat:"Community",
+     x:"A second public-access defibrillator has been installed, funded by the Council and a generous donation from the Wychford Show committee."},
+    {t:"Road resurfacing on Mill Lane — expect delays", d:"21 July 2026", img:"road", cat:"Highways",
+     x:"Oxfordshire Highways will resurface Mill Lane between the ford and Glebe Farm. Work takes place overnight to keep disruption to a minimum."},
+    {t:"Temporary closure of public footpath WY/14/2 between Church Meadow and the allotments while drainage works are carried out", d:"14 July 2026", img:"meadow", cat:"Rights of way",
+     x:"The diversion is signed on site and adds roughly ten minutes to the walk. The path is expected to reopen by the end of October."}
+  ],
+  article: {
+    t:"Wychford Brook footbridge to close for repairs from 2 September",
+    d:"18 August 2026", by:"Posted by the Parish Clerk", cat:"Highways", img:"bridge",
+    standfirst:"The timber footbridge between Church Meadow and the recreation ground will close for around three weeks while the deck boards and handrails are replaced.",
+    body:[
+      "The footbridge over Wychford Brook will be closed from Monday 2 September while contractors replace the worn deck boards and both handrails. The work is expected to take three weeks, weather permitting, and the bridge should reopen before the end of the month.",
+      "A signed diversion will be in place along Church Lane and the permissive path beside Glebe Farm, adding around ten minutes to the walk between the village and the recreation ground. The diversion route is step-free but can be muddy after rain, so please take care.",
+      "The bridge was last refurbished in 2014. A routine inspection in June found that several deck boards had begun to rot and that the eastern handrail no longer met the required standard. The Council agreed at its July meeting to bring the repairs forward rather than wait for the next financial year.",
+      "The work will cost £4,850, met from the Council's rolling maintenance budget. No footpaths other than the bridge crossing itself are affected."
+    ],
+    quote:"We know how well used this crossing is, especially on the school run — closing it is a nuisance, but a short closure now avoids a much longer one later.",
+    quoteBy:"Cllr Margaret Ashworth, Chair of the Council"
+  },
+  events: [
+    {t:"Little Wychford Village Show", d:"Sat 13 September", time:"2.00pm", v:"Recreation Ground"},
+    {t:"Autumn litter pick", d:"Sun 21 September", time:"10.00am", v:"Meet at the Village Hall"},
+    {t:"Neighbourhood Plan drop-in session", d:"Thu 25 September", time:"4.00–8.00pm", v:"The Village Hall"}
+  ],
+  docs: [
+    {t:"Agenda — Full Council — 9 September 2026", type:"Agendas", meta:"PDF · 184KB", d:"2 Sep 2026"},
+    {t:"Minutes — Full Council — 8 July 2026", type:"Minutes", meta:"PDF · 210KB", d:"15 Jul 2026"},
+    {t:"Annual Governance & Accountability Return 2025–26", type:"Finance", meta:"PDF · 1.2MB", d:"30 Jun 2026"},
+    {t:"Standing Orders (revised May 2026)", type:"Policies", meta:"PDF · 310KB", d:"21 May 2026"},
+    {t:"Grass cutting contract — invitation to tender", type:"Notices", meta:"PDF · 96KB", d:"12 May 2026"},
+    {t:"Asset register 2026", type:"Finance", meta:"XLSX · 44KB", d:"2 Apr 2026"}
+  ],
+  docCats: [["Agendas",34],["Minutes",31],["Finance",18],["Policies",12],["Planning",26],["Notices",9]],
+  councillors: [
+    ["Margaret Ashworth","Chair of the Council"],["David Okafor","Vice-Chair · Planning"],
+    ["Sarah Bennett","Finance & General Purposes"],["James Whitlock","Footpaths & Rights of Way"],
+    ["Priya Sharma","Village Hall Trustee"],["Tom Hedges","Allotments"],
+    ["Eleanor Frost","Recreation Ground"],["Roger Dunmore","Highways Liaison"]
+  ],
+  clerk:{name:"Mrs Alison Pearce", role:"Clerk & Responsible Financial Officer"},
+  contact:{
+    addr:["The Parish Office","The Village Hall, Church Lane","Little Wychford","Oxfordshire OX29 4QT"],
+    phone:"01865 731 448", email:"clerk@littlewychford-pc.gov.uk",
+    hours:"Monday to Thursday, 9.30am–12.30pm"
+  },
+  notice:"Mill Lane will be closed between the ford and Glebe Farm from 26–28 August for resurfacing. A signed diversion will be in place.",
+  councilPage:{
+    title:"The Council",
+    intro:"Little Wychford Parish Council is made up of nine elected councillors, supported by the Parish Clerk. The Council meets on the second Tuesday of each month, and its Planning and Finance committees meet as business requires.",
+    sections:[
+      {h:"What the Council does", p:"The Council owns and maintains the recreation ground, the allotments on Meadow Lane, the closed churchyard and the war memorial. It is a statutory consultee on planning applications in the parish, funds grants to village organisations, and precepts the district council for the money it needs each year."},
+      {h:"How decisions are made", p:"Decisions are taken by vote at properly convened meetings — never by individual councillors acting alone. Agendas are published at least three clear days before each meeting, and draft minutes are published within a month. Members of the public may speak during the public participation period at the start of every meeting."},
+      {h:"Your councillors", p:"Councillors are elected for a four-year term and are unpaid. The current council was elected in May 2023. Each councillor's register of interests is available on request from the Clerk."}
+    ],
+    respTable:[
+      ["Recreation ground & play area","Parish Council"],
+      ["Allotments (Meadow Lane)","Parish Council"],
+      ["Street lighting (village lanes)","Parish Council"],
+      ["Potholes & road surfaces","Oxfordshire County Council"],
+      ["Bin collections & recycling","West Oxfordshire District Council"],
+      ["Planning decisions","West Oxfordshire District Council"]
+    ]
+  },
+  searchQ:"allotments",
+  searchResults:[
+    {t:"Allotments", x:"The Council manages 24 plots on Meadow Lane. Rents are set each October; the current waiting list is around six months.", type:"Page"},
+    {t:"Allotment tenancy agreement (2026)", x:"The standard tenancy agreement for all Meadow Lane plots, including rules on structures, bonfires and subletting.", type:"Document"},
+    {t:"Minutes — Full Council — 8 July 2026", x:"…agreed that the allotments water supply be repaired before the end of the summer, at a cost not exceeding £600…", type:"Minutes"},
+    {t:"Water supply restored at Meadow Lane allotments", x:"The leaking supply pipe serving the allotments has been repaired and troughs are back in use.", type:"News"}
+  ]
+};
+
+/* ================= tiny helpers ================= */
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const initials = n => n.split(" ").map(w=>w[0]).join("");
+
+/* Illustrative "photographs": flat SVG village scenes, tinted per style so each
+   direction shows its own image treatment. kind: village|bridge|show|road|meadow|hall */
+function scene(kind, p){ // p = {sky, land, dark, accent, light}
+  const W=800,H=520, s=p;
+  let inner="";
+  const hills=`<path d="M0 330 Q 200 270 420 320 T 800 300 L 800 520 L 0 520 Z" fill="${s.land}"/>
+    <path d="M0 380 Q 260 330 520 375 T 800 360 L 800 520 L 0 520 Z" fill="${s.dark}" opacity=".25"/>`;
+  const tree=(x,y,k)=>`<g transform="translate(${x} ${y}) scale(${k})"><rect x="-6" y="30" width="12" height="34" fill="${s.dark}"/><circle cx="0" cy="8" r="34" fill="${s.dark}" opacity=".85"/><circle cx="-22" cy="20" r="22" fill="${s.dark}" opacity=".7"/><circle cx="22" cy="22" r="20" fill="${s.dark}" opacity=".7"/></g>`;
+  const church=(x,y,k)=>`<g transform="translate(${x} ${y}) scale(${k})"><rect x="0" y="40" width="90" height="70" fill="${s.light}"/><rect x="0" y="40" width="90" height="70" fill="${s.dark}" opacity=".12"/><rect x="12" y="-30" width="34" height="140" fill="${s.light}"/><path d="M12 -30 L29 -62 L46 -30 Z" fill="${s.dark}"/><rect x="24" y="-14" width="10" height="18" fill="${s.dark}" opacity=".8"/><rect x="55" y="62" width="14" height="26" rx="7" fill="${s.dark}" opacity=".75"/><rect x="20" y="120" width="120" height="4" fill="${s.dark}" opacity=".3"/></g>`;
+  if(kind==="village") inner = hills + church(330,160,1.15) + tree(120,300,1) + tree(660,290,1.2) + tree(560,330,.7);
+  if(kind==="bridge") inner = `<rect x="0" y="360" width="800" height="160" fill="${s.accent}" opacity=".28"/>
+    <path d="M0 350 Q 400 340 800 355 L 800 520 L 0 520 Z" fill="${s.accent}" opacity=".35"/>
+    <path d="M110 340 Q 400 220 690 340 L 690 360 Q 400 245 110 360 Z" fill="${s.dark}"/>
+    ${[...Array(12)].map((_,i)=>`<rect x="${140+i*38}" y="${300-Math.sin((i+1)/13*Math.PI)*52}" width="6" height="${60+Math.sin((i+1)/13*Math.PI)*52}" fill="${s.dark}"/>`).join("")}
+    ${hills.replace(/330/,"430").replace(/320/,"420")}` + tree(80,260,.9) + tree(700,250,1);
+  if(kind==="show") inner = hills + `<path d="M150 240 L 400 205 L 650 240" stroke="${s.dark}" stroke-width="4" fill="none"/>
+    ${[...Array(9)].map((_,i)=>{const x=170+i*54, y=209+Math.abs(4-i)*7; return `<path d="M${x} ${y} L ${x+20} ${y} L ${x+10} ${y+26} Z" fill="${i%2? s.accent : s.light}"/>`;}).join("")}
+    <g transform="translate(300 300)"><rect x="0" y="0" width="200" height="14" fill="${s.dark}"/><rect x="12" y="14" width="10" height="46" fill="${s.dark}"/><rect x="178" y="14" width="10" height="46" fill="${s.dark}"/><rect x="20" y="-34" width="70" height="34" fill="${s.light}"/><rect x="104" y="-26" width="44" height="26" fill="${s.accent}"/></g>` + tree(90,290,1) + tree(690,280,1.1);
+  if(kind==="road") inner = hills + `<path d="M330 520 L 400 300 Q 405 285 420 285 L 460 285 Q 472 285 474 300 L 560 520 Z" fill="${s.dark}"/>
+    <path d="M438 505 l6 -40 M448 440 l5 -34 M457 385 l4 -28 M464 340 l3 -22" stroke="${s.light}" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <g transform="translate(210 330)"><path d="M0 60 L30 0 L60 60 Z" fill="${s.light}"/><path d="M0 60 L30 0 L60 60 Z" fill="none" stroke="${s.accent}" stroke-width="8"/><rect x="24" y="22" width="12" height="18" fill="${s.dark}"/></g>` + tree(660,280,1.1);
+  if(kind==="meadow") inner = hills + `${[...Array(16)].map((_,i)=>`<path d="M${60+i*47} ${430+ (i%3)*18} q 6 -26 0 -44" stroke="${s.dark}" stroke-width="4" fill="none" opacity=".55"/>`).join("")}
+    <path d="M0 470 Q 400 440 800 465 L 800 520 L 0 520 Z" fill="${s.accent}" opacity=".3"/>
+    <g transform="translate(600 250)"><rect x="0" y="26" width="8" height="70" fill="${s.dark}"/><rect x="6" y="26" width="58" height="10" fill="${s.dark}"/><rect x="8" y="34" width="52" height="6" fill="${s.dark}" opacity=".55"/></g>` + tree(140,250,1.15) + tree(420,300,.8);
+  if(kind==="hall") inner = hills + `<g transform="translate(250 210)"><rect x="0" y="60" width="300" height="120" fill="${s.light}"/><rect x="0" y="60" width="300" height="120" fill="${s.dark}" opacity=".08"/><path d="M-14 62 L150 -18 L314 62 Z" fill="${s.dark}"/><rect x="130" y="112" width="40" height="68" rx="3" fill="${s.dark}" opacity=".8"/><rect x="34" y="96" width="44" height="34" fill="${s.dark}" opacity=".5"/><rect x="222" y="96" width="44" height="34" fill="${s.dark}" opacity=".5"/><rect x="138" y="30" width="24" height="26" fill="${s.light}"/></g>` + tree(110,290,1) + tree(680,280,1.05);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="${s.sky}"/><circle cx="660" cy="96" r="42" fill="${s.light}" opacity=".9"/>${inner}</svg>`;
+  return "data:image/svg+xml," + encodeURIComponent(svg);
+}
+
+const STYLES = {}; /* filled below: modern, community, editorial, minimal, classic */
+
+/* ======================================================================
+   STYLE 1 — MODERN CIVIC
+   Libre Franklin + Public Sans · white/cool grey · deep municipal blue
+   Flat, rectangular, task-first. GOV.UK rigour with municipal warmth.
+   ====================================================================== */
+(function(){
+const P = {sky:"#C9DCEA", land:"#9DBCCF", dark:"#164B7E", accent:"#D8A013", light:"#F3F7FA"};
+const img = k => scene(k,P);
+const NAVMAP = {"Home":"home","The Council":"council","Councillors":"council","Meetings":"meetings","Agendas & Minutes":"documents","Planning":"documents","Documents":"documents","News":"news","Contact":"contact"};
+const nav = page => C.nav.map(n=>{const tgt=NAVMAP[n];const cur=tgt===page&&(n!=="Councillors"&&n!=="Planning"&&n!=="Agendas & Minutes");
+  return `<li><a href="#" data-goto="${tgt}" ${cur?'aria-current="page"':""}>${esc(n)}</a></li>`;}).join("");
+const logo = `<span class="mc-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><rect width="40" height="40" fill="#164B7E"/><path d="M20 7l10 8v18H10V15z" fill="#fff"/><path d="M20 12l6 5v11h-4v-7h-4v7h-4V17z" fill="#164B7E"/></svg></span>`;
+
+const top = page => `
+<a class="mc-skip" href="#mc-main">Skip to main content</a>
+<header class="mc-utility">
+  <div class="mc-wrap mc-utility__in">
+    <span>A parish council for Little Wychford, Nether End &amp; Wychford Green</span>
+    <span class="mc-utility__c"><a href="tel:01865731448">01865 731 448</a><a href="mailto:${C.contact.email}">${C.contact.email}</a></span>
+  </div>
+</header>
+<div class="mc-mast">
+  <div class="mc-wrap mc-mast__in">
+    <a class="mc-brand" href="#" data-goto="home">${logo}<span class="mc-brand__t"><b>${esc(C.council)}</b><i>${esc(C.strap)}</i></span></a>
+    <form class="mc-search" role="search" aria-label="Site search" onsubmit="return false"><label class="mc-vh" for="mc-q">Search this site</label><input id="mc-q" type="search" placeholder="Search this site"><button type="submit">Search</button></form>
+    <button class="mc-burger" data-menu-toggle aria-expanded="false" aria-controls="mc-nav">Menu</button>
+  </div>
+</div>
+<nav class="mc-nav" id="mc-nav" aria-label="Main navigation"><div class="mc-wrap"><ul>${nav(page)}</ul>
+  <form class="mc-search mc-search--m" role="search" aria-label="Site search" onsubmit="return false"><label class="mc-vh" for="mc-qm">Search this site</label><input id="mc-qm" type="search" placeholder="Search this site"><button type="submit">Search</button></form>
+</div></nav>`;
+
+const noticeBar = `<div class="mc-notice" role="region" aria-label="Important notice"><div class="mc-wrap"><b>Road closure</b> ${esc(C.notice)} <a href="#" data-goto="news">Read more</a></div></div>`;
+
+const bot = `
+<footer class="mc-foot">
+  <div class="mc-wrap mc-foot__grid">
+    <div><h2>${esc(C.council)}</h2><p>${esc(C.contact.addr.join(", "))}</p><p>Office hours: ${esc(C.contact.hours)}</p></div>
+    <nav aria-label="Footer: quick links"><h2>Quick links</h2><ul><li><a href="#" data-goto="meetings">Meetings &amp; agendas</a></li><li><a href="#" data-goto="documents">Documents</a></li><li><a href="#" data-goto="news">News</a></li><li><a href="#" data-goto="contact">Contact the council</a></li></ul></nav>
+    <nav aria-label="Footer: your rights"><h2>Your rights</h2><ul><li><a href="#">Accessibility statement</a></li><li><a href="#">Privacy notice</a></li><li><a href="#">Freedom of information</a></li><li><a href="#">Complaints procedure</a></li></ul></nav>
+    <div><h2>Get in touch</h2><p><a href="tel:01865731448">01865 731 448</a><br><a href="mailto:${C.contact.email}">${C.contact.email}</a></p><p>${esc(C.clerk.name)}<br>${esc(C.clerk.role)}</p></div>
+  </div>
+  <div class="mc-foot__bar"><div class="mc-wrap">© 2026 ${esc(C.council)} · WCAG 2.2 AA</div></div>
+</footer>`;
+
+const crumbs = (items) => `<nav class="mc-crumbs" aria-label="Breadcrumb"><ol>${items.map((c,i)=>i===items.length-1?`<li aria-current="page">${esc(c)}</li>`:`<li><a href="#" data-goto="${c==="Home"?"home":"#"}">${esc(c)}</a></li>`).join("")}</ol></nav>`;
+const frame = (page,title,crumbItems,lead,inner) => top(page)+`
+<main id="mc-main" class="mc-page">
+  <div class="mc-pagehead"><div class="mc-wrap">${crumbs(crumbItems)}<h1>${esc(title)}</h1>${lead?`<p class="mc-lead">${esc(lead)}</p>`:""}</div></div>
+  <div class="mc-wrap mc-page__body">${inner}</div>
+</main>`+bot;
+
+const newsCard = (n,h)=>`<article class="mc-news">${n.img?`<img src="${img(n.img)}" alt="">`:`<div class="mc-news__noimg" aria-hidden="true">${logo}</div>`}
+  <div class="mc-news__b"><span class="mc-tag">${esc(n.cat)}</span><${h}><a href="#" data-goto="article">${esc(n.t)}</a></${h}><time>${esc(n.d)}</time><p>${esc(n.x)}</p></div></article>`;
+const docRow = d=>`<li class="mc-doc"><span class="mc-doc__ic" aria-hidden="true">${d.meta.startsWith("XLSX")?"XLS":"PDF"}</span><span class="mc-doc__b"><a href="#">${esc(d.t)}</a><small>${esc(d.type)} · ${esc(d.meta)} · Published ${esc(d.d)}</small></span></li>`;
+const pagination = `<nav class="mc-pgn" aria-label="Pagination"><ul><li><span aria-current="page">1</span></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">4</a></li><li><a class="mc-pgn__n" href="#">Next</a></li></ul></nav>`;
+
+const pages = {
+home: () => top("home") + noticeBar + `
+<main id="mc-main">
+  <section class="mc-hero"><div class="mc-wrap mc-hero__in">
+    <div class="mc-hero__t"><h1>${esc(C.welcomeHead)}</h1><p>${esc(C.welcome)}</p>
+      <p class="mc-hero__cta"><a class="mc-btn" href="#" data-goto="meetings">Meetings &amp; agendas</a><a class="mc-btn mc-btn--ghost" href="#" data-goto="contact">Contact the council</a></p></div>
+    <img class="mc-hero__img" src="${img("village")}" alt="Illustration of Little Wychford village">
+  </div></section>
+  <section class="mc-tasks" aria-labelledby="mc-tasks-h"><div class="mc-wrap">
+    <h2 id="mc-tasks-h">What do you need to do?</h2>
+    <ul class="mc-tasks__grid">${C.quick.map(q=>`<li><a href="#"><b>${esc(q[0])}</b><span>${esc(q[1])}</span></a></li>`).join("")}</ul>
+  </div></section>
+  <div class="mc-wrap mc-home">
+    <section class="mc-meet" aria-labelledby="mc-meet-h">
+      <h2 id="mc-meet-h">Next meeting</h2>
+      <div class="mc-meet__card"><div class="mc-meet__date"><b>9</b><span>Sept</span></div>
+        <div><h3>${esc(C.nextMeeting.title)}</h3><p>${esc(C.nextMeeting.date)}, ${esc(C.nextMeeting.time)} — ${esc(C.nextMeeting.venue)}</p>
+        <p class="mc-meet__links"><a class="mc-btn mc-btn--s" href="#">View agenda (PDF)</a><a href="#" data-goto="meetings">All meetings</a></p></div></div>
+      <p class="mc-meet__note">${esc(C.nextMeeting.note)}</p>
+    </section>
+    <section aria-labelledby="mc-news-h"><div class="mc-secthead"><h2 id="mc-news-h">Latest news</h2><a href="#" data-goto="news">All news</a></div>
+      <div class="mc-news3">${C.news.slice(0,3).map(n=>newsCard(n,"h3")).join("")}</div></section>
+    <div class="mc-2col">
+      <section aria-labelledby="mc-ev-h"><div class="mc-secthead"><h2 id="mc-ev-h">Coming up</h2></div>
+        <ul class="mc-evlist">${C.events.map(e=>`<li><time>${esc(e.d)}</time><span><b>${esc(e.t)}</b><br>${esc(e.time)} · ${esc(e.v)}</span></li>`).join("")}</ul></section>
+      <section aria-labelledby="mc-doc-h"><div class="mc-secthead"><h2 id="mc-doc-h">Recent documents</h2><a href="#" data-goto="documents">All documents</a></div>
+        <ul class="mc-doclist">${C.docs.slice(0,4).map(docRow).join("")}</ul></section>
+    </div>
+  </div>
+  <section class="mc-cta"><div class="mc-wrap mc-cta__in"><div><h2>Contact the Parish Council</h2><p>The Parish Office is open ${esc(C.contact.hours)} — or write to the Clerk at any time.</p></div><a class="mc-btn mc-btn--w" href="#" data-goto="contact">Get in touch</a></div></section>
+</main>`+bot,
+
+council: () => frame("council", C.councilPage.title, ["Home","The Council"], C.councilPage.intro, `
+  <div class="mc-cols">
+    <div class="mc-prose">
+      ${C.councilPage.sections.map(s=>`<h2>${esc(s.h)}</h2><p>${esc(s.p)}</p>`).join("")}
+      <h2>Who does what</h2>
+      <div class="mc-tablewrap"><table class="mc-table"><caption class="mc-vh">Responsibilities of each council</caption>
+        <thead><tr><th scope="col">Service</th><th scope="col">Responsible council</th></tr></thead>
+        <tbody>${C.councilPage.respTable.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>
+      <h2>Councillors</h2>
+      <ul class="mc-people">${C.councillors.map(p=>`<li><span class="mc-avatar" aria-hidden="true">${initials(p[0])}</span><b>Cllr ${esc(p[0])}</b><small>${esc(p[1])}</small></li>`).join("")}</ul>
+    </div>
+    <aside class="mc-aside" aria-label="Related">
+      <h2>Related pages</h2><ul><li><a href="#" data-goto="meetings">Meetings &amp; agendas</a></li><li><a href="#" data-goto="documents">Standing orders</a></li><li><a href="#" data-goto="documents">Register of interests</a></li><li><a href="#" data-goto="contact">Contact the Clerk</a></li></ul>
+      <div class="mc-aside__box"><h2>The Clerk</h2><p>${esc(C.clerk.name)}<br>${esc(C.clerk.role)}</p><p><a href="mailto:${C.contact.email}">${C.contact.email}</a></p></div>
+    </aside>
+  </div>`),
+
+news: () => frame("news","News",["Home","News"],"Updates from the Parish Council, published by the Clerk.",`
+  <div class="mc-newsfilter"><span>Filter:</span><a href="#" aria-current="true">All</a><a href="#">Highways</a><a href="#">Events</a><a href="#">Consultations</a><a href="#">Community</a></div>
+  <div class="mc-newsgrid">${C.news.map(n=>newsCard(n,"h2")).join("")}</div>${pagination}`),
+
+article: () => { const a=C.article; return frame("article", a.t, ["Home","News","Footbridge repairs"], null, `
+  <article class="mc-article">
+    <p class="mc-article__meta"><span class="mc-tag">${esc(a.cat)}</span><time>${esc(a.d)}</time> · ${esc(a.by)}</p>
+    <p class="mc-article__stand">${esc(a.standfirst)}</p>
+    <img src="${img(a.img)}" alt="Illustration of the Wychford Brook footbridge">
+    ${a.body.slice(0,2).map(p=>`<p>${esc(p)}</p>`).join("")}
+    <blockquote><p>“${esc(a.quote)}”</p><footer>— ${esc(a.quoteBy)}</footer></blockquote>
+    ${a.body.slice(2).map(p=>`<p>${esc(p)}</p>`).join("")}
+    <div class="mc-article__foot"><a href="#" data-goto="news">← All news</a><a href="#" data-goto="contact">Contact the Clerk about this</a></div>
+  </article>`);},
+
+meetings: () => frame("meetings","Meetings",["Home","Meetings"],"The Council normally meets on the second Tuesday of each month at the Village Hall. All meetings are open to the public.",`
+  <section class="mc-meet mc-meet--page" aria-labelledby="mcm-next"><h2 id="mcm-next">Next meeting</h2>
+    <div class="mc-meet__card"><div class="mc-meet__date"><b>9</b><span>Sept</span></div>
+      <div><h3>${esc(C.nextMeeting.title)}</h3><p>${esc(C.nextMeeting.date)}, ${esc(C.nextMeeting.time)} — ${esc(C.nextMeeting.venue)}</p>
+      <p class="mc-meet__links"><a class="mc-btn mc-btn--s" href="#">View agenda (PDF, 184KB)</a></p></div></div></section>
+  <h2>Upcoming meetings</h2>
+  <div class="mc-tablewrap"><table class="mc-table"><caption class="mc-vh">Upcoming council meetings</caption>
+    <thead><tr><th scope="col">Meeting</th><th scope="col">Date</th><th scope="col">Time</th><th scope="col">Venue</th><th scope="col">Papers</th></tr></thead>
+    <tbody>${C.meetings.map(m=>`<tr><td>${esc(m.t)}</td><td>${esc(m.d)}</td><td>${esc(m.time)}</td><td>${esc(m.v)}</td><td>${m.agenda?`<a href="#">${esc(m.agenda)}</a>`:`<span class="mc-muted">To follow</span>`}</td></tr>`).join("")}</tbody></table></div>
+  <h2>Previous meetings</h2>
+  <ul class="mc-doclist">${C.pastMeetings.map(m=>`<li class="mc-doc"><span class="mc-doc__ic" aria-hidden="true">PDF</span><span class="mc-doc__b"><a href="#">${esc(m.t)} — ${esc(m.d)}</a><small>${esc(m.minutes)} · ${esc(m.status)}</small></span></li>`).join("")}</ul>`),
+
+documents: () => frame("documents","Documents",["Home","Documents"],"Agendas, minutes, policies and financial documents published by the Council.",`
+  <div class="mc-cols">
+    <div>
+      <form class="mc-docsearch" role="search" aria-label="Search documents" onsubmit="return false"><label class="mc-vh" for="mc-dq">Search documents</label><input id="mc-dq" type="search" placeholder="Search documents…"><button type="submit">Search</button></form>
+      <ul class="mc-doclist">${C.docs.map(docRow).join("")}</ul>${pagination}
+    </div>
+    <aside class="mc-aside" aria-label="Document categories"><h2>Categories</h2>
+      <ul class="mc-cats">${C.docCats.map(c=>`<li><a href="#">${esc(c[0])}<span>${c[1]}</span></a></li>`).join("")}</ul>
+      <div class="mc-aside__box"><h2>Can't find it?</h2><p>Older records are held by the Clerk — <a href="#" data-goto="contact">ask for a copy</a>. Documents can be supplied in large print on request.</p></div>
+    </aside>
+  </div>`),
+
+contact: () => frame("contact","Contact the council",["Home","Contact"],"The Parish Office is staffed part-time. If your enquiry is urgent, please telephone during office hours.",`
+  <div class="mc-cols">
+    <form class="mc-form" onsubmit="return false">
+      <h2>Send a message</h2>
+      <p class="mc-form__row"><label for="mcf-n">Your name</label><input id="mcf-n" type="text" autocomplete="name"></p>
+      <p class="mc-form__row"><label for="mcf-e">Email address</label><input id="mcf-e" type="email" autocomplete="email"><small>We'll only use this to reply to you.</small></p>
+      <p class="mc-form__row"><label for="mcf-s">Subject</label><select id="mcf-s"><option>General enquiry</option><option>Planning</option><option>Allotments</option><option>Village hall booking</option><option>Report a problem</option></select></p>
+      <p class="mc-form__row"><label for="mcf-m">Your message</label><textarea id="mcf-m" rows="6"></textarea></p>
+      <button class="mc-btn" type="submit">Send message</button>
+    </form>
+    <aside class="mc-aside" aria-label="Contact details">
+      <div class="mc-aside__box"><h2>The Parish Office</h2><p>${C.contact.addr.map(esc).join("<br>")}</p>
+        <p><b>Phone</b><br><a href="tel:01865731448">${esc(C.contact.phone)}</a></p>
+        <p><b>Email</b><br><a href="mailto:${C.contact.email}">${C.contact.email}</a></p>
+        <p><b>Office hours</b><br>${esc(C.contact.hours)}</p></div>
+      <img src="${img("hall")}" alt="Illustration of the Village Hall on Church Lane" class="mc-mapimg">
+    </aside>
+  </div>`),
+
+search: () => frame("search",`Search results`,["Home","Search"],null,`
+  <form class="mc-docsearch mc-docsearch--top" role="search" aria-label="Site search" onsubmit="return false"><label class="mc-vh" for="mc-sq">Search this site</label><input id="mc-sq" type="search" value="${esc(C.searchQ)}"><button type="submit">Search</button></form>
+  <p class="mc-muted">${C.searchResults.length} results for <b>“${esc(C.searchQ)}”</b></p>
+  <ol class="mc-results">${C.searchResults.map(r=>`<li><span class="mc-tag">${esc(r.type)}</span><h2><a href="#">${esc(r.t)}</a></h2><p>${esc(r.x)}</p></li>`).join("")}</ol>${pagination}`),
+
+notfound: () => top("notfound")+`
+<main id="mc-main" class="mc-page"><div class="mc-wrap mc-404">
+  <p class="mc-404__code" aria-hidden="true">404</p>
+  <h1>Page not found</h1>
+  <p class="mc-lead">The page you asked for doesn't exist or may have moved. Try searching, or start again from the homepage.</p>
+  <form class="mc-docsearch mc-docsearch--top" role="search" aria-label="Site search" onsubmit="return false"><label class="mc-vh" for="mc-4q">Search this site</label><input id="mc-4q" type="search" placeholder="Search this site"><button type="submit">Search</button></form>
+  <p><a class="mc-btn" href="#" data-goto="home">Go to the homepage</a></p>
+</div></main>`+bot,
+
+components: () => frame("components","Component sheet",["Home","Components"],"Every reusable part of the Modern Civic style on one page.",`
+  <section class="mc-comp"><h2>Type & colour</h2>
+    <p class="mc-spec mc-spec--d">Libre Franklin 800 — display &amp; headings</p>
+    <p class="mc-spec">Public Sans 400 — body copy at 17px/1.6, links underlined, <a href="#">like this one</a>.</p>
+    <div class="mc-swatches">${[["#164B7E","Primary"],["#0E2A47","Footer navy"],["#172B3A","Ink"],["#D8A013","Signal"],["#F0F3F6","Wash"],["#D9E0E6","Line"]].map(s=>`<span><i style="background:${s[0]}"></i>${s[1]}<br><code>${s[0]}</code></span>`).join("")}</div></section>
+  <section class="mc-comp"><h2>Buttons</h2><p class="mc-btnrow"><a class="mc-btn" href="#">Primary action</a><a class="mc-btn mc-btn--ghost" href="#">Secondary</a><a class="mc-btn mc-btn--s" href="#">Small</a><a href="#">Text link</a></p></section>
+  <section class="mc-comp"><h2>Notices & alerts</h2>
+    ${noticeBar}
+    <div class="mc-alert mc-alert--ok" role="status"><b>Your message has been sent.</b> The Clerk will reply within five working days.</div>
+    <div class="mc-alert mc-alert--warn"><b>Draft minutes.</b> These minutes have not yet been approved by the Council.</div></section>
+  <section class="mc-comp"><h2>Cards, documents & tags</h2>
+    <div class="mc-news3">${C.news.slice(0,2).map(n=>newsCard(n,"h3")).join("")}</div>
+    <ul class="mc-doclist" style="margin-top:18px">${C.docs.slice(0,2).map(docRow).join("")}</ul>
+    <p><span class="mc-tag">Highways</span> <span class="mc-tag">Consultations</span> <span class="mc-tag">Events</span></p></section>
+  <section class="mc-comp"><h2>Table</h2><div class="mc-tablewrap"><table class="mc-table"><thead><tr><th scope="col">Service</th><th scope="col">Responsible council</th></tr></thead><tbody>${C.councilPage.respTable.slice(0,3).map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div></section>
+  <section class="mc-comp"><h2>Form elements</h2><form class="mc-form mc-form--bare" onsubmit="return false"><p class="mc-form__row"><label for="mcc-a">Text input</label><input id="mcc-a" type="text"></p><p class="mc-form__row"><label for="mcc-b">Select</label><select id="mcc-b"><option>General enquiry</option></select></p></form></section>
+  <section class="mc-comp"><h2>Pagination & breadcrumb</h2>${pagination}${crumbs(["Home","Documents","Minutes"])}</section>`)
+};
+
+STYLES.modern = {
+label:"Modern Civic",
+blurb:"Confident contemporary public-sector design — task-first homepage, flat rectangular panels, a solid navigation band and generous white space. GOV.UK rigour with municipal warmth rather than a startup look.",
+meta:"Libre Franklin & Public Sans · white / cool grey / municipal blue · square corners, 1px borders",
+pages,
+css:`
+.mcv{--blue:#164B7E;--blue-d:#103A63;--navy:#0E2A47;--ink:#172B3A;--mut:#4C5B68;--wash:#F0F3F6;--line:#D9E0E6;--signal:#D8A013;--ok:#2E6B3F;--bg:#fff;
+  font-family:"Public Sans",system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:17px;line-height:1.6}
+.mcv h1,.mcv h2,.mcv h3{font-family:"Libre Franklin",system-ui,sans-serif;letter-spacing:-.015em;line-height:1.15;text-wrap:balance;margin:0}
+.mcv a{color:var(--blue);text-underline-offset:3px}
+.mcv a:hover{color:var(--blue-d)}
+.mcv :focus-visible{outline:3px solid var(--ink);outline-offset:2px;border-radius:0}
+.mcv img{display:block}
+.mc-wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+.mc-vh{position:absolute!important;clip:rect(0 0 0 0);clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+.mc-skip{position:absolute;left:-9999px;background:var(--signal);color:var(--ink);padding:10px 16px;font-weight:700;z-index:50}
+.mc-skip:focus{left:12px;top:12px}
+.mc-utility{background:var(--navy);color:#C4D3E1;font-size:13px}
+.mc-utility__in{display:flex;justify-content:space-between;gap:16px;padding-top:7px;padding-bottom:7px;flex-wrap:wrap}
+.mc-utility a{color:#fff;text-decoration:none;margin-left:18px}
+.mc-utility a:hover{text-decoration:underline}
+.mc-mast{border-bottom:1px solid var(--line)}
+.mc-mast__in{display:flex;align-items:center;gap:26px;padding-top:18px;padding-bottom:18px}
+.mc-brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--ink);margin-right:auto}
+.mc-mark{width:44px;height:44px;flex:none}
+.mc-brand__t b{font:800 19px/1.15 "Libre Franklin";display:block;letter-spacing:-.01em}
+.mc-brand__t i{font:400 12.5px/1.3 "Public Sans";font-style:normal;color:var(--mut);display:block;margin-top:3px}
+.mc-search{display:flex}
+.mc-search input{font:inherit;font-size:15px;padding:9px 12px;border:2px solid var(--ink);border-right:0;width:210px;background:#fff;color:var(--ink)}
+.mc-search button{font:700 14px "Public Sans";background:var(--blue);color:#fff;border:2px solid var(--blue);padding:9px 15px;cursor:pointer}
+.mc-search button:hover{background:var(--blue-d);border-color:var(--blue-d)}
+.mc-burger{display:none;font:700 15px "Public Sans";background:var(--blue);color:#fff;border:0;padding:10px 16px;cursor:pointer}
+.mc-nav{background:var(--blue)}
+.mc-nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap}
+.mc-nav a{display:block;color:#fff;text-decoration:none;font:600 15px/1 "Public Sans";padding:15px 15px;border-bottom:4px solid transparent;border-top:4px solid transparent}
+.mc-nav a:hover{background:var(--blue-d);color:#fff}
+.mc-nav a[aria-current="page"]{border-bottom-color:var(--signal);background:var(--blue-d)}
+.mc-search--m{display:none}
+.mc-notice{background:#FCF6E4;border-bottom:1px solid #E8D9A8;font-size:15px;padding:11px 0}
+.mc-notice b{color:#7A5A00;text-transform:uppercase;font-size:12.5px;letter-spacing:.08em;margin-right:8px}
+.mc-notice .mc-wrap{border-left:4px solid var(--signal);padding-left:18px}
+.mc-hero{border-bottom:1px solid var(--line)}
+.mc-hero__in{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center;padding-top:52px;padding-bottom:52px}
+.mc-hero__t h1{font-size:clamp(30px,4vw,44px);font-weight:800;margin-bottom:16px}
+.mc-hero__t p{margin:0 0 14px;max-width:56ch}
+.mc-hero__cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.mc-hero__img{width:100%;border:1px solid var(--line)}
+.mc-btn{display:inline-block;background:var(--blue);color:#fff!important;text-decoration:none;font:700 15px/1 "Public Sans";padding:13px 20px;border:2px solid var(--blue)}
+.mc-btn:hover{background:var(--blue-d);border-color:var(--blue-d)}
+.mc-btn--ghost{background:transparent;color:var(--blue)!important;border-color:var(--blue)}
+.mc-btn--ghost:hover{background:var(--wash);color:var(--blue-d)!important}
+.mc-btn--w{background:#fff;color:var(--navy)!important;border-color:#fff}
+.mc-btn--w:hover{background:var(--wash)}
+.mc-btn--s{padding:9px 14px;font-size:13.5px}
+.mc-tasks{background:var(--wash);border-bottom:1px solid var(--line);padding:40px 0 46px}
+.mc-tasks h2{font-size:24px;font-weight:800;margin-bottom:20px}
+.mc-tasks__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mc-tasks__grid a{display:block;background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);padding:16px 18px;text-decoration:none;height:100%}
+.mc-tasks__grid a:hover{border-left-color:var(--signal);background:#FBFCFD}
+.mc-tasks__grid b{display:block;font:700 16.5px/1.3 "Libre Franklin";color:var(--blue);margin-bottom:4px;text-decoration:underline;text-underline-offset:3px}
+.mc-tasks__grid span{font-size:14px;color:var(--mut)}
+.mc-home{padding-top:46px;padding-bottom:56px;display:flex;flex-direction:column;gap:46px}
+.mc-secthead{display:flex;align-items:baseline;justify-content:space-between;border-bottom:3px solid var(--ink);padding-bottom:9px;margin-bottom:20px}
+.mc-secthead h2,.mc-meet>h2,.mc-comp>h2{font-size:23px;font-weight:800}
+.mc-meet>h2{border-bottom:3px solid var(--ink);padding-bottom:9px;margin-bottom:20px}
+.mc-secthead a{font-weight:600;font-size:15px}
+.mc-meet__card{display:flex;gap:20px;border:1px solid var(--line);border-left:4px solid var(--blue);padding:20px 22px;align-items:flex-start;background:#fff}
+.mc-meet__date{flex:none;background:var(--navy);color:#fff;text-align:center;padding:10px 16px}
+.mc-meet__date b{font:800 26px/1 "Libre Franklin";display:block}
+.mc-meet__date span{font-size:12.5px;text-transform:uppercase;letter-spacing:.08em}
+.mc-meet__card h3{font-size:19px;margin-bottom:5px}
+.mc-meet__card p{margin:0 0 8px;color:var(--mut);font-size:15.5px}
+.mc-meet__links{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.mc-meet__note{font-size:14px;color:var(--mut);margin:10px 0 0;max-width:70ch}
+.mc-news3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.mc-news{border:1px solid var(--line);background:#fff;display:flex;flex-direction:column}
+.mc-news img,.mc-news__noimg{width:100%;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--line)}
+.mc-news__noimg{background:var(--wash);display:flex;align-items:center;justify-content:center}
+.mc-news__noimg .mc-mark{opacity:.35}
+.mc-news__b{padding:15px 17px 17px;display:flex;flex-direction:column;gap:6px;flex:1}
+.mc-news__b h2 a,.mc-news__b h3 a{color:var(--ink);font-size:17.5px;line-height:1.3;font-weight:700}
+.mc-news__b h2 a:hover,.mc-news__b h3 a:hover{color:var(--blue)}
+.mc-news__b time{font-size:13px;color:var(--mut);order:-1}
+.mc-news__b p{font-size:14.5px;color:var(--mut);margin:0}
+.mc-tag{display:inline-block;font:700 11px/1 "Public Sans";letter-spacing:.09em;text-transform:uppercase;color:var(--blue);background:var(--wash);border:1px solid var(--line);padding:4px 8px;align-self:flex-start}
+.mc-2col{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.mc-evlist{list-style:none;margin:0;padding:0}
+.mc-evlist li{display:flex;gap:16px;padding:13px 2px;border-bottom:1px solid var(--line);font-size:15px}
+.mc-evlist time{flex:none;width:120px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.mc-doclist{list-style:none;margin:0;padding:0}
+.mc-doc{display:flex;gap:14px;padding:13px 2px;border-bottom:1px solid var(--line);align-items:flex-start}
+.mc-doc__ic{flex:none;font:800 11px/1 "Libre Franklin";background:var(--navy);color:#fff;padding:8px 7px;letter-spacing:.05em}
+.mc-doc__b a{font-weight:600;font-size:15.5px}
+.mc-doc__b small{display:block;color:var(--mut);font-size:13px;margin-top:3px}
+.mc-cta{background:var(--navy);color:#fff;padding:38px 0}
+.mc-cta__in{display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap}
+.mc-cta h2{font-size:24px;font-weight:800;margin-bottom:6px}
+.mc-cta p{margin:0;color:#C4D3E1;max-width:60ch}
+.mc-foot{background:var(--navy);color:#C4D3E1;font-size:14.5px;margin-top:0}
+.mc-page+ .mc-foot,.mcv main+.mc-foot{margin-top:0}
+.mc-foot__grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:34px;padding-top:40px;padding-bottom:34px}
+.mc-foot h2{font:700 13px/1 "Public Sans";letter-spacing:.12em;text-transform:uppercase;color:#fff;margin-bottom:14px}
+.mc-foot p{margin:0 0 10px}
+.mc-foot ul{list-style:none;margin:0;padding:0}
+.mc-foot li{margin-bottom:8px}
+.mc-foot a{color:#fff}
+.mc-foot__bar{border-top:1px solid #24466B;padding:14px 0;font-size:13px}
+.mc-page__body{padding-top:36px;padding-bottom:60px}
+.mc-pagehead{background:var(--wash);border-bottom:1px solid var(--line);padding:22px 0 26px}
+.mc-pagehead h1{font-size:clamp(27px,3.4vw,36px);font-weight:800}
+.mc-lead{font-size:18.5px;color:var(--mut);max-width:64ch;margin:10px 0 0}
+.mc-crumbs ol{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-wrap:wrap;gap:6px;font-size:13.5px}
+.mc-crumbs li+li::before{content:"/";margin-right:6px;color:var(--mut)}
+.mc-crumbs a{color:var(--mut)}
+.mc-crumbs [aria-current]{color:var(--ink);font-weight:600}
+.mc-cols{display:grid;grid-template-columns:1fr 300px;gap:48px;align-items:start}
+.mc-prose h2{font-size:22px;font-weight:800;margin:30px 0 12px}
+.mc-prose h2:first-child{margin-top:0}
+.mc-prose p{max-width:70ch;margin:0 0 14px}
+.mc-aside{border-top:4px solid var(--blue);background:var(--wash);padding:20px 20px 22px;font-size:15px}
+.mc-aside h2{font-size:16px;font-weight:800;margin-bottom:12px}
+.mc-aside ul{list-style:none;margin:0 0 6px;padding:0}
+.mc-aside li{margin-bottom:9px}
+.mc-aside__box{border-top:1px solid var(--line);margin-top:18px;padding-top:16px}
+.mc-aside__box p{margin:0 0 10px}
+.mc-mapimg{width:100%;border:1px solid var(--line);margin-top:18px}
+.mc-tablewrap{overflow-x:auto;margin:6px 0 22px}
+.mc-table{border-collapse:collapse;width:100%;font-size:15px;min-width:480px}
+.mc-table th{text-align:left;font:700 13px "Public Sans";letter-spacing:.06em;text-transform:uppercase;background:var(--navy);color:#fff;padding:10px 13px}
+.mc-table td{border-bottom:1px solid var(--line);padding:11px 13px}
+.mc-table tr:nth-child(even) td{background:var(--wash)}
+.mc-people{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.mc-people li{border:1px solid var(--line);padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:3px 13px;align-items:center}
+.mc-people .mc-avatar{grid-row:span 2;width:46px;height:46px;background:var(--wash);border:1px solid var(--line);color:var(--blue);display:flex;align-items:center;justify-content:center;font:800 15px "Libre Franklin"}
+.mc-people b{font-size:15.5px}
+.mc-people small{color:var(--mut);font-size:13px}
+.mc-newsgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:34px}
+.mc-newsfilter{display:flex;gap:14px;align-items:center;font-size:14.5px;margin-bottom:24px;flex-wrap:wrap}
+.mc-newsfilter span{color:var(--mut);font-weight:600}
+.mc-newsfilter a{text-decoration:none;padding:6px 12px;border:1px solid var(--line)}
+.mc-newsfilter a:hover{background:var(--wash)}
+.mc-newsfilter a[aria-current]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mc-pgn ul{list-style:none;display:flex;gap:6px;margin:26px 0 0;padding:0}
+.mc-pgn a,.mc-pgn span{display:block;min-width:40px;text-align:center;padding:9px 10px;border:1px solid var(--line);text-decoration:none;font-size:14.5px}
+.mc-pgn a:hover{background:var(--wash)}
+.mc-pgn [aria-current]{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+.mc-pgn__n{font-weight:600}
+.mc-article{max-width:720px}
+.mc-article__meta{display:flex;gap:12px;align-items:center;color:var(--mut);font-size:14px;margin:0 0 14px}
+.mc-article__stand{font-size:20px;line-height:1.5;color:var(--mut);margin:0 0 20px}
+.mc-article img{width:100%;border:1px solid var(--line);margin:0 0 22px}
+.mc-article p{margin:0 0 16px}
+.mc-article blockquote{border-left:4px solid var(--signal);margin:24px 0;padding:6px 0 6px 20px}
+.mc-article blockquote p{font:500 19px/1.5 "Libre Franklin";margin-bottom:8px}
+.mc-article blockquote footer{color:var(--mut);font-size:14px}
+.mc-article__foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:28px;padding-top:16px;flex-wrap:wrap;gap:10px}
+.mc-docsearch{display:flex;margin:0 0 20px}
+.mc-docsearch input{font:inherit;font-size:16px;padding:11px 13px;border:2px solid var(--ink);border-right:0;flex:1;max-width:430px}
+.mc-docsearch button{font:700 15px "Public Sans";background:var(--blue);border:2px solid var(--blue);color:#fff;padding:11px 18px;cursor:pointer}
+.mc-cats{list-style:none;margin:0;padding:0}
+.mc-cats a{display:flex;justify-content:space-between;padding:9px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-weight:600;font-size:15px}
+.mc-cats span{color:var(--mut);font-weight:400;font-variant-numeric:tabular-nums}
+.mc-results{list-style:none;margin:0;padding:0;max-width:760px}
+.mc-results li{border-bottom:1px solid var(--line);padding:18px 0}
+.mc-results h2{font-size:18.5px;margin:7px 0 6px}
+.mc-results p{margin:0;color:var(--mut);font-size:15px}
+.mc-muted{color:var(--mut)}
+.mc-404{padding-top:70px;padding-bottom:90px;max-width:640px}
+.mc-404__code{font:800 70px/1 "Libre Franklin";color:var(--line);margin:0 0 6px}
+.mc-404 h1{font-size:34px;font-weight:800;margin-bottom:12px}
+.mc-form{max-width:560px}
+.mc-form h2{font-size:22px;font-weight:800;margin-bottom:18px}
+.mc-form__row{margin:0 0 16px;display:flex;flex-direction:column;gap:6px}
+.mc-form label{font-weight:700;font-size:15px}
+.mc-form input,.mc-form select,.mc-form textarea{font:inherit;font-size:16px;padding:10px 12px;border:2px solid var(--ink);background:#fff;color:var(--ink)}
+.mc-form small{color:var(--mut);font-size:13.5px}
+.mc-form button{margin-top:6px}
+.mc-comp{margin-bottom:40px}
+.mc-comp>h2{border-bottom:3px solid var(--ink);padding-bottom:8px;margin-bottom:18px}
+.mc-spec--d{font:800 30px/1.2 "Libre Franklin";margin:0 0 8px}
+.mc-spec{margin:0 0 14px}
+.mc-swatches{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px}
+.mc-swatches i{display:block;width:84px;height:52px;border:1px solid var(--line);margin-bottom:5px}
+.mc-swatches code{color:var(--mut)}
+.mc-btnrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.mc-alert{border:1px solid var(--line);border-left-width:4px;padding:13px 16px;margin:14px 0;font-size:15px}
+.mc-alert--ok{border-left-color:var(--ok);background:#F1F7F2}
+.mc-alert--warn{border-left-color:var(--signal);background:#FCF6E4}
+.mc-comp .mc-notice{border:1px solid #E8D9A8;margin:14px 0}
+@media (max-width:960px){
+  .mc-hero__in,.mc-cols,.mc-2col{grid-template-columns:1fr}
+  .mc-tasks__grid,.mc-newsgrid,.mc-news3{grid-template-columns:repeat(2,1fr)}
+  .mc-foot__grid{grid-template-columns:1fr 1fr}
+  .mc-search{display:none}
+  .mc-burger{display:block}
+  .mc-mast__in{gap:14px}
+  .mc-nav{display:none}
+  .nav-open .mc-nav{display:block}
+  .mc-nav ul{flex-direction:column;padding:6px 0}
+  .mc-nav a{border-left:4px solid transparent;border-top:0;border-bottom:0;padding:13px 16px;font-size:16px}
+  .mc-nav a[aria-current="page"]{border-left-color:var(--signal)}
+  .mc-search--m{display:flex;padding:12px 16px 16px}
+  .mc-search--m input{flex:1;width:auto}
+}
+@media (max-width:600px){
+  .mc-tasks__grid,.mc-newsgrid,.mc-news3,.mc-people,.mc-foot__grid{grid-template-columns:1fr}
+  .mc-utility__c{display:none}
+  .mc-brand__t i{display:none}
+  .mc-meet__card{flex-direction:column}
+}
+`};
+})();
+
+/* ======================================================================
+   STYLE 2 — COMMUNITY
+   Bricolage Grotesque + Nunito Sans · cream / moss green / honey
+   Rounded, photo-forward, noticeboard warmth. Friendly, never childish.
+   ====================================================================== */
+(function(){
+const P = {sky:"#F3E7C8", land:"#B9CDA4", dark:"#2F6B4F", accent:"#E8A13C", light:"#FFF8EA"};
+const img = k => scene(k,P);
+const NAVMAP = {"Home":"home","The Council":"council","Councillors":"council","Meetings":"meetings","Agendas & Minutes":"documents","Planning":"documents","Documents":"documents","News":"news","Contact":"contact"};
+const ICONS = {
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h4M9 12h6M9 16h6"/></svg>',
+  map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>',
+  warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4 21 20H3z"/><path d="M12 10v4.5M12 17.6v.1"/></svg>',
+  hall:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 11 12 4l8 7"/><path d="M6 10v10h12V10M10 20v-6h4v6"/></svg>',
+  leaf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 19C5 9 12 4 20 4c0 9-5 15-15 15z"/><path d="M5 19c3-5 7-8 11-10"/></svg>'
+};
+const qiKeys = ["cal","doc","map","warn","hall","leaf"];
+const logo = `<span class="cm-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#2F6B4F"/><path d="M24 9c5 5 8 9 8 13.5A8 8 0 0 1 24 30a8 8 0 0 1-8-7.5C16 18 19 14 24 9z" fill="#FAF6EF"/><path d="M24 30v9M24 24l-4-4M24 27l5-5" stroke="#FAF6EF" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg></span>`;
+
+const nav = page => C.nav.map(n=>{const tgt=NAVMAP[n];const cur=tgt===page&&!["Councillors","Planning","Agendas & Minutes"].includes(n);
+  return `<li><a href="#" data-goto="${tgt}" ${cur?'aria-current="page"':""}>${esc(n)}</a></li>`;}).join("");
+
+const top = page => `
+<a class="cm-skip" href="#cm-main">Skip to main content</a>
+<div class="cm-strip"><div class="cm-wrap cm-strip__in">
+  <span class="cm-pill"><i aria-hidden="true"></i>Next meeting: Tue 9 Sept, 7.30pm — Village Hall</span>
+  <span class="cm-strip__c"><a href="tel:01865731448">01865 731 448</a> · <a href="mailto:${C.contact.email}">Email the Clerk</a></span>
+</div></div>
+<header class="cm-head"><div class="cm-wrap cm-head__in">
+  <a class="cm-brand" href="#" data-goto="home">${logo}<span><b>${esc(C.council)}</b><i>${esc(C.strap)}</i></span></a>
+  <form class="cm-search" role="search" aria-label="Site search" onsubmit="return false"><label class="cm-vh" for="cm-q">Search</label><input id="cm-q" type="search" placeholder="Search…"><button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg></button></form>
+  <button class="cm-burger" data-menu-toggle aria-expanded="false" aria-controls="cm-nav"><span aria-hidden="true">☰</span> Menu</button>
+</div>
+<nav class="cm-nav" id="cm-nav" aria-label="Main navigation"><div class="cm-wrap"><ul>${nav(page)}</ul></div></nav>
+</header>`;
+
+const noticeCard = `<div class="cm-notice" role="region" aria-label="Important notice"><span class="cm-notice__pin" aria-hidden="true"></span><div><b>Road closure this week</b><p>${esc(C.notice)}</p></div><a class="cm-btn cm-btn--s" href="#" data-goto="news">Details</a></div>`;
+
+const bot = `
+<footer class="cm-foot"><div class="cm-wrap">
+  <div class="cm-foot__grid">
+    <div class="cm-foot__about">${logo.replace('cm-mark','cm-mark cm-mark--f')}<h2>${esc(C.council)}</h2><p>${esc(C.strap)}.</p><p>${C.contact.addr.map(esc).join("<br>")}</p></div>
+    <nav aria-label="Footer: explore"><h2>Explore</h2><ul><li><a href="#" data-goto="news">News</a></li><li><a href="#" data-goto="meetings">Meetings</a></li><li><a href="#" data-goto="documents">Documents</a></li><li><a href="#" data-goto="council">Your councillors</a></li></ul></nav>
+    <nav aria-label="Footer: your rights"><h2>Your rights</h2><ul><li><a href="#">Accessibility statement</a></li><li><a href="#">Privacy notice</a></li><li><a href="#">Freedom of information</a></li><li><a href="#">Complaints</a></li></ul></nav>
+    <div><h2>Say hello</h2><p><a href="tel:01865731448">${esc(C.contact.phone)}</a><br><a href="mailto:${C.contact.email}">${C.contact.email}</a></p><p>Office hours:<br>${esc(C.contact.hours)}</p></div>
+  </div>
+  <div class="cm-foot__bar"><span>© 2026 ${esc(C.council)}</span><span>WCAG 2.2 AA · Site by NetWise</span></div>
+</div></footer>`;
+
+const crumbs = items => `<nav class="cm-crumbs" aria-label="Breadcrumb"><ol>${items.map((c,i)=>i===items.length-1?`<li aria-current="page">${esc(c)}</li>`:`<li><a href="#" data-goto="${c==="Home"?"home":"#"}">${esc(c)}</a></li>`).join("")}</ol></nav>`;
+const frame = (page,title,crumbItems,lead,inner) => top(page)+`
+<main id="cm-main" class="cm-page"><div class="cm-wrap">
+  <div class="cm-pagehead">${crumbs(crumbItems)}<h1>${esc(title)}</h1>${lead?`<p class="cm-lead">${esc(lead)}</p>`:""}</div>
+  ${inner}
+</div></main>`+bot;
+
+const newsCard = (n,h)=>`<article class="cm-news"><a class="cm-news__imglink" href="#" data-goto="article" tabindex="-1" aria-hidden="true">${n.img?`<img src="${img(n.img)}" alt="">`:`<span class="cm-news__noimg">${logo}</span>`}</a>
+  <div class="cm-news__b"><span class="cm-chip">${esc(n.cat)}</span><${h}><a href="#" data-goto="article">${esc(n.t)}</a></${h}><time>${esc(n.d)}</time><p>${esc(n.x)}</p></div></article>`;
+const docRow = d=>`<li class="cm-doc"><span class="cm-doc__ic" aria-hidden="true">${ICONS.doc}</span><span class="cm-doc__b"><a href="#">${esc(d.t)}</a><small>${esc(d.type)} · ${esc(d.meta)} · ${esc(d.d)}</small></span><span class="cm-doc__go" aria-hidden="true">↓</span></li>`;
+const pagination = `<nav class="cm-pgn" aria-label="Pagination"><ul><li><span aria-current="page">1</span></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">4</a></li><li><a class="cm-pgn__n" href="#">Next →</a></li></ul></nav>`;
+
+const pages = {
+home: () => top("home") + `
+<main id="cm-main">
+  <div class="cm-wrap">
+    <section class="cm-hero"><div class="cm-hero__t">
+        <h1>A village that <span class="cm-hi">looks after</span> its own</h1>
+        <p>${esc(C.welcome)}</p>
+        <p class="cm-hero__cta"><a class="cm-btn" href="#" data-goto="meetings">See what's on</a><a class="cm-btn cm-btn--ghost" href="#" data-goto="council">Meet the council</a></p></div>
+      <img class="cm-hero__img" src="${img("village")}" alt="Illustration of Little Wychford village green and church">
+    </section>
+    ${noticeCard}
+    <section class="cm-quick" aria-labelledby="cm-quick-h"><h2 id="cm-quick-h" class="cm-h2">How can we help?</h2>
+      <ul class="cm-quick__grid">${C.quick.map((q,i)=>`<li><a href="#"><span class="cm-quick__ic" aria-hidden="true">${ICONS[qiKeys[i]]}</span><b>${esc(q[0])}</b><span class="cm-quick__d">${esc(q[1])}</span></a></li>`).join("")}</ul></section>
+    <section class="cm-meetrow" aria-labelledby="cm-meet-h">
+      <div class="cm-meetcard"><h2 id="cm-meet-h">Next council meeting</h2>
+        <p class="cm-meetcard__when"><b>Tue 9 September</b> · 7.30pm · Village Hall</p>
+        <p>${esc(C.nextMeeting.note)}</p>
+        <p class="cm-meetcard__cta"><a class="cm-btn cm-btn--sun" href="#">Read the agenda</a><a class="cm-link" href="#" data-goto="meetings">All meetings →</a></p></div>
+      <div class="cm-events"><h2 class="cm-h2">On the noticeboard</h2>
+        <ul>${C.events.map(e=>`<li><span class="cm-events__d">${esc(e.d)}</span><b>${esc(e.t)}</b><small>${esc(e.time)} · ${esc(e.v)}</small></li>`).join("")}</ul></div>
+    </section>
+    <section aria-labelledby="cm-news-h"><div class="cm-secthead"><h2 id="cm-news-h" class="cm-h2">Village news</h2><a class="cm-link" href="#" data-goto="news">All news →</a></div>
+      <div class="cm-news3">${C.news.slice(0,3).map(n=>newsCard(n,"h3")).join("")}</div></section>
+    <section aria-labelledby="cm-docs-h"><div class="cm-secthead"><h2 id="cm-docs-h" class="cm-h2">Fresh from the filing cabinet</h2><a class="cm-link" href="#" data-goto="documents">All documents →</a></div>
+      <ul class="cm-doclist cm-doclist--2">${C.docs.slice(0,4).map(docRow).join("")}</ul></section>
+    <section class="cm-people" aria-labelledby="cm-people-h"><h2 id="cm-people-h" class="cm-h2">Your councillors</h2>
+      <ul>${C.councillors.slice(0,6).map(p=>`<li><span class="cm-avatar" aria-hidden="true">${initials(p[0])}</span><b>Cllr ${esc(p[0])}</b><small>${esc(p[1])}</small></li>`).join("")}
+      <li class="cm-people__more"><a href="#" data-goto="council">All nine councillors →</a></li></ul></section>
+    <section class="cm-cta"><div><h2>Something on your mind?</h2><p>Potholes, an overgrown footpath, an idea for the village — the Clerk reads every message.</p></div><a class="cm-btn cm-btn--sun" href="#" data-goto="contact">Contact the council</a></section>
+  </div>
+</main>`+bot,
+
+council: () => frame("council",C.councilPage.title,["Home","The Council"],C.councilPage.intro,`
+  <div class="cm-cols">
+    <div class="cm-prose">
+      ${C.councilPage.sections.map(s=>`<h2>${esc(s.h)}</h2><p>${esc(s.p)}</p>`).join("")}
+      <h2>Who does what</h2>
+      <div class="cm-tablewrap"><table class="cm-table"><caption class="cm-vh">Responsibilities of each council</caption>
+        <thead><tr><th scope="col">Service</th><th scope="col">Who to ask</th></tr></thead>
+        <tbody>${C.councilPage.respTable.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>
+      <h2>Councillors</h2>
+      <ul class="cm-peoplegrid">${C.councillors.map(p=>`<li><span class="cm-avatar cm-avatar--lg" aria-hidden="true">${initials(p[0])}</span><b>Cllr ${esc(p[0])}</b><small>${esc(p[1])}</small></li>`).join("")}</ul>
+    </div>
+    <aside class="cm-aside" aria-label="Related">
+      <div class="cm-asidecard"><h2>The Clerk</h2><p>${esc(C.clerk.name)}<br>${esc(C.clerk.role)}</p><p><a href="mailto:${C.contact.email}">${C.contact.email}</a></p></div>
+      <div class="cm-asidecard"><h2>Related pages</h2><ul><li><a href="#" data-goto="meetings">Meetings &amp; agendas</a></li><li><a href="#" data-goto="documents">Standing orders</a></li><li><a href="#" data-goto="contact">Contact the Clerk</a></li></ul></div>
+    </aside>
+  </div>`),
+
+news: () => frame("news","Village news",["Home","News"],"What's happening in the parish — from roadworks to the flower show.",`
+  <div class="cm-filter"><a href="#" aria-current="true">All</a><a href="#">Highways</a><a href="#">Events</a><a href="#">Consultations</a><a href="#">Community</a></div>
+  <div class="cm-newsgrid">${C.news.map(n=>newsCard(n,"h2")).join("")}</div>${pagination}`),
+
+article: () => { const a=C.article; return frame("article",a.t,["Home","News","Footbridge repairs"],null,`
+  <article class="cm-article">
+    <p class="cm-article__meta"><span class="cm-chip">${esc(a.cat)}</span><time>${esc(a.d)}</time><span>·</span><span>${esc(a.by)}</span></p>
+    <p class="cm-article__stand">${esc(a.standfirst)}</p>
+    <img class="cm-article__img" src="${img(a.img)}" alt="Illustration of the Wychford Brook footbridge">
+    ${a.body.slice(0,2).map(p=>`<p>${esc(p)}</p>`).join("")}
+    <blockquote class="cm-quote"><p>“${esc(a.quote)}”</p><footer>${esc(a.quoteBy)}</footer></blockquote>
+    ${a.body.slice(2).map(p=>`<p>${esc(p)}</p>`).join("")}
+    <div class="cm-article__foot"><a class="cm-link" href="#" data-goto="news">← Back to all news</a></div>
+  </article>`);},
+
+meetings: () => frame("meetings","Meetings",["Home","Meetings"],"We meet on the second Tuesday of the month — and everyone's welcome to come along and listen, or speak in the public session.",`
+  <div class="cm-meetcard cm-meetcard--page"><h2>Next meeting</h2>
+    <p class="cm-meetcard__when"><b>${esc(C.nextMeeting.date)}</b> · ${esc(C.nextMeeting.time)} · ${esc(C.nextMeeting.venue)}</p>
+    <p>${esc(C.nextMeeting.note)}</p>
+    <p class="cm-meetcard__cta"><a class="cm-btn cm-btn--sun" href="#">Read the agenda (PDF, 184KB)</a></p></div>
+  <h2 class="cm-h2">Coming up</h2>
+  <ul class="cm-meetlist">${C.meetings.map(m=>`<li><span class="cm-events__d">${esc(m.d)}</span><span class="cm-meetlist__b"><b>${esc(m.t)}</b><small>${esc(m.time)} · ${esc(m.v)}</small></span>${m.agenda?`<a class="cm-btn cm-btn--s" href="#">Agenda</a>`:`<span class="cm-soon">Papers to follow</span>`}</li>`).join("")}</ul>
+  <h2 class="cm-h2">Past meetings &amp; minutes</h2>
+  <ul class="cm-doclist">${C.pastMeetings.map(m=>`<li class="cm-doc"><span class="cm-doc__ic" aria-hidden="true">${ICONS.doc}</span><span class="cm-doc__b"><a href="#">${esc(m.t)} — ${esc(m.d)}</a><small>${esc(m.minutes)} · ${esc(m.status)}</small></span><span class="cm-doc__go" aria-hidden="true">↓</span></li>`).join("")}</ul>`),
+
+documents: () => frame("documents","Documents",["Home","Documents"],"Everything the council publishes — agendas, minutes, money and policies.",`
+  <form class="cm-docsearch" role="search" aria-label="Search documents" onsubmit="return false"><label class="cm-vh" for="cm-dq">Search documents</label><input id="cm-dq" type="search" placeholder="Search documents…"><button type="submit">Search</button></form>
+  <div class="cm-catchips">${C.docCats.map(c=>`<a href="#">${esc(c[0])} <span>${c[1]}</span></a>`).join("")}</div>
+  <ul class="cm-doclist">${C.docs.map(docRow).join("")}</ul>${pagination}
+  <div class="cm-asidecard cm-asidecard--wide"><h2>Need a hand?</h2><p>Older records are kept by the Clerk — <a href="#" data-goto="contact">ask for a copy</a>. Any document can be supplied in large print.</p></div>`),
+
+contact: () => frame("contact","Contact the council",["Home","Contact"],"The Parish Office is staffed part-time, but messages are read every day.",`
+  <div class="cm-cols">
+    <form class="cm-form" onsubmit="return false">
+      <h2 class="cm-h2">Send us a message</h2>
+      <p class="cm-form__row"><label for="cmf-n">Your name</label><input id="cmf-n" type="text" autocomplete="name"></p>
+      <p class="cm-form__row"><label for="cmf-e">Email address</label><input id="cmf-e" type="email" autocomplete="email"><small>We'll only use this to reply to you.</small></p>
+      <p class="cm-form__row"><label for="cmf-s">What's it about?</label><select id="cmf-s"><option>General enquiry</option><option>Planning</option><option>Allotments</option><option>Village hall booking</option><option>Report a problem</option></select></p>
+      <p class="cm-form__row"><label for="cmf-m">Your message</label><textarea id="cmf-m" rows="6"></textarea></p>
+      <button class="cm-btn" type="submit">Send message</button>
+    </form>
+    <aside class="cm-aside" aria-label="Contact details">
+      <div class="cm-asidecard"><h2>The Parish Office</h2><p>${C.contact.addr.map(esc).join("<br>")}</p>
+        <p><b>Phone</b> <a href="tel:01865731448">${esc(C.contact.phone)}</a><br><b>Email</b> <a href="mailto:${C.contact.email}">${C.contact.email}</a></p>
+        <p><b>Open</b> ${esc(C.contact.hours)}</p></div>
+      <img class="cm-mapimg" src="${img("hall")}" alt="Illustration of the Village Hall on Church Lane">
+    </aside>
+  </div>`),
+
+search: () => frame("search","Search",["Home","Search"],null,`
+  <form class="cm-docsearch" role="search" aria-label="Site search" onsubmit="return false"><label class="cm-vh" for="cm-sq">Search this site</label><input id="cm-sq" type="search" value="${esc(C.searchQ)}"><button type="submit">Search</button></form>
+  <p class="cm-resultcount">${C.searchResults.length} results for <b>“${esc(C.searchQ)}”</b></p>
+  <ul class="cm-results">${C.searchResults.map(r=>`<li><span class="cm-chip">${esc(r.type)}</span><h2><a href="#">${esc(r.t)}</a></h2><p>${esc(r.x)}</p></li>`).join("")}</ul>${pagination}`),
+
+notfound: () => top("notfound")+`
+<main id="cm-main" class="cm-page"><div class="cm-wrap cm-404">
+  <span class="cm-404__mark" aria-hidden="true">${logo}</span>
+  <h1>Well, this is a dead end</h1>
+  <p class="cm-lead">That page doesn't exist — a bit like the shortcut across Farmer Hedges' field. Try a search, or head back to the green.</p>
+  <form class="cm-docsearch" role="search" aria-label="Site search" onsubmit="return false"><label class="cm-vh" for="cm-4q">Search this site</label><input id="cm-4q" type="search" placeholder="Search this site"><button type="submit">Search</button></form>
+  <p><a class="cm-btn" href="#" data-goto="home">Back to the homepage</a></p>
+</div></main>`+bot,
+
+components: () => frame("components","Component sheet",["Home","Components"],"Every reusable part of the Community style on one page.",`
+  <section class="cm-comp"><h2 class="cm-h2">Type &amp; colour</h2>
+    <p class="cm-spec--d">Bricolage Grotesque 800 — display</p>
+    <p>Nunito Sans 400 — friendly, generous body copy at 17px/1.65 with <a href="#">warm green links</a>.</p>
+    <div class="cm-swatches">${[["#2F6B4F","Moss"],["#22382C","Ink"],["#E8A13C","Honey"],["#C4643B","Clay"],["#FAF6EF","Cream"],["#FFFFFF","Card"]].map(s=>`<span><i style="background:${s[0]}"></i>${s[1]}<br><code>${s[0]}</code></span>`).join("")}</div></section>
+  <section class="cm-comp"><h2 class="cm-h2">Buttons</h2><p class="cm-btnrow"><a class="cm-btn" href="#">Primary action</a><a class="cm-btn cm-btn--sun" href="#">Highlight</a><a class="cm-btn cm-btn--ghost" href="#">Secondary</a><a class="cm-btn cm-btn--s" href="#">Small</a><a class="cm-link" href="#">Text link →</a></p></section>
+  <section class="cm-comp"><h2 class="cm-h2">Notices &amp; alerts</h2>${noticeCard}
+    <div class="cm-alert cm-alert--ok" role="status"><b>Message sent.</b> The Clerk will reply within five working days.</div>
+    <div class="cm-alert"><b>Draft minutes.</b> These minutes haven't been approved by the Council yet.</div></section>
+  <section class="cm-comp"><h2 class="cm-h2">Cards &amp; documents</h2>
+    <div class="cm-news3">${C.news.slice(0,2).map(n=>newsCard(n,"h3")).join("")}</div>
+    <ul class="cm-doclist" style="margin-top:18px">${C.docs.slice(0,2).map(docRow).join("")}</ul>
+    <p><span class="cm-chip">Highways</span> <span class="cm-chip">Events</span> <span class="cm-chip">Community</span></p></section>
+  <section class="cm-comp"><h2 class="cm-h2">Table</h2><div class="cm-tablewrap"><table class="cm-table"><thead><tr><th scope="col">Service</th><th scope="col">Who to ask</th></tr></thead><tbody>${C.councilPage.respTable.slice(0,3).map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div></section>
+  <section class="cm-comp"><h2 class="cm-h2">Form</h2><form class="cm-form" onsubmit="return false"><p class="cm-form__row"><label for="cmc-a">Text input</label><input id="cmc-a" type="text"></p></form></section>
+  <section class="cm-comp"><h2 class="cm-h2">Pagination &amp; breadcrumb</h2>${pagination}${crumbs(["Home","Documents","Minutes"])}</section>`)
+};
+
+STYLES.community = {
+label:"Community",
+blurb:"Warm and welcoming — rounded photo-forward cards, a village-noticeboard motif, pill navigation and a cream canvas with moss green and honey. Friendly and personable without tipping into childish.",
+meta:"Bricolage Grotesque & Nunito Sans · cream / moss / honey · 14px radius, soft shadows",
+pages,
+css:`
+.cmv{--moss:#2F6B4F;--moss-d:#245640;--ink:#22382C;--mut:#5C6B5A;--cream:#FAF6EF;--card:#FFFFFF;--honey:#E8A13C;--honey-d:#8A5A17;--clay:#C4643B;--line:#E8E0D0;
+  --r:14px;--shadow:0 2px 10px rgba(46,58,40,.07);
+  font-family:"Nunito Sans",system-ui,sans-serif;color:var(--ink);background:var(--cream);font-size:17px;line-height:1.65}
+.cmv h1,.cmv h2,.cmv h3{font-family:"Bricolage Grotesque","Nunito Sans",sans-serif;line-height:1.12;letter-spacing:-.015em;text-wrap:balance;margin:0}
+.cmv a{color:var(--moss);text-underline-offset:3px}
+.cmv a:hover{color:var(--moss-d)}
+.cmv :focus-visible{outline:3px solid var(--ink);outline-offset:2px;border-radius:4px}
+.cmv img{display:block}
+.cm-wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.cm-vh{position:absolute!important;clip:rect(0 0 0 0);clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+.cm-skip{position:absolute;left:-9999px;background:var(--honey);color:var(--ink);padding:10px 16px;font-weight:800;z-index:50;border-radius:0 0 10px 0}
+.cm-skip:focus{left:0;top:0}
+.cm-strip{background:var(--cream);font-size:13.5px;border-bottom:1px solid var(--line)}
+.cm-strip__in{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}
+.cm-pill{display:inline-flex;align-items:center;gap:8px;background:#EDF3EA;border:1px solid #D5E2CF;color:var(--moss-d);font-weight:700;padding:5px 13px;border-radius:999px}
+.cm-pill i{width:8px;height:8px;border-radius:50%;background:var(--moss);flex:none}
+.cm-strip__c a{font-weight:700}
+.cm-head{background:var(--card);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.cm-head__in{display:flex;align-items:center;gap:22px;padding-top:16px;padding-bottom:14px}
+.cm-brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink);margin-right:auto}
+.cm-mark{width:50px;height:50px;flex:none}
+.cm-brand b{font:800 20px/1.1 "Bricolage Grotesque";display:block;letter-spacing:-.01em}
+.cm-brand i{font:600 12.5px/1.3 "Nunito Sans";font-style:normal;color:var(--mut);display:block;margin-top:3px}
+.cm-search{display:flex;background:var(--cream);border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
+.cm-search input{font:inherit;font-size:15px;border:0;background:transparent;padding:9px 6px 9px 18px;width:180px;color:var(--ink)}
+.cm-search input:focus-visible{outline-offset:-3px}
+.cm-search button{border:0;background:var(--moss);color:#fff;width:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:999px;margin:3px}
+.cm-search button svg{width:17px;height:17px}
+.cm-search button:hover{background:var(--moss-d)}
+.cm-burger{display:none;font:800 15px "Nunito Sans";background:var(--moss);color:#fff;border:0;border-radius:999px;padding:11px 18px;cursor:pointer}
+.cm-nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:4px;margin:0;padding:6px 0 12px}
+.cm-nav a{display:block;text-decoration:none;font:700 15px/1 "Nunito Sans";color:var(--ink);padding:10px 15px;border-radius:999px}
+.cm-nav a:hover{background:var(--cream);color:var(--moss-d)}
+.cm-nav a[aria-current="page"]{background:var(--moss);color:#fff}
+.cm-hero{display:grid;grid-template-columns:1fr 1.05fr;gap:46px;align-items:center;padding:52px 0 44px}
+.cm-hero__t h1{font-size:clamp(32px,4.6vw,52px);font-weight:800;margin-bottom:16px}
+.cm-hi{background:linear-gradient(transparent 58%, #F6D89A 58%);padding:0 2px}
+.cm-hero__t p{margin:0 0 12px;max-width:54ch}
+.cm-hero__cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.cm-hero__img{width:100%;border-radius:22px;box-shadow:var(--shadow)}
+.cm-btn{display:inline-block;background:var(--moss);color:#fff!important;text-decoration:none;font:800 15px/1 "Nunito Sans";padding:13px 22px;border-radius:999px;border:2px solid var(--moss);cursor:pointer}
+.cm-btn:hover{background:var(--moss-d);border-color:var(--moss-d)}
+.cm-btn--sun{background:var(--honey);border-color:var(--honey);color:var(--ink)!important}
+.cm-btn--sun:hover{background:#DE9526;border-color:#DE9526}
+.cm-btn--ghost{background:transparent;color:var(--moss)!important}
+.cm-btn--ghost:hover{background:#EDF3EA;color:var(--moss-d)!important}
+.cm-btn--s{padding:8px 15px;font-size:13.5px}
+.cm-link{font-weight:800;text-decoration:none}
+.cm-link:hover{text-decoration:underline}
+.cm-notice{display:flex;gap:16px;align-items:center;background:#FBF1DC;border:1px solid #EDD9AC;border-radius:var(--r);padding:16px 20px;margin:0 0 40px;position:relative}
+.cm-notice__pin{width:14px;height:14px;border-radius:50%;background:var(--clay);box-shadow:inset 0 -2px 0 rgba(0,0,0,.2);flex:none}
+.cm-notice b{font:800 16px "Bricolage Grotesque"}
+.cm-notice p{margin:2px 0 0;font-size:14.5px;color:#6B5B33}
+.cm-notice .cm-btn{margin-left:auto;flex:none}
+.cm-h2{font-size:25px;font-weight:800}
+.cm-quick{margin:0 0 46px}
+.cm-quick__grid{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cm-quick__grid a{display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;text-decoration:none;height:100%;box-shadow:var(--shadow)}
+.cm-quick__grid a:hover{border-color:var(--moss);transform:translateY(-2px);transition:transform .15s ease}
+@media (prefers-reduced-motion:reduce){.cm-quick__grid a:hover{transform:none}}
+.cm-quick__ic{width:38px;height:38px;color:var(--moss);background:#EDF3EA;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px}
+.cm-quick__ic svg{width:21px;height:21px}
+.cm-quick__grid b{font:800 17px/1.25 "Bricolage Grotesque";color:var(--ink)}
+.cm-quick__d{font-size:14px;color:var(--mut)}
+.cm-meetrow{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-bottom:48px;align-items:start}
+.cm-meetcard{background:var(--moss);color:#fff;border-radius:20px;padding:26px 28px}
+.cm-meetcard h2{font-size:22px;color:#fff;margin-bottom:10px}
+.cm-meetcard__when{font-size:18px;margin:0 0 10px}
+.cm-meetcard__when b{font:800 19px "Bricolage Grotesque"}
+.cm-meetcard p{color:#E4EEE2;margin:0 0 12px;font-size:15.5px}
+.cm-meetcard__cta{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.cm-meetcard .cm-link{color:#fff}
+.cm-meetcard--page{margin-bottom:34px}
+.cm-events{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 24px;box-shadow:var(--shadow)}
+.cm-events h2{margin-bottom:12px;font-size:20px}
+.cm-events ul{list-style:none;margin:0;padding:0}
+.cm-events li{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.cm-events li:last-child{border-bottom:0}
+.cm-events__d{grid-row:span 2;align-self:center;background:var(--cream);border:1px solid var(--line);border-radius:10px;font:800 12.5px/1.2 "Nunito Sans";color:var(--moss-d);padding:8px 10px;text-align:center;min-width:86px}
+.cm-events b{font-size:15.5px}
+.cm-events small,.cm-meetlist small{color:var(--mut);font-size:13.5px}
+.cm-secthead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px}
+.cm-news3,.cm-newsgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cm-newsgrid{margin-bottom:34px}
+.cmv section{margin-bottom:0}
+.cm-news{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.cm-news img,.cm-news__noimg{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.cm-news__noimg{background:#EDF3EA;display:flex;align-items:center;justify-content:center}
+.cm-news__noimg .cm-mark{opacity:.4;width:56px;height:56px}
+.cm-news__b{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.cm-news__b h2 a,.cm-news__b h3 a{color:var(--ink);font-size:18px;line-height:1.3;text-decoration:none;font-weight:800}
+.cm-news__b h2 a:hover,.cm-news__b h3 a:hover{color:var(--moss-d);text-decoration:underline}
+.cm-news__b time{font-size:13px;color:var(--mut);font-weight:700;order:-1}
+.cm-news__b p{font-size:14.5px;color:var(--mut);margin:0}
+.cm-chip{display:inline-block;font:800 11.5px/1 "Nunito Sans";color:var(--moss-d);background:#EDF3EA;padding:5px 11px;border-radius:999px;align-self:flex-start}
+.cm-doclist{list-style:none;margin:0;padding:0}
+.cm-doclist--2{display:grid;grid-template-columns:1fr 1fr;gap:0 26px;margin-bottom:46px}
+.cm-doc{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px;margin-bottom:10px}
+.cm-doc:hover{border-color:var(--moss)}
+.cm-doc__ic{flex:none;width:36px;height:36px;border-radius:10px;background:#EDF3EA;color:var(--moss);display:flex;align-items:center;justify-content:center}
+.cm-doc__ic svg{width:19px;height:19px}
+.cm-doc__b{flex:1}
+.cm-doc__b a{font-weight:800;font-size:15.5px;text-decoration:none;color:var(--ink)}
+.cm-doc__b a:hover{color:var(--moss-d);text-decoration:underline}
+.cm-doc__b small{display:block;color:var(--mut);font-size:13px;margin-top:2px}
+.cm-doc__go{color:var(--moss);font-weight:800}
+.cm-people ul{list-style:none;margin:18px 0 46px;padding:0;display:flex;gap:14px;flex-wrap:wrap}
+.cm-people li{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;width:150px;box-shadow:var(--shadow)}
+.cm-people b{font-size:14px}
+.cm-people small{font-size:12px;color:var(--mut)}
+.cm-people__more{justify-content:center}
+.cm-avatar{width:52px;height:52px;border-radius:50%;background:var(--moss);color:#fff;display:flex;align-items:center;justify-content:center;font:800 16px "Bricolage Grotesque";margin-bottom:5px}
+.cm-avatar--lg{width:60px;height:60px}
+.cm-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--card);border:2px solid var(--moss);border-radius:20px;padding:28px 32px;margin:46px 0 60px;flex-wrap:wrap}
+.cm-cta h2{font-size:24px;margin-bottom:6px}
+.cm-cta p{margin:0;color:var(--mut);max-width:52ch}
+.cm-foot{background:#20372B;color:#C9D6C6;font-size:14.5px;border-radius:26px 26px 0 0;margin-top:0}
+.cm-foot__grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:34px;padding:44px 0 30px}
+.cm-foot h2{font:800 15px "Bricolage Grotesque";color:#fff;margin-bottom:12px}
+.cm-foot p{margin:0 0 10px}
+.cm-foot ul{list-style:none;margin:0;padding:0}
+.cm-foot li{margin-bottom:8px}
+.cm-foot a{color:#fff}
+.cm-mark--f{width:40px;height:40px;display:inline-block;margin-bottom:10px}
+.cm-foot__bar{display:flex;justify-content:space-between;gap:14px;border-top:1px solid #35503F;padding:16px 0 22px;font-size:13px;flex-wrap:wrap}
+.cm-page{padding:34px 0 64px}
+.cm-pagehead{margin-bottom:30px}
+.cm-pagehead h1{font-size:clamp(29px,4vw,42px);font-weight:800}
+.cm-lead{font-size:18.5px;color:var(--mut);max-width:62ch;margin:12px 0 0}
+.cm-crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:0;font-size:13.5px;font-weight:700}
+.cm-crumbs li+li::before{content:"›";margin-right:6px;color:var(--mut)}
+.cm-crumbs a{color:var(--mut);text-decoration:none}
+.cm-crumbs a:hover{color:var(--moss-d);text-decoration:underline}
+.cm-crumbs [aria-current]{color:var(--ink)}
+.cm-cols{display:grid;grid-template-columns:1fr 300px;gap:44px;align-items:start}
+.cm-prose h2{font-size:23px;margin:30px 0 12px}
+.cm-prose h2:first-child{margin-top:0}
+.cm-prose p{max-width:68ch;margin:0 0 14px}
+.cm-aside{display:flex;flex-direction:column;gap:16px}
+.cm-asidecard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;font-size:15px;box-shadow:var(--shadow)}
+.cm-asidecard h2{font-size:17px;margin-bottom:10px}
+.cm-asidecard p{margin:0 0 10px}
+.cm-asidecard ul{list-style:none;margin:0;padding:0}
+.cm-asidecard li{margin-bottom:8px}
+.cm-asidecard--wide{margin-top:26px}
+.cm-mapimg{width:100%;border-radius:var(--r);box-shadow:var(--shadow)}
+.cm-tablewrap{overflow-x:auto;margin:6px 0 22px}
+.cm-table{border-collapse:separate;border-spacing:0;width:100%;font-size:15px;min-width:460px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cm-table th{text-align:left;font:800 13.5px "Nunito Sans";background:#EDF3EA;color:var(--moss-d);padding:11px 15px}
+.cm-table td{border-top:1px solid var(--line);padding:11px 15px}
+.cm-peoplegrid{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cm-peoplegrid li{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:2px 14px;align-items:center}
+.cm-peoplegrid .cm-avatar{grid-row:span 2;margin:0}
+.cm-peoplegrid b{font-size:15px}
+.cm-peoplegrid small{color:var(--mut);font-size:13px}
+.cm-filter{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.cm-filter a{text-decoration:none;font-weight:800;font-size:14px;padding:8px 15px;border-radius:999px;border:1.5px solid var(--line);background:var(--card)}
+.cm-filter a:hover{border-color:var(--moss)}
+.cm-filter a[aria-current]{background:var(--moss);border-color:var(--moss);color:#fff}
+.cm-pgn ul{list-style:none;display:flex;gap:7px;margin:28px 0 0;padding:0}
+.cm-pgn a,.cm-pgn span{display:block;min-width:42px;text-align:center;padding:9px 11px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);text-decoration:none;font-weight:800;font-size:14.5px}
+.cm-pgn a:hover{border-color:var(--moss)}
+.cm-pgn [aria-current]{background:var(--moss);border-color:var(--moss);color:#fff}
+.cm-article{max-width:740px}
+.cm-article__meta{display:flex;gap:10px;align-items:center;color:var(--mut);font-size:14px;font-weight:700;margin:0 0 14px}
+.cm-article__stand{font-size:20px;line-height:1.55;color:var(--mut);margin:0 0 20px}
+.cm-article__img{width:100%;border-radius:18px;margin:0 0 24px;box-shadow:var(--shadow)}
+.cm-article p{margin:0 0 16px}
+.cm-quote{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--honey);border-radius:12px;margin:26px 0;padding:18px 22px}
+.cm-quote p{font:600 18.5px/1.5 "Bricolage Grotesque";margin:0 0 8px}
+.cm-quote footer{color:var(--mut);font-size:14px;font-weight:700}
+.cm-article__foot{border-top:1px dashed var(--line);margin-top:28px;padding-top:16px}
+.cm-meetlist{list-style:none;margin:14px 0 40px;padding:0}
+.cm-meetlist li{display:flex;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px;margin-bottom:10px}
+.cm-meetlist__b{flex:1}
+.cm-meetlist b{display:block;font-size:15.5px}
+.cm-soon{font-size:13px;color:var(--mut);font-weight:700;background:var(--cream);border:1px dashed var(--line);border-radius:999px;padding:6px 12px}
+.cm-docsearch{display:flex;background:var(--card);border:1.5px solid var(--line);border-radius:999px;overflow:hidden;max-width:480px;margin:0 0 18px}
+.cm-docsearch input{font:inherit;font-size:16px;border:0;background:transparent;padding:11px 18px;flex:1;color:var(--ink)}
+.cm-docsearch input:focus-visible{outline-offset:-3px}
+.cm-docsearch button{border:0;background:var(--moss);color:#fff;font:800 14.5px "Nunito Sans";padding:0 22px;margin:4px;border-radius:999px;cursor:pointer}
+.cm-docsearch button:hover{background:var(--moss-d)}
+.cm-catchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.cm-catchips a{text-decoration:none;font-weight:800;font-size:14px;padding:8px 14px;border-radius:999px;background:var(--card);border:1.5px solid var(--line)}
+.cm-catchips a:hover{border-color:var(--moss)}
+.cm-catchips span{color:var(--mut);font-weight:700}
+.cm-results{list-style:none;margin:0;padding:0;max-width:760px}
+.cm-results li{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 22px;margin-bottom:12px}
+.cm-results h2{font-size:19px;margin:8px 0 6px}
+.cm-results h2 a{text-decoration:none;color:var(--ink)}
+.cm-results h2 a:hover{color:var(--moss-d);text-decoration:underline}
+.cm-results p{margin:0;color:var(--mut);font-size:15px}
+.cm-resultcount{color:var(--mut);font-weight:700}
+.cm-404{text-align:center;padding:64px 0 90px;max-width:600px}
+.cm-404__mark .cm-mark{width:74px;height:74px;display:inline-block;margin-bottom:16px}
+.cm-404 h1{font-size:36px;margin-bottom:12px}
+.cm-404 .cm-lead{margin:0 auto 22px}
+.cm-404 .cm-docsearch{margin:0 auto 18px}
+.cm-form{max-width:560px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 28px;box-shadow:var(--shadow)}
+.cm-form h2{margin-bottom:16px}
+.cm-form__row{margin:0 0 15px;display:flex;flex-direction:column;gap:6px}
+.cm-form label{font-weight:800;font-size:15px}
+.cm-form input,.cm-form select,.cm-form textarea{font:inherit;font-size:16px;padding:11px 14px;border:1.5px solid #C9C2AF;border-radius:10px;background:#fff;color:var(--ink)}
+.cm-form input:hover,.cm-form select:hover,.cm-form textarea:hover{border-color:var(--moss)}
+.cm-form small{color:var(--mut);font-size:13.5px}
+.cm-comp{margin-bottom:42px}
+.cm-comp>.cm-h2{margin-bottom:16px}
+.cm-spec--d{font:800 30px/1.2 "Bricolage Grotesque";margin:0 0 8px}
+.cm-swatches{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;font-weight:700}
+.cm-swatches i{display:block;width:84px;height:52px;border-radius:10px;border:1px solid var(--line);margin-bottom:5px}
+.cm-swatches code{color:var(--mut);font-weight:400}
+.cm-btnrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.cm-alert{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:14px 0;font-size:15px}
+.cm-alert--ok{border-color:#BCD8BB;background:#F0F7EE}
+.cm-comp .cm-notice{margin:14px 0}
+@media (max-width:980px){
+  .cm-hero,.cm-cols,.cm-meetrow{grid-template-columns:1fr}
+  .cm-news3,.cm-newsgrid,.cm-quick__grid{grid-template-columns:repeat(2,1fr)}
+  .cm-doclist--2{grid-template-columns:1fr}
+  .cm-foot__grid{grid-template-columns:1fr 1fr}
+  .cm-search{display:none}
+  .cm-burger{display:block}
+  .cm-nav{display:none}
+  .nav-open .cm-nav{display:block;border-top:1px solid var(--line)}
+  .cm-nav ul{flex-direction:column;padding:10px 0 14px}
+  .cm-nav a{border-radius:12px;font-size:16.5px;padding:12px 16px}
+}
+@media (max-width:620px){
+  .cm-news3,.cm-newsgrid,.cm-quick__grid,.cm-peoplegrid,.cm-foot__grid{grid-template-columns:1fr}
+  .cm-strip__c{display:none}
+  .cm-brand i{display:none}
+  .cm-notice{flex-wrap:wrap}
+  .cm-notice .cm-btn{margin-left:0}
+  .cm-people li{width:calc(50% - 7px)}
+}
+`};
+})();
+
+/* ======================================================================
+   STYLE 3 — EDITORIAL
+   Newsreader + IBM Plex Sans · warm ink on paper · claret accent
+   A village journal: masthead, hairline rules, serious typography.
+   ====================================================================== */
+(function(){
+const P = {sky:"#EFEBE1", land:"#CFC7B4", dark:"#4A4438", accent:"#7A2E3B", light:"#FCFBF8"};
+const img = k => scene(k,P);
+const NAVMAP = {"Home":"home","The Council":"council","Councillors":"council","Meetings":"meetings","Agendas & Minutes":"documents","Planning":"documents","Documents":"documents","News":"news","Contact":"contact"};
+const nav = page => C.nav.map(n=>{const tgt=NAVMAP[n];const cur=tgt===page&&!["Councillors","Planning","Agendas & Minutes"].includes(n);
+  return `<li><a href="#" data-goto="${tgt}" ${cur?'aria-current="page"':""}>${esc(n)}</a></li>`;}).join("");
+
+const top = page => `
+<a class="ed-skip" href="#ed-main">Skip to main content</a>
+<header class="ed-head">
+  <div class="ed-wrap ed-head__meta"><span>Oxfordshire · Est. 1894</span><span>Parish Office: Mon–Thu 9.30–12.30 · <a href="tel:01865731448">01865 731 448</a></span></div>
+  <div class="ed-wrap ed-mast">
+    <a class="ed-wordmark" href="#" data-goto="home"><span class="ed-wordmark__over">The Parish of</span><b>Little Wychford</b><span class="ed-wordmark__under">Parish Council · Nether End · Wychford Green</span></a>
+  </div>
+  <div class="ed-navbar"><div class="ed-wrap ed-navbar__in">
+    <button class="ed-burger" data-menu-toggle aria-expanded="false" aria-controls="ed-nav">Menu</button>
+    <nav class="ed-nav" id="ed-nav" aria-label="Main navigation"><ul>${nav(page)}</ul></nav>
+    <form class="ed-search" role="search" aria-label="Site search" onsubmit="return false"><label class="ed-vh" for="ed-q">Search</label><input id="ed-q" type="search" placeholder="Search"><button type="submit">Go</button></form>
+  </div></div>
+</header>`;
+
+const noticeRow = `<aside class="ed-notice" aria-label="Important notice"><span class="ed-notice__k">Notice</span><p>${esc(C.notice)}</p><a href="#" data-goto="news">Read more</a></aside>`;
+
+const bot = `
+<footer class="ed-foot"><div class="ed-wrap">
+  <div class="ed-foot__mast"><b>Little Wychford</b><span>Parish Council</span></div>
+  <div class="ed-foot__grid">
+    <div><h2>The Parish Office</h2><p>${C.contact.addr.map(esc).join("<br>")}</p><p><a href="tel:01865731448">${esc(C.contact.phone)}</a> · <a href="mailto:${C.contact.email}">${C.contact.email}</a></p></div>
+    <nav aria-label="Footer: council"><h2>The Council</h2><ul><li><a href="#" data-goto="council">About the council</a></li><li><a href="#" data-goto="meetings">Meetings</a></li><li><a href="#" data-goto="documents">Agendas &amp; minutes</a></li><li><a href="#" data-goto="news">News</a></li></ul></nav>
+    <nav aria-label="Footer: your rights"><h2>Your rights</h2><ul><li><a href="#">Accessibility statement</a></li><li><a href="#">Privacy notice</a></li><li><a href="#">Freedom of information</a></li><li><a href="#">Complaints procedure</a></li></ul></nav>
+  </div>
+  <p class="ed-foot__bar">© 2026 ${esc(C.council)} · WCAG 2.2 AA · Site by NetWise</p>
+</div></footer>`;
+
+const crumbs = items => `<nav class="ed-crumbs" aria-label="Breadcrumb"><ol>${items.map((c,i)=>i===items.length-1?`<li aria-current="page">${esc(c)}</li>`:`<li><a href="#" data-goto="${c==="Home"?"home":"#"}">${esc(c)}</a></li>`).join("")}</ol></nav>`;
+const frame = (page,title,crumbItems,lead,inner,wide) => top(page)+`
+<main id="ed-main" class="ed-page"><div class="ed-wrap${wide?"":" ed-wrap--copy"}">
+  ${crumbs(crumbItems)}<h1 class="ed-h1">${esc(title)}</h1>${lead?`<p class="ed-lead">${esc(lead)}</p>`:""}<div class="ed-rule" aria-hidden="true"></div>
+  ${inner}
+</div></main>`+bot;
+
+const briefRow = n=>`<li><time>${esc(n.d)}</time><h3><a href="#" data-goto="article">${esc(n.t)}</a></h3></li>`;
+const docRow = d=>`<li class="ed-doc"><span class="ed-doc__t"><a href="#">${esc(d.t)}</a></span><span class="ed-doc__k">${esc(d.type)}</span><span class="ed-doc__m">${esc(d.meta)}</span><time>${esc(d.d)}</time></li>`;
+const pagination = `<nav class="ed-pgn" aria-label="Pagination"><ul><li><span aria-current="page">1</span></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">4</a></li><li><a href="#">Next →</a></li></ul></nav>`;
+
+const pages = {
+home: () => top("home") + `
+<main id="ed-main" class="ed-page"><div class="ed-wrap">
+  ${noticeRow}
+  <section class="ed-leadstory" aria-labelledby="ed-lead-h">
+    <div class="ed-leadstory__t">
+      <p class="ed-kicker">Highways · 18 August 2026</p>
+      <h1 id="ed-lead-h"><a href="#" data-goto="article">${esc(C.news[0].t)}</a></h1>
+      <p class="ed-stand">${esc(C.news[0].x)}</p>
+      <p class="ed-more"><a href="#" data-goto="article">Continue reading →</a></p>
+    </div>
+    <img src="${img("bridge")}" alt="Illustration of the Wychford Brook footbridge">
+    <aside class="ed-brief" aria-label="More news"><h2>In brief</h2>
+      <ul>${C.news.slice(1,5).map(briefRow).join("")}</ul>
+      <p class="ed-more"><a href="#" data-goto="news">All news →</a></p></aside>
+  </section>
+  <div class="ed-rule ed-rule--heavy" aria-hidden="true"></div>
+  <section class="ed-triptych">
+    <div class="ed-col" aria-labelledby="ed-mt-h"><h2 id="ed-mt-h" class="ed-colhead">Next meeting</h2>
+      <p class="ed-mdate">${esc(C.nextMeeting.date)}<br><span>${esc(C.nextMeeting.time)} — ${esc(C.nextMeeting.venue)}</span></p>
+      <p class="ed-mnote">${esc(C.nextMeeting.note)}</p>
+      <p><a class="ed-btn" href="#">Agenda (PDF)</a> <a class="ed-btn ed-btn--ghost" href="#" data-goto="meetings">All meetings</a></p></div>
+    <div class="ed-col" aria-labelledby="ed-ev-h"><h2 id="ed-ev-h" class="ed-colhead">Diary</h2>
+      <ul class="ed-diary">${C.events.map(e=>`<li><time>${esc(e.d)}</time><b>${esc(e.t)}</b><span>${esc(e.time)} · ${esc(e.v)}</span></li>`).join("")}</ul></div>
+    <div class="ed-col" aria-labelledby="ed-wc-h"><h2 id="ed-wc-h" class="ed-colhead">The council</h2>
+      <p class="ed-mnote">${esc(C.welcome).slice(0,218)}…</p>
+      <p><a class="ed-more" href="#" data-goto="council">About the council →</a></p></div>
+  </section>
+  <div class="ed-rule ed-rule--heavy" aria-hidden="true"></div>
+  <section aria-labelledby="ed-docs-h"><div class="ed-secthead"><h2 id="ed-docs-h">Recently published</h2><a href="#" data-goto="documents">All documents →</a></div>
+    <ul class="ed-doclist">${C.docs.slice(0,5).map(docRow).join("")}</ul></section>
+  <section class="ed-contactstrip"><p><i>Something to raise with the council?</i> The Clerk reads every letter and email.</p><a class="ed-btn" href="#" data-goto="contact">Contact the council</a></section>
+</div></main>`+bot,
+
+council: () => frame("council",C.councilPage.title,["Home","The Council"],C.councilPage.intro,`
+  ${C.councilPage.sections.map(s=>`<h2 class="ed-h2">${esc(s.h)}</h2><p class="ed-p">${esc(s.p)}</p>`).join("")}
+  <h2 class="ed-h2">Who does what</h2>
+  <div class="ed-tablewrap"><table class="ed-table"><caption class="ed-vh">Responsibilities of each council</caption>
+    <thead><tr><th scope="col">Service</th><th scope="col">Responsible council</th></tr></thead>
+    <tbody>${C.councilPage.respTable.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>
+  <h2 class="ed-h2">Councillors</h2>
+  <ol class="ed-people">${C.councillors.map(p=>`<li><b>Cllr ${esc(p[0])}</b><span>${esc(p[1])}</span></li>`).join("")}
+    <li><b>${esc(C.clerk.name)}</b><span>${esc(C.clerk.role)}</span></li></ol>`),
+
+news: () => frame("news","News",["Home","News"],"Reports and notices from the Parish Council, written by the Clerk.",`
+  <ul class="ed-newslist">${C.news.map((n,i)=>`<li class="ed-newsitem${i===0?" ed-newsitem--first":""}">
+    ${n.img&&i===0?`<img src="${img(n.img)}" alt="">`:""}
+    <p class="ed-kicker">${esc(n.cat)} · ${esc(n.d)}</p>
+    <h2><a href="#" data-goto="article">${esc(n.t)}</a></h2>
+    <p class="ed-p">${esc(n.x)}</p></li>`).join("")}</ul>${pagination}`,true),
+
+article: () => { const a=C.article; return top("article")+`
+<main id="ed-main" class="ed-page"><article class="ed-wrap ed-wrap--copy ed-article">
+  ${crumbs(["Home","News","Footbridge repairs"])}
+  <p class="ed-kicker">${esc(a.cat)} · ${esc(a.d)}</p>
+  <h1 class="ed-h1">${esc(a.t)}</h1>
+  <p class="ed-stand">${esc(a.standfirst)}</p>
+  <p class="ed-byline">${esc(a.by)}</p>
+  <div class="ed-rule" aria-hidden="true"></div>
+  <img class="ed-article__img" src="${img(a.img)}" alt="Illustration of the Wychford Brook footbridge">
+  ${a.body.slice(0,2).map((p,i)=>`<p class="ed-p${i===0?" ed-p--first":""}">${esc(p)}</p>`).join("")}
+  <blockquote class="ed-pull"><p>${esc(a.quote)}</p><footer>${esc(a.quoteBy)}</footer></blockquote>
+  ${a.body.slice(2).map(p=>`<p class="ed-p">${esc(p)}</p>`).join("")}
+  <div class="ed-rule" aria-hidden="true"></div>
+  <p class="ed-more"><a href="#" data-goto="news">← All news</a></p>
+</article></main>`+bot;},
+
+meetings: () => frame("meetings","Meetings",["Home","Meetings"],"The Council meets on the second Tuesday of each month at the Village Hall. Members of the public are always welcome.",`
+  <section class="ed-docket" aria-labelledby="edm-next"><h2 id="edm-next" class="ed-colhead">Next meeting</h2>
+    <p class="ed-mdate">${esc(C.nextMeeting.date)}<br><span>${esc(C.nextMeeting.time)} — ${esc(C.nextMeeting.venue)}</span></p>
+    <p class="ed-mnote">${esc(C.nextMeeting.note)}</p>
+    <p><a class="ed-btn" href="#">Agenda (PDF, 184KB)</a></p></section>
+  <h2 class="ed-h2">Forthcoming meetings</h2>
+  <ol class="ed-meetlist">${C.meetings.map(m=>`<li><time>${esc(m.d)}</time><span class="ed-meetlist__b"><b>${esc(m.t)}</b><span>${esc(m.time)} · ${esc(m.v)}</span></span>${m.agenda?`<a href="#">${esc(m.agenda)}</a>`:`<i>Papers to follow</i>`}</li>`).join("")}</ol>
+  <h2 class="ed-h2">Minutes of previous meetings</h2>
+  <ul class="ed-doclist">${C.pastMeetings.map(m=>`<li class="ed-doc"><span class="ed-doc__t"><a href="#">${esc(m.t)}</a></span><span class="ed-doc__k">${esc(m.status)}</span><span class="ed-doc__m">${esc(m.minutes)}</span><time>${esc(m.d)}</time></li>`).join("")}</ul>`),
+
+documents: () => frame("documents","Documents",["Home","Documents"],"The public record: agendas, minutes, accounts and policies.",`
+  <div class="ed-docbar">
+    <form class="ed-search ed-search--wide" role="search" aria-label="Search documents" onsubmit="return false"><label class="ed-vh" for="ed-dq">Search documents</label><input id="ed-dq" type="search" placeholder="Search documents…"><button type="submit">Go</button></form>
+    <p class="ed-cats">${C.docCats.map(c=>`<a href="#">${esc(c[0])} <span>(${c[1]})</span></a>`).join(" · ")}</p>
+  </div>
+  <ul class="ed-doclist">${C.docs.map(docRow).join("")}</ul>${pagination}
+  <p class="ed-mnote" style="margin-top:26px">Older records are held by the Clerk and may be inspected by appointment. Any document can be supplied in large print on request.</p>`,true),
+
+contact: () => frame("contact","Contact the council",["Home","Contact"],"Correspondence is welcome by letter, by email, or in person during office hours.",`
+  <div class="ed-contactcols">
+    <div>
+      <h2 class="ed-h2">The Parish Office</h2>
+      <p class="ed-p">${C.contact.addr.map(esc).join("<br>")}</p>
+      <dl class="ed-dl"><dt>Telephone</dt><dd><a href="tel:01865731448">${esc(C.contact.phone)}</a></dd>
+      <dt>Email</dt><dd><a href="mailto:${C.contact.email}">${C.contact.email}</a></dd>
+      <dt>Office hours</dt><dd>${esc(C.contact.hours)}</dd>
+      <dt>The Clerk</dt><dd>${esc(C.clerk.name)}, ${esc(C.clerk.role)}</dd></dl>
+      <img class="ed-article__img" src="${img("hall")}" alt="Illustration of the Village Hall on Church Lane">
+    </div>
+    <form class="ed-form" onsubmit="return false">
+      <h2 class="ed-h2">Write to us</h2>
+      <p class="ed-form__row"><label for="edf-n">Your name</label><input id="edf-n" type="text" autocomplete="name"></p>
+      <p class="ed-form__row"><label for="edf-e">Email address</label><input id="edf-e" type="email" autocomplete="email"><small>Used only to reply to you.</small></p>
+      <p class="ed-form__row"><label for="edf-s">Subject</label><select id="edf-s"><option>General enquiry</option><option>Planning</option><option>Allotments</option><option>Village hall booking</option><option>Report a problem</option></select></p>
+      <p class="ed-form__row"><label for="edf-m">Your message</label><textarea id="edf-m" rows="7"></textarea></p>
+      <button class="ed-btn" type="submit">Send message</button>
+    </form>
+  </div>`,true),
+
+search: () => frame("search","Search",["Home","Search"],null,`
+  <form class="ed-search ed-search--wide" role="search" aria-label="Site search" onsubmit="return false"><label class="ed-vh" for="ed-sq">Search this site</label><input id="ed-sq" type="search" value="${esc(C.searchQ)}"><button type="submit">Go</button></form>
+  <p class="ed-kicker" style="margin-top:14px">${C.searchResults.length} results for “${esc(C.searchQ)}”</p>
+  <ul class="ed-results">${C.searchResults.map(r=>`<li><p class="ed-kicker">${esc(r.type)}</p><h2><a href="#">${esc(r.t)}</a></h2><p class="ed-p">${esc(r.x)}</p></li>`).join("")}</ul>${pagination}`),
+
+notfound: () => top("notfound")+`
+<main id="ed-main" class="ed-page"><div class="ed-wrap ed-wrap--copy ed-404">
+  <p class="ed-kicker">Error 404</p>
+  <h1 class="ed-h1">This page has gone to press without us</h1>
+  <p class="ed-stand">The address you followed doesn't exist, or the page has moved. You may find what you need with a search, or from the homepage.</p>
+  <div class="ed-rule" aria-hidden="true"></div>
+  <form class="ed-search ed-search--wide" role="search" aria-label="Site search" onsubmit="return false"><label class="ed-vh" for="ed-4q">Search this site</label><input id="ed-4q" type="search" placeholder="Search this site"><button type="submit">Go</button></form>
+  <p style="margin-top:20px"><a class="ed-btn" href="#" data-goto="home">Return to the homepage</a></p>
+</div></main>`+bot,
+
+components: () => frame("components","Component sheet",["Home","Components"],"Every reusable part of the Editorial style on one page.",`
+  <h2 class="ed-h2">Type &amp; colour</h2>
+  <p class="ed-spec--d">Newsreader — headlines with real presence</p>
+  <p class="ed-p"><i>Italic Newsreader for standfirsts and asides.</i> Body copy also in Newsreader at 18px/1.7 for a genuinely book-like read, with <a href="#">claret links</a>. Meta, labels and navigation in IBM Plex Sans.</p>
+  <div class="ed-swatches">${[["#1A1712","Ink"],["#7A2E3B","Claret"],["#6E675C","Muted"],["#FCFBF8","Paper"],["#F4F1EA","Tint"],["#E5E1D8","Rule"]].map(s=>`<span><i style="background:${s[0]}"></i>${s[1]}<br><code>${s[0]}</code></span>`).join("")}</div>
+  <h2 class="ed-h2">Buttons</h2><p class="ed-btnrow"><a class="ed-btn" href="#">Primary action</a><a class="ed-btn ed-btn--ghost" href="#">Secondary</a><a class="ed-more" href="#">Text link →</a></p>
+  <h2 class="ed-h2">Notices</h2>${noticeRow}
+  <div class="ed-alert" role="status"><b>Message sent.</b> The Clerk will reply within five working days.</div>
+  <h2 class="ed-h2">Document rows</h2><ul class="ed-doclist">${C.docs.slice(0,3).map(docRow).join("")}</ul>
+  <h2 class="ed-h2">Table</h2><div class="ed-tablewrap"><table class="ed-table"><thead><tr><th scope="col">Service</th><th scope="col">Responsible council</th></tr></thead><tbody>${C.councilPage.respTable.slice(0,3).map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>
+  <h2 class="ed-h2">Pull quote</h2><blockquote class="ed-pull"><p>${esc(C.article.quote)}</p><footer>${esc(C.article.quoteBy)}</footer></blockquote>
+  <h2 class="ed-h2">Form, pagination &amp; breadcrumb</h2>
+  <form class="ed-form" onsubmit="return false" style="max-width:420px"><p class="ed-form__row"><label for="edc-a">Text input</label><input id="edc-a" type="text"></p></form>
+  ${pagination}${crumbs(["Home","Documents","Minutes"])}`)
+};
+
+STYLES.editorial = {
+label:"Editorial",
+blurb:"A village journal — masthead header, serif headlines with real presence, hairline rules, a lead-story homepage and a numbered meeting docket. Sophisticated and content-first, closer to a quality periodical than a council template.",
+meta:"Newsreader & IBM Plex Sans · warm ink on paper / claret · hairline rules, no cards",
+pages,
+css:`
+.edv{--ink:#1A1712;--mut:#6E675C;--paper:#FCFBF8;--tint:#F4F1EA;--rule:#E5E1D8;--rule-d:#1A1712;--claret:#7A2E3B;--claret-d:#5E2129;
+  font-family:"Newsreader",Georgia,serif;color:var(--ink);background:var(--paper);font-size:18px;line-height:1.7}
+.edv h1,.edv h2,.edv h3{font-family:"Newsreader",Georgia,serif;font-weight:600;line-height:1.12;letter-spacing:-.01em;text-wrap:balance;margin:0}
+.edv a{color:var(--claret);text-decoration-thickness:1px;text-underline-offset:3px}
+.edv a:hover{color:var(--claret-d)}
+.edv :focus-visible{outline:3px solid var(--claret);outline-offset:2px}
+.edv img{display:block;filter:none}
+.ed-wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.ed-wrap--copy{max-width:760px}
+.ed-vh{position:absolute!important;clip:rect(0 0 0 0);clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+.ed-skip{position:absolute;left:-9999px;background:var(--ink);color:var(--paper);padding:10px 16px;font:600 14px "IBM Plex Sans";z-index:50}
+.ed-skip:focus{left:12px;top:12px}
+.ed-head__meta{display:flex;justify-content:space-between;gap:14px;font:400 12.5px/1 "IBM Plex Sans";color:var(--mut);padding-top:12px;letter-spacing:.02em;flex-wrap:wrap}
+.ed-head__meta a{color:var(--ink)}
+.ed-mast{text-align:center;padding:26px 24px 22px}
+.ed-wordmark{display:inline-block;text-decoration:none;color:var(--ink)}
+.ed-wordmark__over{display:block;font:500 12px/1 "IBM Plex Sans";letter-spacing:.34em;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
+.ed-wordmark b{font:600 clamp(30px,4.6vw,46px)/1 "Newsreader";letter-spacing:.01em}
+.ed-wordmark__under{display:block;font:500 11.5px/1 "IBM Plex Sans";letter-spacing:.26em;text-transform:uppercase;color:var(--mut);margin-top:12px}
+.ed-navbar{border-top:1px solid var(--rule-d);border-bottom:1px solid var(--rule-d);position:relative}
+.ed-navbar::before{content:"";display:block;position:absolute;top:2px;left:0;right:0;border-top:1px solid var(--rule-d)}
+.ed-navbar__in{display:flex;align-items:center;justify-content:center;gap:20px;position:relative}
+.ed-nav ul{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;margin:0;padding:0}
+.ed-nav a{display:block;font:500 13px/1 "IBM Plex Sans";letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink);padding:15px 13px}
+.ed-nav a:hover{color:var(--claret)}
+.ed-nav a[aria-current="page"]{color:var(--claret);box-shadow:inset 0 -3px 0 var(--claret)}
+.ed-search{display:flex;align-items:center;border-bottom:1px solid var(--ink)}
+.ed-navbar .ed-search{margin-left:16px}
+.ed-search input{font:400 14px "IBM Plex Sans";border:0;background:transparent;padding:7px 2px;width:110px;color:var(--ink)}
+.ed-search button{font:600 12px "IBM Plex Sans";letter-spacing:.1em;text-transform:uppercase;border:0;background:none;color:var(--claret);cursor:pointer;padding:7px 4px}
+.ed-search--wide{max-width:440px;border:1px solid var(--ink);padding:2px 2px 2px 12px}
+.ed-search--wide input{flex:1;font-size:16px;width:auto}
+.ed-search--wide button{background:var(--ink);color:var(--paper);padding:9px 16px}
+.ed-burger{display:none;font:600 13px "IBM Plex Sans";letter-spacing:.12em;text-transform:uppercase;background:none;border:1px solid var(--ink);color:var(--ink);padding:9px 16px;cursor:pointer;margin:8px 0}
+.ed-page{padding:34px 0 70px}
+.ed-notice{display:flex;gap:16px;align-items:baseline;border:1px solid var(--rule);border-left:3px solid var(--claret);background:var(--tint);padding:13px 18px;margin:0 0 34px;font-size:15.5px;flex-wrap:wrap}
+.ed-notice__k{font:600 11.5px/1.6 "IBM Plex Sans";letter-spacing:.2em;text-transform:uppercase;color:var(--claret);flex:none}
+.ed-notice p{margin:0;flex:1;min-width:240px}
+.ed-notice a{font:500 14px "IBM Plex Sans";white-space:nowrap}
+.ed-leadstory{display:grid;grid-template-columns:1.15fr 1fr .72fr;gap:34px;align-items:start}
+.ed-leadstory__t h1{font-size:clamp(28px,3.6vw,42px)}
+.ed-leadstory__t h1 a{color:var(--ink);text-decoration:none}
+.ed-leadstory__t h1 a:hover{color:var(--claret-d)}
+.ed-leadstory img{width:100%;border:1px solid var(--rule)}
+.ed-kicker{font:600 12px/1.5 "IBM Plex Sans";letter-spacing:.18em;text-transform:uppercase;color:var(--claret);margin:0 0 12px}
+.ed-stand{font-size:20px;line-height:1.55;font-style:italic;color:var(--mut);margin:14px 0 12px}
+.ed-more{font:500 14px "IBM Plex Sans";margin:6px 0 0}
+.ed-more a,a.ed-more{text-decoration:none}
+.ed-more a:hover,a.ed-more:hover{text-decoration:underline}
+.ed-brief{border-left:1px solid var(--rule);padding-left:26px}
+.ed-brief h2{font:600 12.5px/1 "IBM Plex Sans";letter-spacing:.22em;text-transform:uppercase;color:var(--ink);margin-bottom:14px}
+.ed-brief ul{list-style:none;margin:0;padding:0}
+.ed-brief li{padding:12px 0;border-bottom:1px solid var(--rule)}
+.ed-brief li:first-child{padding-top:0}
+.ed-brief time{font:500 11.5px/1 "IBM Plex Sans";letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.ed-brief h3{font-size:16.5px;line-height:1.35;margin-top:5px;font-weight:500}
+.ed-brief h3 a{color:var(--ink);text-decoration:none}
+.ed-brief h3 a:hover{color:var(--claret)}
+.ed-rule{border-top:1px solid var(--rule);margin:34px 0}
+.ed-rule--heavy{border-top:1px solid var(--rule-d);position:relative;margin:40px 0 34px}
+.ed-rule--heavy::after{content:"";position:absolute;top:2px;left:0;right:0;border-top:1px solid var(--rule-d)}
+.ed-triptych{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:38px}
+.ed-col{min-width:0}
+.ed-colhead{font:600 12.5px/1 "IBM Plex Sans";letter-spacing:.22em;text-transform:uppercase;margin-bottom:16px;color:var(--ink)}
+.ed-mdate{font-size:24px;line-height:1.3;font-weight:600;margin:0 0 10px}
+.ed-mdate span{font-size:16px;font-weight:400;color:var(--mut);font-style:italic}
+.ed-mnote{font-size:15.5px;color:var(--mut);margin:0 0 14px}
+.ed-btn{display:inline-block;font:600 13px/1 "IBM Plex Sans";letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--paper)!important;text-decoration:none;padding:12px 18px;border:1px solid var(--ink);cursor:pointer}
+.ed-btn:hover{background:var(--claret);border-color:var(--claret)}
+.ed-btn--ghost{background:transparent;color:var(--ink)!important}
+.ed-btn--ghost:hover{background:var(--tint);color:var(--ink)!important;border-color:var(--ink)}
+.ed-diary{list-style:none;margin:0;padding:0}
+.ed-diary li{padding:11px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:1px}
+.ed-diary li:first-child{padding-top:0}
+.ed-diary time{font:500 11.5px/1.6 "IBM Plex Sans";letter-spacing:.12em;text-transform:uppercase;color:var(--claret)}
+.ed-diary b{font-size:16.5px;font-weight:600}
+.ed-diary span{font-size:14px;color:var(--mut);font-style:italic}
+.ed-secthead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.ed-secthead h2{font-size:24px}
+.ed-secthead a{font:500 14px "IBM Plex Sans";text-decoration:none}
+.ed-secthead a:hover{text-decoration:underline}
+.ed-doclist{list-style:none;margin:0;padding:0}
+.ed-doc{display:grid;grid-template-columns:1fr auto auto auto;gap:20px;align-items:baseline;padding:13px 2px;border-bottom:1px solid var(--rule);font-size:16px}
+.ed-doc__t a{color:var(--ink);text-decoration:none;font-weight:500}
+.ed-doc__t a:hover{color:var(--claret);text-decoration:underline}
+.ed-doc__k{font:500 11.5px/1 "IBM Plex Sans";letter-spacing:.14em;text-transform:uppercase;color:var(--claret)}
+.ed-doc__m,.ed-doc time{font:400 13px/1 "IBM Plex Sans";color:var(--mut);font-variant-numeric:tabular-nums}
+.ed-contactstrip{display:flex;justify-content:space-between;align-items:center;gap:24px;background:var(--tint);border:1px solid var(--rule);padding:24px 30px;margin-top:44px;flex-wrap:wrap}
+.ed-contactstrip p{font-size:19px;margin:0}
+.ed-foot{border-top:1px solid var(--rule-d);position:relative;margin-top:0;padding:36px 0 30px;background:var(--paper)}
+.ed-foot::before{content:"";position:absolute;top:2px;left:0;right:0;border-top:1px solid var(--rule-d)}
+.ed-foot__mast{text-align:center;margin-bottom:26px}
+.ed-foot__mast b{font:600 24px "Newsreader";display:block}
+.ed-foot__mast span{font:500 10.5px/1 "IBM Plex Sans";letter-spacing:.3em;text-transform:uppercase;color:var(--mut)}
+.ed-foot__grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:34px;font-size:15px;max-width:860px;margin:0 auto}
+.ed-foot h2{font:600 12px/1 "IBM Plex Sans";letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.ed-foot p{margin:0 0 10px;color:var(--mut)}
+.ed-foot ul{list-style:none;margin:0;padding:0}
+.ed-foot li{margin-bottom:7px}
+.ed-foot a{color:var(--ink)}
+.ed-foot__bar{text-align:center;font:400 12.5px "IBM Plex Sans";color:var(--mut);border-top:1px solid var(--rule);margin-top:30px;padding-top:18px}
+.ed-crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;padding:0;font:400 12.5px "IBM Plex Sans";letter-spacing:.04em}
+.ed-crumbs li+li::before{content:"—";margin-right:6px;color:var(--mut)}
+.ed-crumbs a{color:var(--mut);text-decoration:none}
+.ed-crumbs a:hover{color:var(--claret);text-decoration:underline}
+.ed-crumbs [aria-current]{color:var(--ink)}
+.ed-h1{font-size:clamp(30px,4.2vw,44px)}
+.ed-lead{font-size:20px;font-style:italic;color:var(--mut);line-height:1.55;margin:14px 0 0}
+.ed-h2{font-size:24px;margin:34px 0 12px}
+.ed-p{margin:0 0 16px;max-width:66ch}
+.ed-p--first::first-letter{font-size:3.3em;float:left;line-height:.82;padding:4px 8px 0 0;font-weight:600;color:var(--claret)}
+.ed-byline{font:500 13px "IBM Plex Sans";letter-spacing:.06em;color:var(--mut);margin:10px 0 0}
+.ed-article__img{width:100%;border:1px solid var(--rule);margin:0 0 24px}
+.ed-pull{border-top:1px solid var(--rule-d);border-bottom:1px solid var(--rule-d);margin:30px 0;padding:22px 8px;text-align:center}
+.ed-pull p{font-size:24px;line-height:1.4;font-style:italic;margin:0 0 10px}
+.ed-pull footer{font:500 12px "IBM Plex Sans";letter-spacing:.14em;text-transform:uppercase;color:var(--claret)}
+.ed-people{list-style:none;margin:0;padding:0;counter-reset:cllr;columns:2;column-gap:44px;max-width:66ch}
+.ed-people li{counter-increment:cllr;padding:10px 0;border-bottom:1px solid var(--rule);break-inside:avoid;display:flex;flex-direction:column}
+.ed-people li::before{content:counter(cllr,decimal-leading-zero);font:500 11px/1 "IBM Plex Sans";letter-spacing:.1em;color:var(--claret);margin-bottom:4px}
+.ed-people b{font-weight:600;font-size:17px}
+.ed-people span{font-size:14px;color:var(--mut);font-style:italic}
+.ed-newslist{list-style:none;margin:0;padding:0;max-width:820px}
+.ed-newsitem{padding:26px 0;border-bottom:1px solid var(--rule)}
+.ed-newsitem--first{padding-top:0}
+.ed-newsitem--first img{width:100%;border:1px solid var(--rule);margin-bottom:20px}
+.ed-newsitem h2{font-size:26px;margin-bottom:10px}
+.ed-newsitem--first h2{font-size:32px}
+.ed-newsitem h2 a{color:var(--ink);text-decoration:none}
+.ed-newsitem h2 a:hover{color:var(--claret-d)}
+.ed-docket{border:1px solid var(--rule);background:var(--tint);padding:22px 26px;margin-bottom:8px}
+.ed-meetlist{list-style:none;margin:0;padding:0;counter-reset:mt}
+.ed-meetlist li{counter-increment:mt;display:grid;grid-template-columns:auto 1fr auto;gap:2px 22px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--rule)}
+.ed-meetlist li::before{content:counter(mt,decimal-leading-zero);grid-row:span 2;font:500 13px/1 "IBM Plex Sans";color:var(--claret);align-self:center}
+.ed-meetlist time{font:500 13px "IBM Plex Sans";letter-spacing:.05em;color:var(--mut);grid-column:2}
+.ed-meetlist__b{grid-column:2}
+.ed-meetlist__b b{display:block;font-size:18px;font-weight:600}
+.ed-meetlist__b span{font-size:14.5px;color:var(--mut);font-style:italic}
+.ed-meetlist a{font:500 14px "IBM Plex Sans";grid-column:3;grid-row:1 / span 2;align-self:center}
+.ed-meetlist i{grid-column:3;grid-row:1 / span 2;align-self:center;font:400 13px "IBM Plex Sans";color:var(--mut)}
+.ed-tablewrap{overflow-x:auto;margin:6px 0 10px}
+.ed-table{border-collapse:collapse;width:100%;font-size:16px;min-width:460px}
+.ed-table th{text-align:left;font:600 12px "IBM Plex Sans";letter-spacing:.14em;text-transform:uppercase;border-top:1px solid var(--rule-d);border-bottom:1px solid var(--rule-d);padding:10px 12px 9px}
+.ed-table td{border-bottom:1px solid var(--rule);padding:11px 12px}
+.ed-docbar{margin-bottom:22px}
+.ed-cats{font:400 14px "IBM Plex Sans";color:var(--mut);margin:16px 0 0}
+.ed-cats a{text-decoration:none}
+.ed-cats a:hover{text-decoration:underline}
+.ed-cats span{color:var(--mut)}
+.ed-results{list-style:none;margin:20px 0 0;padding:0;max-width:720px}
+.ed-results li{padding:20px 0;border-bottom:1px solid var(--rule)}
+.ed-results h2{font-size:22px;margin:4px 0 8px}
+.ed-results h2 a{color:var(--ink);text-decoration:none}
+.ed-results h2 a:hover{color:var(--claret)}
+.ed-pgn ul{list-style:none;display:flex;gap:4px;margin:30px 0 0;padding:0;font:500 14px "IBM Plex Sans"}
+.ed-pgn a,.ed-pgn span{display:block;min-width:38px;text-align:center;padding:9px 10px;text-decoration:none;border-bottom:2px solid transparent}
+.ed-pgn a:hover{border-bottom-color:var(--claret)}
+.ed-pgn [aria-current]{color:var(--ink);border-bottom-color:var(--ink);font-weight:600}
+.ed-404{text-align:left;padding-top:26px}
+.ed-contactcols{display:grid;grid-template-columns:1fr 1.1fr;gap:52px;align-items:start}
+.ed-dl{margin:0 0 24px;font-size:16px}
+.ed-dl dt{font:600 11.5px/1 "IBM Plex Sans";letter-spacing:.18em;text-transform:uppercase;color:var(--claret);margin:14px 0 4px}
+.ed-dl dd{margin:0}
+.ed-form__row{margin:0 0 16px;display:flex;flex-direction:column;gap:6px}
+.ed-form label{font:600 13px "IBM Plex Sans";letter-spacing:.06em;text-transform:uppercase}
+.ed-form input,.ed-form select,.ed-form textarea{font:400 16px "Newsreader";padding:10px 12px;border:1px solid var(--ink);background:#fff;color:var(--ink)}
+.ed-form small{font:400 13px "IBM Plex Sans";color:var(--mut)}
+.ed-form button{margin-top:4px}
+.ed-spec--d{font-size:34px;line-height:1.2;font-weight:600;margin:0 0 10px}
+.ed-swatches{display:flex;gap:14px;flex-wrap:wrap;font:500 12px "IBM Plex Sans";margin:14px 0 4px}
+.ed-swatches i{display:block;width:84px;height:52px;border:1px solid var(--rule);margin-bottom:5px}
+.ed-swatches code{color:var(--mut)}
+.ed-btnrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.ed-alert{border:1px solid var(--rule);border-left:3px solid #4A6741;background:#F2F4EC;padding:13px 18px;margin:14px 0;font-size:15.5px}
+@media (max-width:960px){
+  .ed-leadstory{grid-template-columns:1fr 1fr}
+  .ed-brief{grid-column:1 / -1;border-left:0;border-top:1px solid var(--rule);padding:22px 0 0}
+  .ed-triptych{grid-template-columns:1fr}
+  .ed-col{border-bottom:1px solid var(--rule);padding-bottom:22px}
+  .ed-col:last-child{border-bottom:0;padding-bottom:0}
+  .ed-contactcols{grid-template-columns:1fr}
+  .ed-navbar__in{justify-content:flex-start}
+  .ed-navbar .ed-search{display:none}
+  .ed-burger{display:block}
+  .ed-nav{display:none;width:100%}
+  .nav-open .ed-nav{display:block}
+  .ed-nav ul{flex-direction:column;padding-bottom:10px}
+  .ed-nav a{padding:12px 4px;font-size:14px}
+  .ed-nav a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--claret);padding-left:12px}
+  .ed-people{columns:1}
+}
+@media (max-width:620px){
+  .ed-leadstory{grid-template-columns:1fr}
+  .ed-doc{grid-template-columns:1fr;gap:4px}
+  .ed-meetlist li{grid-template-columns:auto 1fr}
+  .ed-meetlist a,.ed-meetlist i{grid-column:2;grid-row:auto;align-self:start}
+  .ed-foot__grid{grid-template-columns:1fr}
+  .ed-head__meta{justify-content:center;text-align:center}
+}
+`};
+})();
+
+/* ======================================================================
+   STYLE 4 — MINIMAL
+   Instrument Sans only · near-monochrome · hairlines and air
+   No cards, no shadows — precision spacing and one quiet blue.
+   ====================================================================== */
+(function(){
+const P = {sky:"#E9ECEE", land:"#C6CCD1", dark:"#43484D", accent:"#8C949B", light:"#F7F8F9"};
+const img = k => scene(k,P);
+const NAVMAP = {"Home":"home","The Council":"council","Councillors":"council","Meetings":"meetings","Agendas & Minutes":"documents","Planning":"documents","Documents":"documents","News":"news","Contact":"contact"};
+const nav = page => C.nav.map(n=>{const tgt=NAVMAP[n];const cur=tgt===page&&!["Councillors","Planning","Agendas & Minutes"].includes(n);
+  return `<li><a href="#" data-goto="${tgt}" ${cur?'aria-current="page"':""}>${esc(n)}</a></li>`;}).join("");
+
+const top = page => `
+<a class="mn-skip" href="#mn-main">Skip to main content</a>
+<header class="mn-head"><div class="mn-wrap mn-head__in">
+  <a class="mn-brand" href="#" data-goto="home">${esc(C.council)}</a>
+  <nav class="mn-nav" id="mn-nav" aria-label="Main navigation"><ul>${nav(page)}</ul></nav>
+  <button class="mn-burger" data-menu-toggle aria-expanded="false" aria-controls="mn-nav">Menu</button>
+</div></header>`;
+
+const bot = `
+<footer class="mn-foot"><div class="mn-wrap">
+  <div class="mn-foot__grid">
+    <div><h2>${esc(C.council)}</h2><p>${C.contact.addr.map(esc).join("<br>")}</p></div>
+    <div><h2>Contact</h2><p><a href="tel:01865731448">${esc(C.contact.phone)}</a><br><a href="mailto:${C.contact.email}">${C.contact.email}</a><br>${esc(C.contact.hours)}</p></div>
+    <nav aria-label="Footer"><h2>Information</h2><ul><li><a href="#">Accessibility statement</a></li><li><a href="#">Privacy notice</a></li><li><a href="#">Freedom of information</a></li><li><a href="#">Complaints</a></li></ul></nav>
+  </div>
+  <p class="mn-foot__bar"><span>© 2026 ${esc(C.council)}</span><span>WCAG 2.2 AA</span></p>
+</div></footer>`;
+
+const crumbs = items => `<nav class="mn-crumbs" aria-label="Breadcrumb"><ol>${items.map((c,i)=>i===items.length-1?`<li aria-current="page">${esc(c)}</li>`:`<li><a href="#" data-goto="${c==="Home"?"home":"#"}">${esc(c)}</a></li>`).join("")}</ol></nav>`;
+const frame = (page,title,crumbItems,lead,inner,wide) => top(page)+`
+<main id="mn-main" class="mn-page"><div class="mn-wrap${wide?"":" mn-wrap--copy"}">
+  ${crumbs(crumbItems)}<h1 class="mn-h1">${esc(title)}</h1>${lead?`<p class="mn-lead">${esc(lead)}</p>`:""}
+  ${inner}
+</div></main>`+bot;
+
+const newsRow = n=>`<li class="mn-row"><time>${esc(n.d)}</time><span class="mn-row__b"><a href="#" data-goto="article">${esc(n.t)}</a><small>${esc(n.cat)}</small></span><span class="mn-row__a" aria-hidden="true">→</span></li>`;
+const docRow = d=>`<li class="mn-row"><time>${esc(d.d)}</time><span class="mn-row__b"><a href="#">${esc(d.t)}</a><small>${esc(d.type)} · ${esc(d.meta)}</small></span><span class="mn-row__a" aria-hidden="true">↓</span></li>`;
+const pagination = `<nav class="mn-pgn" aria-label="Pagination"><ul><li><span aria-current="page">1</span></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">4</a></li><li><a href="#">Next</a></li></ul></nav>`;
+
+const pages = {
+home: () => top("home") + `
+<main id="mn-main" class="mn-page"><div class="mn-wrap">
+  <section class="mn-hero">
+    <h1>${esc(C.welcomeHead)}</h1>
+    <p class="mn-hero__p">${esc(C.welcome)}</p>
+    <p class="mn-hero__links"><a class="mn-btn" href="#" data-goto="meetings">Meetings &amp; agendas</a><a class="mn-btn mn-btn--ghost" href="#" data-goto="contact">Contact the council</a></p>
+  </section>
+  <div class="mn-noticeline" role="region" aria-label="Important notice"><span>Notice</span><p>${esc(C.notice)}</p><a href="#" data-goto="news">Details</a></div>
+  <section class="mn-sect" aria-labelledby="mn-meet-h">
+    <h2 id="mn-meet-h" class="mn-sect__h">Next meeting</h2>
+    <div class="mn-sect__b">
+      <p class="mn-meet"><b>${esc(C.nextMeeting.title)}</b><span>${esc(C.nextMeeting.date)}, ${esc(C.nextMeeting.time)}<br>${esc(C.nextMeeting.venue)}</span></p>
+      <p class="mn-meet__note">${esc(C.nextMeeting.note)}</p>
+      <p class="mn-links"><a href="#">Agenda (PDF, 184KB)</a><a href="#" data-goto="meetings">All meetings</a></p>
+    </div>
+  </section>
+  <section class="mn-sect" aria-labelledby="mn-do-h">
+    <h2 id="mn-do-h" class="mn-sect__h">Popular tasks</h2>
+    <ul class="mn-tasks mn-sect__b">${C.quick.map(q=>`<li><a href="#">${esc(q[0])}</a><small>${esc(q[1])}</small></li>`).join("")}</ul>
+  </section>
+  <section class="mn-sect" aria-labelledby="mn-news-h">
+    <h2 id="mn-news-h" class="mn-sect__h">News</h2>
+    <div class="mn-sect__b"><ul class="mn-list">${C.news.slice(0,4).map(newsRow).join("")}</ul>
+    <p class="mn-links"><a href="#" data-goto="news">All news</a></p></div>
+  </section>
+  <section class="mn-sect" aria-labelledby="mn-docs-h">
+    <h2 id="mn-docs-h" class="mn-sect__h">Documents</h2>
+    <div class="mn-sect__b"><ul class="mn-list">${C.docs.slice(0,4).map(docRow).join("")}</ul>
+    <p class="mn-links"><a href="#" data-goto="documents">All documents</a></p></div>
+  </section>
+  <section class="mn-sect mn-sect--last" aria-labelledby="mn-ct-h">
+    <h2 id="mn-ct-h" class="mn-sect__h">Contact</h2>
+    <div class="mn-sect__b"><p class="mn-meet"><b>The Parish Office</b><span>${esc(C.contact.hours)}<br><a href="tel:01865731448">${esc(C.contact.phone)}</a> · <a href="mailto:${C.contact.email}">${C.contact.email}</a></span></p>
+    <p class="mn-links"><a class="mn-btn" href="#" data-goto="contact">Send a message</a></p></div>
+  </section>
+</div></main>`+bot,
+
+council: () => frame("council",C.councilPage.title,["Home","The Council"],C.councilPage.intro,`
+  ${C.councilPage.sections.map(s=>`<h2 class="mn-h2">${esc(s.h)}</h2><p class="mn-p">${esc(s.p)}</p>`).join("")}
+  <h2 class="mn-h2">Who does what</h2>
+  <div class="mn-tablewrap"><table class="mn-table"><caption class="mn-vh">Responsibilities of each council</caption>
+    <thead><tr><th scope="col">Service</th><th scope="col">Responsible council</th></tr></thead>
+    <tbody>${C.councilPage.respTable.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>
+  <h2 class="mn-h2">Councillors</h2>
+  <ul class="mn-people">${C.councillors.map(p=>`<li><b>Cllr ${esc(p[0])}</b><span>${esc(p[1])}</span></li>`).join("")}
+  <li><b>${esc(C.clerk.name)}</b><span>${esc(C.clerk.role)}</span></li></ul>`),
+
+news: () => frame("news","News",["Home","News"],"Updates from the Parish Council.",`
+  <ul class="mn-list mn-list--lg">${C.news.map(newsRow).join("")}</ul>${pagination}`),
+
+article: () => { const a=C.article; return frame("article",a.t,["Home","News","Footbridge repairs"],null,`
+  <p class="mn-artmeta">${esc(a.cat)} · ${esc(a.d)} · ${esc(a.by)}</p>
+  <p class="mn-lead">${esc(a.standfirst)}</p>
+  <img class="mn-artimg" src="${img(a.img)}" alt="Illustration of the Wychford Brook footbridge">
+  ${a.body.slice(0,2).map(p=>`<p class="mn-p">${esc(p)}</p>`).join("")}
+  <blockquote class="mn-quote"><p>${esc(a.quote)}</p><footer>${esc(a.quoteBy)}</footer></blockquote>
+  ${a.body.slice(2).map(p=>`<p class="mn-p">${esc(p)}</p>`).join("")}
+  <p class="mn-links" style="margin-top:34px"><a href="#" data-goto="news">← All news</a></p>`);},
+
+meetings: () => frame("meetings","Meetings",["Home","Meetings"],"The Council meets on the second Tuesday of each month. All meetings are open to the public.",`
+  <h2 class="mn-h2">Next meeting</h2>
+  <p class="mn-meet"><b>${esc(C.nextMeeting.title)}</b><span>${esc(C.nextMeeting.date)}, ${esc(C.nextMeeting.time)} — ${esc(C.nextMeeting.venue)}</span></p>
+  <p class="mn-p mn-meet__note">${esc(C.nextMeeting.note)}</p>
+  <p class="mn-links"><a href="#">Agenda (PDF, 184KB)</a></p>
+  <h2 class="mn-h2">Upcoming</h2>
+  <ul class="mn-list">${C.meetings.map(m=>`<li class="mn-row"><time>${esc(m.d)}</time><span class="mn-row__b"><a href="#">${esc(m.t)}</a><small>${esc(m.time)} · ${esc(m.v)}</small></span><span class="mn-row__m">${m.agenda?`<a href="#">Agenda</a>`:"Papers to follow"}</span></li>`).join("")}</ul>
+  <h2 class="mn-h2">Minutes</h2>
+  <ul class="mn-list">${C.pastMeetings.map(m=>`<li class="mn-row"><time>${esc(m.d)}</time><span class="mn-row__b"><a href="#">${esc(m.t)}</a><small>${esc(m.minutes)} · ${esc(m.status)}</small></span><span class="mn-row__a" aria-hidden="true">↓</span></li>`).join("")}</ul>`),
+
+documents: () => frame("documents","Documents",["Home","Documents"],"Agendas, minutes, policies and accounts.",`
+  <form class="mn-search" role="search" aria-label="Search documents" onsubmit="return false"><label class="mn-vh" for="mn-dq">Search documents</label><input id="mn-dq" type="search" placeholder="Search documents"><button type="submit">Search</button></form>
+  <p class="mn-cats">${C.docCats.map(c=>`<a href="#">${esc(c[0])} <span>${c[1]}</span></a>`).join("")}</p>
+  <ul class="mn-list mn-list--lg">${C.docs.map(docRow).join("")}</ul>${pagination}
+  <p class="mn-p mn-fine">Older records are held by the Clerk. Any document can be supplied in large print on request.</p>`),
+
+contact: () => frame("contact","Contact",["Home","Contact"],"The Parish Office is staffed part-time. Messages are read every working day.",`
+  <div class="mn-contactgrid">
+    <dl class="mn-dl">
+      <dt>Address</dt><dd>${C.contact.addr.map(esc).join("<br>")}</dd>
+      <dt>Telephone</dt><dd><a href="tel:01865731448">${esc(C.contact.phone)}</a></dd>
+      <dt>Email</dt><dd><a href="mailto:${C.contact.email}">${C.contact.email}</a></dd>
+      <dt>Office hours</dt><dd>${esc(C.contact.hours)}</dd>
+      <dt>The Clerk</dt><dd>${esc(C.clerk.name)}<br>${esc(C.clerk.role)}</dd>
+    </dl>
+    <form class="mn-form" onsubmit="return false">
+      <p class="mn-form__row"><label for="mnf-n">Your name</label><input id="mnf-n" type="text" autocomplete="name"></p>
+      <p class="mn-form__row"><label for="mnf-e">Email address</label><input id="mnf-e" type="email" autocomplete="email"><small>Used only to reply to you.</small></p>
+      <p class="mn-form__row"><label for="mnf-s">Subject</label><select id="mnf-s"><option>General enquiry</option><option>Planning</option><option>Allotments</option><option>Village hall booking</option><option>Report a problem</option></select></p>
+      <p class="mn-form__row"><label for="mnf-m">Your message</label><textarea id="mnf-m" rows="6"></textarea></p>
+      <button class="mn-btn" type="submit">Send message</button>
+    </form>
+  </div>`,true),
+
+search: () => frame("search","Search",["Home","Search"],null,`
+  <form class="mn-search" role="search" aria-label="Site search" onsubmit="return false"><label class="mn-vh" for="mn-sq">Search this site</label><input id="mn-sq" type="search" value="${esc(C.searchQ)}"><button type="submit">Search</button></form>
+  <p class="mn-fine">${C.searchResults.length} results for “${esc(C.searchQ)}”</p>
+  <ul class="mn-list mn-list--lg">${C.searchResults.map(r=>`<li class="mn-row"><span class="mn-row__t">${esc(r.type)}</span><span class="mn-row__b"><a href="#">${esc(r.t)}</a><small>${esc(r.x)}</small></span><span class="mn-row__a" aria-hidden="true">→</span></li>`).join("")}</ul>${pagination}`),
+
+notfound: () => top("notfound")+`
+<main id="mn-main" class="mn-page"><div class="mn-wrap mn-wrap--copy mn-404">
+  <p class="mn-404__code" aria-hidden="true">404</p>
+  <h1 class="mn-h1">Page not found</h1>
+  <p class="mn-lead">The page you asked for doesn't exist or has moved.</p>
+  <form class="mn-search" role="search" aria-label="Site search" onsubmit="return false"><label class="mn-vh" for="mn-4q">Search this site</label><input id="mn-4q" type="search" placeholder="Search this site"><button type="submit">Search</button></form>
+  <p class="mn-links" style="margin-top:22px"><a class="mn-btn" href="#" data-goto="home">Go to the homepage</a></p>
+</div></main>`+bot,
+
+components: () => frame("components","Component sheet",["Home","Components"],"Every reusable part of the Minimal style on one page.",`
+  <h2 class="mn-h2">Type &amp; colour</h2>
+  <p class="mn-spec--d">Instrument Sans — one family, weight does the work</p>
+  <p class="mn-p">Body copy at 16.5px/1.7 in near-black on white. One quiet blue for <a href="#">links and actions</a>; everything else is monochrome.</p>
+  <div class="mn-swatches">${[["#101214","Ink"],["#5F666D","Muted"],["#0F4C81","Accent"],["#E7E9EB","Hairline"],["#F7F8F9","Wash"],["#FFFFFF","Ground"]].map(s=>`<span><i style="background:${s[0]}"></i>${s[1]}<br><code>${s[0]}</code></span>`).join("")}</div>
+  <h2 class="mn-h2">Buttons</h2><p class="mn-btnrow"><a class="mn-btn" href="#">Primary action</a><a class="mn-btn mn-btn--ghost" href="#">Secondary</a><a href="#">Text link</a></p>
+  <h2 class="mn-h2">Notice</h2>
+  <div class="mn-noticeline"><span>Notice</span><p>${esc(C.notice)}</p><a href="#">Details</a></div>
+  <div class="mn-noticeline mn-noticeline--ok" role="status"><span>Sent</span><p>Your message has been sent. The Clerk will reply within five working days.</p></div>
+  <h2 class="mn-h2">List rows (news / documents)</h2>
+  <ul class="mn-list">${C.news.slice(0,2).map(newsRow).join("")}${C.docs.slice(0,2).map(docRow).join("")}</ul>
+  <h2 class="mn-h2">Table</h2><div class="mn-tablewrap"><table class="mn-table"><thead><tr><th scope="col">Service</th><th scope="col">Responsible council</th></tr></thead><tbody>${C.councilPage.respTable.slice(0,3).map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>
+  <h2 class="mn-h2">Form, pagination &amp; breadcrumb</h2>
+  <form class="mn-form" onsubmit="return false" style="max-width:380px"><p class="mn-form__row"><label for="mnc-a">Text input</label><input id="mnc-a" type="text"></p></form>
+  ${pagination}${crumbs(["Home","Documents","Minutes"])}`)
+};
+
+STYLES.minimal = {
+label:"Minimal",
+blurb:"Premium restraint — a single typeface doing all the work, hairline dividers instead of cards, one quiet blue, and unusually generous white space. Feels expensive precisely because almost everything has been taken away.",
+meta:"Instrument Sans · monochrome + one blue · hairlines, no cards, no shadows",
+pages,
+css:`
+.mnv{--ink:#101214;--body:#33383D;--mut:#5F666D;--hair:#E7E9EB;--wash:#F7F8F9;--blue:#0F4C81;--blue-d:#0A3A63;
+  font-family:"Instrument Sans",system-ui,sans-serif;color:var(--body);background:#fff;font-size:16.5px;line-height:1.7}
+.mnv h1,.mnv h2,.mnv h3{color:var(--ink);font-weight:600;letter-spacing:-.015em;line-height:1.15;text-wrap:balance;margin:0}
+.mnv a{color:var(--blue);text-decoration-thickness:1px;text-underline-offset:3.5px}
+.mnv a:hover{color:var(--blue-d)}
+.mnv :focus-visible{outline:2.5px solid var(--ink);outline-offset:3px}
+.mn-wrap{max-width:1060px;margin:0 auto;padding:0 26px}
+.mn-wrap--copy{max-width:700px}
+.mn-vh{position:absolute!important;clip:rect(0 0 0 0);clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+.mn-skip{position:absolute;left:-9999px;background:var(--ink);color:#fff;padding:10px 16px;font-weight:600;font-size:14px;z-index:50}
+.mn-skip:focus{left:12px;top:12px}
+.mn-head{border-bottom:1px solid var(--hair);background:#fff}
+.mn-head__in{display:flex;align-items:center;gap:26px;padding-top:22px;padding-bottom:22px}
+.mn-brand{font-weight:600;font-size:15.5px;color:var(--ink);text-decoration:none;letter-spacing:-.01em;margin-right:auto}
+.mn-nav ul{list-style:none;display:flex;gap:26px;margin:0;padding:0}
+.mn-nav a{font-size:14px;color:var(--mut);text-decoration:none}
+.mn-nav a:hover{color:var(--ink)}
+.mn-nav a[aria-current="page"]{color:var(--ink);font-weight:600;box-shadow:0 14px 0 -12px var(--ink)}
+.mn-burger{display:none;font:600 14px "Instrument Sans";background:none;border:1px solid var(--hair);color:var(--ink);padding:9px 16px;cursor:pointer;border-radius:2px}
+.mn-page{padding:0 0 90px}
+.mn-hero{padding:88px 0 56px;max-width:720px}
+.mn-hero h1{font-size:clamp(30px,4vw,44px);font-weight:600;margin-bottom:22px}
+.mn-hero__p{margin:0 0 30px;font-size:17.5px;color:var(--mut)}
+.mn-hero__links{display:flex;gap:14px;flex-wrap:wrap}
+.mn-btn{display:inline-block;background:var(--ink);color:#fff!important;text-decoration:none;font:600 14px/1 "Instrument Sans";padding:13px 22px;border-radius:2px;border:1px solid var(--ink);cursor:pointer}
+.mn-btn:hover{background:#000}
+.mn-btn--ghost{background:transparent;color:var(--ink)!important}
+.mn-btn--ghost:hover{background:var(--wash)}
+.mn-noticeline{display:flex;gap:18px;align-items:baseline;border-top:1px solid var(--ink);border-bottom:1px solid var(--hair);padding:15px 2px;margin:0 0 26px;font-size:15px;flex-wrap:wrap}
+.mn-noticeline span{font:600 11px/1.6 "Instrument Sans";letter-spacing:.16em;text-transform:uppercase;color:var(--ink);flex:none}
+.mn-noticeline p{margin:0;flex:1;min-width:240px;color:var(--mut)}
+.mn-noticeline a{white-space:nowrap;font-size:14px}
+.mn-noticeline--ok span{color:#2E6B3F}
+.mn-sect{display:grid;grid-template-columns:220px 1fr;gap:30px;border-top:1px solid var(--hair);padding:44px 0}
+.mn-sect--last{border-bottom:1px solid var(--hair)}
+.mn-sect__h{font:600 12px/1.8 "Instrument Sans";letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
+.mn-sect__b{min-width:0}
+.mn-meet{display:flex;flex-direction:column;gap:6px;margin:0 0 14px}
+.mn-meet b{font-size:22px;font-weight:600;color:var(--ink);letter-spacing:-.015em}
+.mn-meet span{color:var(--mut);font-size:16px}
+.mn-meet__note{max-width:60ch;color:var(--mut);font-size:15px;margin:0 0 16px}
+.mn-links{display:flex;gap:22px;flex-wrap:wrap;margin:14px 0 0;font-size:15px}
+.mn-tasks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 44px}
+.mn-tasks li{border-bottom:1px solid var(--hair);padding:14px 2px}
+.mn-tasks a{font-weight:600;font-size:16px;text-decoration:none;color:var(--ink)}
+.mn-tasks a:hover{color:var(--blue)}
+.mn-tasks a::after{content:" →";color:var(--mut)}
+.mn-tasks small{display:block;color:var(--mut);font-size:13.5px;margin-top:3px}
+.mn-list{list-style:none;margin:0;padding:0}
+.mn-list--lg .mn-row{padding:18px 2px}
+.mn-row{display:flex;gap:26px;align-items:baseline;border-bottom:1px solid var(--hair);padding:14px 2px}
+.mn-row time,.mn-row__t{flex:none;width:118px;font-size:13px;color:var(--mut);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.mn-row__t{text-transform:uppercase;font-weight:600;font-size:11px;letter-spacing:.14em}
+.mn-row__b{flex:1;min-width:0}
+.mn-row__b a{font-weight:600;font-size:16px;color:var(--ink);text-decoration:none}
+.mn-row__b a:hover{color:var(--blue)}
+.mn-row__b small{display:block;color:var(--mut);font-size:13.5px;margin-top:3px}
+.mn-row__a{color:var(--mut)}
+.mn-row__m{flex:none;font-size:14px;color:var(--mut)}
+.mn-crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:34px 0 0;font-size:13px}
+.mn-crumbs li+li::before{content:"/";margin-right:8px;color:var(--hair)}
+.mn-crumbs a{color:var(--mut);text-decoration:none}
+.mn-crumbs a:hover{color:var(--ink)}
+.mn-crumbs [aria-current]{color:var(--ink)}
+.mn-h1{font-size:clamp(28px,3.6vw,38px);margin:18px 0 0;padding-bottom:26px}
+.mn-lead{font-size:18px;color:var(--mut);max-width:62ch;margin:0 0 30px}
+.mn-h2{font-size:15px;font-weight:600;letter-spacing:.01em;margin:40px 0 14px;padding-top:22px;border-top:1px solid var(--hair)}
+.mn-p{margin:0 0 15px;max-width:66ch}
+.mn-fine{font-size:13.5px;color:var(--mut)}
+.mn-tablewrap{overflow-x:auto;margin:4px 0 8px}
+.mn-table{border-collapse:collapse;width:100%;font-size:15px;min-width:440px}
+.mn-table th{text-align:left;font:600 11.5px "Instrument Sans";letter-spacing:.14em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--ink);padding:9px 10px 9px 0}
+.mn-table td{border-bottom:1px solid var(--hair);padding:11px 10px 11px 0}
+.mn-people{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 44px}
+.mn-people li{border-bottom:1px solid var(--hair);padding:12px 2px;display:flex;flex-direction:column}
+.mn-people b{font-weight:600;color:var(--ink);font-size:15.5px}
+.mn-people span{color:var(--mut);font-size:13.5px}
+.mn-artmeta{font-size:13px;color:var(--mut);letter-spacing:.02em;margin:0 0 18px}
+.mn-artimg{width:100%;filter:grayscale(1) contrast(1.03);margin:6px 0 28px}
+.mn-quote{border-left:2px solid var(--ink);margin:28px 0;padding:4px 0 4px 24px}
+.mn-quote p{font-size:20px;line-height:1.5;color:var(--ink);font-weight:500;letter-spacing:-.01em;margin:0 0 8px}
+.mn-quote footer{font-size:13.5px;color:var(--mut)}
+.mn-search{display:flex;border-bottom:1.5px solid var(--ink);max-width:440px;margin:0 0 18px}
+.mn-search input{font:inherit;font-size:16.5px;border:0;background:transparent;padding:10px 2px;flex:1;color:var(--ink)}
+.mn-search button{font:600 13px "Instrument Sans";letter-spacing:.06em;border:0;background:none;color:var(--blue);cursor:pointer;padding:10px 4px}
+.mn-search button:hover{color:var(--blue-d)}
+.mn-cats{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;margin:0 0 26px}
+.mn-cats a{text-decoration:none;font-weight:600}
+.mn-cats span{color:var(--mut);font-weight:400;font-variant-numeric:tabular-nums}
+.mn-pgn ul{list-style:none;display:flex;gap:2px;margin:30px 0 0;padding:0;font-size:14px}
+.mn-pgn a,.mn-pgn span{display:block;min-width:36px;text-align:center;padding:8px 9px;text-decoration:none;color:var(--mut)}
+.mn-pgn a:hover{color:var(--ink)}
+.mn-pgn [aria-current]{color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--ink)}
+.mn-404{padding-top:70px}
+.mn-404__code{font-size:100px;font-weight:600;letter-spacing:-.05em;color:var(--hair);line-height:1;margin:0}
+.mn-404 .mn-h1{padding-bottom:8px}
+.mn-contactgrid{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:start}
+.mn-dl{margin:0;font-size:15.5px}
+.mn-dl dt{font:600 11px/1 "Instrument Sans";letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:18px 0 5px}
+.mn-dl dt:first-child{margin-top:0}
+.mn-dl dd{margin:0;color:var(--ink)}
+.mn-form__row{margin:0 0 18px;display:flex;flex-direction:column;gap:7px}
+.mn-form label{font-weight:600;font-size:14px;color:var(--ink)}
+.mn-form input,.mn-form select,.mn-form textarea{font:inherit;font-size:16px;padding:11px 12px;border:1px solid #C6CBD0;border-radius:2px;background:#fff;color:var(--ink)}
+.mn-form input:hover,.mn-form select:hover,.mn-form textarea:hover{border-color:var(--ink)}
+.mn-form small{color:var(--mut);font-size:13px}
+.mn-spec--d{font-size:28px;font-weight:600;color:var(--ink);letter-spacing:-.02em;margin:0 0 10px}
+.mn-swatches{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin:16px 0 4px}
+.mn-swatches i{display:block;width:80px;height:50px;border:1px solid var(--hair);margin-bottom:5px}
+.mn-swatches code{color:var(--mut)}
+.mn-btnrow{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.mn-foot{border-top:1px solid var(--hair);padding:40px 0 34px;font-size:14px;color:var(--mut);background:#fff}
+.mn-foot__grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:34px}
+.mn-foot h2{font:600 11px/1 "Instrument Sans";letter-spacing:.16em;text-transform:uppercase;color:var(--ink);margin-bottom:12px}
+.mn-foot p{margin:0}
+.mn-foot ul{list-style:none;margin:0;padding:0}
+.mn-foot li{margin-bottom:7px}
+.mn-foot a{color:var(--mut)}
+.mn-foot a:hover{color:var(--ink)}
+.mn-foot__bar{display:flex;justify-content:space-between;gap:14px;border-top:1px solid var(--hair);margin:30px 0 0;padding-top:16px;font-size:12.5px;flex-wrap:wrap}
+@media (max-width:920px){
+  .mn-nav{display:none}
+  .mn-burger{display:block}
+  .nav-open .mn-nav{display:block;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--hair);z-index:30}
+  .mn-head{position:relative}
+  .nav-open .mn-nav ul{flex-direction:column;gap:0;padding:8px 26px 18px}
+  .nav-open .mn-nav a{display:block;padding:12px 0;font-size:16px;border-bottom:1px solid var(--hair)}
+  .mn-sect{grid-template-columns:1fr;gap:14px;padding:32px 0}
+  .mn-contactgrid{grid-template-columns:1fr;gap:36px}
+  .mn-hero{padding:54px 0 40px}
+}
+@media (max-width:620px){
+  .mn-tasks,.mn-people,.mn-foot__grid{grid-template-columns:1fr}
+  .mn-row{flex-wrap:wrap;gap:4px 26px}
+  .mn-row time{width:auto}
+  .mn-row__b{flex-basis:100%;order:2}
+  .mn-row__a{display:none}
+}
+`};
+})();
+
+/* ======================================================================
+   STYLE 5 — CONTEMPORARY CLASSIC
+   EB Garamond + Public Sans · V3 civic palette: navy / parchment / brass
+   Recognisably traditional civic design, executed with modern precision.
+   ====================================================================== */
+(function(){
+const P = {sky:"#D9D2BE", land:"#B4AE94", dark:"#1C2B3A", accent:"#A9793D", light:"#F7F4EC"};
+const img = k => scene(k,P);
+const NAVMAP = {"Home":"home","The Council":"council","Councillors":"council","Meetings":"meetings","Agendas & Minutes":"documents","Planning":"documents","Documents":"documents","News":"news","Contact":"contact"};
+const nav = page => C.nav.map(n=>{const tgt=NAVMAP[n];const cur=tgt===page&&!["Councillors","Planning","Agendas & Minutes"].includes(n);
+  return `<li><a href="#" data-goto="${tgt}" ${cur?'aria-current="page"':""}>${esc(n)}</a></li>`;}).join("");
+const crest = `<span class="cl-crest" aria-hidden="true"><svg viewBox="0 0 64 76"><path d="M32 2 60 10v26c0 20-12 30-28 38C16 66 4 56 4 36V10z" fill="#1C2B3A"/><path d="M32 6.5 56 13.4v22.4c0 17.3-10.2 26.1-24 33.3C18.2 61.9 8 53.1 8 35.8V13.4z" fill="#F7F4EC"/><path d="M32 14c4.5 4.5 7.5 8.3 7.5 12.4 0 4-3.2 7-7.5 7s-7.5-3-7.5-7c0-4.1 3-7.9 7.5-12.4z" fill="#46614B"/><rect x="30.6" y="31" width="2.8" height="8" fill="#46614B"/><path d="M12 47c4-2.6 8-2.6 12 0s8 2.6 12 0 8-2.6 12 0" stroke="#A9793D" stroke-width="3" fill="none"/><path d="M12 54c4-2.6 8-2.6 12 0s8 2.6 12 0 8-2.6 12 0" stroke="#A9793D" stroke-width="3" fill="none"/></svg></span>`;
+
+const top = page => `
+<a class="cl-skip" href="#cl-main">Skip to main content</a>
+<div class="cl-topbar"><div class="cl-wrap cl-topbar__in">
+  <span>Serving the parish since 1894</span>
+  <span class="cl-topbar__c"><a href="tel:01865731448">01865 731 448</a><span aria-hidden="true"> · </span><a href="mailto:${C.contact.email}">Email the Clerk</a></span>
+</div></div>
+<header class="cl-mast">
+  <a class="cl-brand" href="#" data-goto="home">${crest}<span class="cl-brand__n">${esc(C.council)}</span><span class="cl-brand__s">${esc(C.strap)}</span></a>
+  <span class="cl-flourish" aria-hidden="true"></span>
+</header>
+<nav class="cl-nav" aria-label="Main navigation"><div class="cl-wrap cl-nav__in">
+  <button class="cl-burger" data-menu-toggle aria-expanded="false" aria-controls="cl-nav-list">Menu</button>
+  <ul id="cl-nav-list">${nav(page)}</ul>
+  <form class="cl-navsearch" role="search" aria-label="Site search" onsubmit="return false"><label class="cl-vh" for="cl-q">Search</label><input id="cl-q" type="search" placeholder="Search…"><button type="submit">Go</button></form>
+</div></nav>`;
+
+const noticePanel = `<div class="cl-notice" role="region" aria-label="Important notice"><b>Public notice</b><p>${esc(C.notice)}</p><a href="#" data-goto="news">Read the full notice</a></div>`;
+
+const bot = `
+<footer class="cl-foot"><div class="cl-wrap">
+  <div class="cl-foot__grid">
+    <div class="cl-foot__id">${crest.replace('cl-crest','cl-crest cl-crest--f')}<h2>${esc(C.council)}</h2><p>${C.contact.addr.map(esc).join("<br>")}</p></div>
+    <nav aria-label="Footer: the council"><h2>The council</h2><ul><li><a href="#" data-goto="council">About the council</a></li><li><a href="#" data-goto="council">Councillors</a></li><li><a href="#" data-goto="meetings">Meetings</a></li><li><a href="#" data-goto="documents">Agendas &amp; minutes</a></li></ul></nav>
+    <nav aria-label="Footer: your rights"><h2>Your rights</h2><ul><li><a href="#">Accessibility statement</a></li><li><a href="#">Privacy notice</a></li><li><a href="#">Freedom of information</a></li><li><a href="#">Complaints procedure</a></li></ul></nav>
+    <div><h2>Contact</h2><p><a href="tel:01865731448">${esc(C.contact.phone)}</a><br><a href="mailto:${C.contact.email}">${C.contact.email}</a></p><p>${esc(C.contact.hours)}</p></div>
+  </div>
+  <div class="cl-foot__bar"><span>© 2026 ${esc(C.council)}</span><span>WCAG 2.2 AA · Site by NetWise</span></div>
+</div></footer>`;
+
+const crumbs = items => `<nav class="cl-crumbs" aria-label="Breadcrumb"><ol>${items.map((c,i)=>i===items.length-1?`<li aria-current="page">${esc(c)}</li>`:`<li><a href="#" data-goto="${c==="Home"?"home":"#"}">${esc(c)}</a></li>`).join("")}</ol></nav>`;
+const secthead = (id,t,link)=>`<div class="cl-secthead"><h2 ${id?`id="${id}"`:""}>${esc(t)}</h2>${link?`<a href="#" data-goto="${link[1]}">${esc(link[0])}</a>`:""}</div>`;
+const frame = (page,title,crumbItems,lead,inner) => top(page)+`
+<main id="cl-main" class="cl-page">
+  <div class="cl-pagehead"><div class="cl-wrap">${crumbs(crumbItems)}<h1>${esc(title)}</h1>${lead?`<p class="cl-lead">${esc(lead)}</p>`:""}</div></div>
+  <div class="cl-wrap cl-page__body">${inner}</div>
+</main>`+bot;
+
+const newsCard = (n,h)=>`<article class="cl-news">${n.img?`<img src="${img(n.img)}" alt="">`:`<div class="cl-news__noimg" aria-hidden="true">${crest}</div>`}
+  <div class="cl-news__b"><p class="cl-news__meta"><span>${esc(n.cat)}</span> · <time>${esc(n.d)}</time></p><${h}><a href="#" data-goto="article">${esc(n.t)}</a></${h}><p class="cl-news__x">${esc(n.x)}</p></div></article>`;
+const docRow = d=>`<li class="cl-doc"><span class="cl-doc__ic" aria-hidden="true"><svg viewBox="0 0 20 24" fill="none"><path d="M2 1h11l5 5v17H2z" stroke="#A9793D" stroke-width="1.6"/><path d="M13 1v5h5" stroke="#A9793D" stroke-width="1.6"/></svg></span><span class="cl-doc__b"><a href="#">${esc(d.t)}</a><small>${esc(d.type)} · ${esc(d.meta)} · Published ${esc(d.d)}</small></span><a class="cl-doc__dl" href="#">Download</a></li>`;
+const pagination = `<nav class="cl-pgn" aria-label="Pagination"><ul><li><span aria-current="page">1</span></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">4</a></li><li><a href="#">Next</a></li></ul></nav>`;
+
+const pages = {
+home: () => top("home") + `
+<main id="cl-main">
+  <section class="cl-hero"><div class="cl-wrap cl-hero__in">
+    <div class="cl-hero__t">
+      <p class="cl-kicker">The Parish Council</p>
+      <h1>${esc(C.welcomeHead)}</h1>
+      <p>${esc(C.welcome)}</p>
+      <p class="cl-hero__cta"><a class="cl-btn" href="#" data-goto="meetings">Meetings &amp; agendas</a><a class="cl-btn cl-btn--ghost" href="#" data-goto="council">About the council</a></p>
+    </div>
+    <div class="cl-hero__f"><img src="${img("village")}" alt="Illustration of Little Wychford village green and church"></div>
+  </div></section>
+  <div class="cl-wrap cl-home">
+    ${noticePanel}
+    <section class="cl-meetpanel" aria-labelledby="cl-meet-h">
+      <div class="cl-meetpanel__l"><p class="cl-kicker" id="cl-meet-h">Next meeting</p>
+        <h2>${esc(C.nextMeeting.title)}</h2>
+        <p class="cl-meetpanel__w">${esc(C.nextMeeting.date)}, ${esc(C.nextMeeting.time)}<br>${esc(C.nextMeeting.venue)}</p></div>
+      <div class="cl-meetpanel__r"><p>${esc(C.nextMeeting.note)}</p>
+        <p class="cl-meetpanel__cta"><a class="cl-btn cl-btn--brass" href="#">View the agenda (PDF)</a><a href="#" data-goto="meetings">All meetings</a></p></div>
+    </section>
+    <section aria-labelledby="cl-quick-h">${secthead("cl-quick-h","Council services")}
+      <ul class="cl-quick">${C.quick.map(q=>`<li><a href="#"><b>${esc(q[0])}</b><span>${esc(q[1])}</span></a></li>`).join("")}</ul></section>
+    <section aria-labelledby="cl-news-h">${secthead("cl-news-h","News from the council",["All news","news"])}
+      <div class="cl-news3">${C.news.slice(0,3).map(n=>newsCard(n,"h3")).join("")}</div></section>
+    <div class="cl-2col">
+      <section aria-labelledby="cl-ev-h">${secthead("cl-ev-h","Forthcoming events")}
+        <ul class="cl-evlist">${C.events.map(e=>`<li><time>${esc(e.d)}</time><span><b>${esc(e.t)}</b><small>${esc(e.time)} · ${esc(e.v)}</small></span></li>`).join("")}</ul></section>
+      <section aria-labelledby="cl-doc-h">${secthead("cl-doc-h","Latest documents",["All documents","documents"])}
+        <ul class="cl-doclist">${C.docs.slice(0,4).map(docRow).join("")}</ul></section>
+    </div>
+  </div>
+  <section class="cl-cta"><div class="cl-wrap cl-cta__in">
+    <div><p class="cl-kicker cl-kicker--light">Correspondence</p><h2>Contact the Parish Council</h2><p>The Parish Office is open ${esc(C.contact.hours)}. The Clerk welcomes letters, emails and visitors by appointment.</p></div>
+    <a class="cl-btn cl-btn--brass" href="#" data-goto="contact">Get in touch</a>
+  </div></section>
+</main>`+bot,
+
+council: () => frame("council",C.councilPage.title,["Home","The Council"],C.councilPage.intro,`
+  <div class="cl-cols">
+    <div class="cl-prose">
+      ${C.councilPage.sections.map(s=>`<h2>${esc(s.h)}</h2><p>${esc(s.p)}</p>`).join("")}
+      <h2>Who does what</h2>
+      <div class="cl-tablewrap"><table class="cl-table"><caption class="cl-vh">Responsibilities of each council</caption>
+        <thead><tr><th scope="col">Service</th><th scope="col">Responsible council</th></tr></thead>
+        <tbody>${C.councilPage.respTable.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>
+      <h2>Councillors</h2>
+      <ul class="cl-people">${C.councillors.map(p=>`<li><span class="cl-avatar" aria-hidden="true">${initials(p[0])}</span><b>Cllr ${esc(p[0])}</b><small>${esc(p[1])}</small></li>`).join("")}</ul>
+    </div>
+    <aside class="cl-aside" aria-label="Related">
+      <h2>The Clerk</h2><p>${esc(C.clerk.name)}<br>${esc(C.clerk.role)}</p><p><a href="mailto:${C.contact.email}">${C.contact.email}</a></p>
+      <h2>Related pages</h2><ul><li><a href="#" data-goto="meetings">Meetings &amp; agendas</a></li><li><a href="#" data-goto="documents">Standing orders</a></li><li><a href="#" data-goto="documents">Register of interests</a></li><li><a href="#" data-goto="contact">Contact the Clerk</a></li></ul>
+    </aside>
+  </div>`),
+
+news: () => frame("news","News from the council",["Home","News"],"Notices, reports and village news, published by the Clerk.",`
+  <div class="cl-newsgrid">${C.news.map(n=>newsCard(n,"h2")).join("")}</div>${pagination}`),
+
+article: () => { const a=C.article; return frame("article",a.t,["Home","News","Footbridge repairs"],null,`
+  <article class="cl-article">
+    <p class="cl-article__meta"><span>${esc(a.cat)}</span> · <time>${esc(a.d)}</time> · ${esc(a.by)}</p>
+    <p class="cl-article__stand">${esc(a.standfirst)}</p>
+    <div class="cl-hero__f cl-article__f"><img src="${img(a.img)}" alt="Illustration of the Wychford Brook footbridge"></div>
+    ${a.body.slice(0,2).map(p=>`<p>${esc(p)}</p>`).join("")}
+    <blockquote class="cl-quote"><p>“${esc(a.quote)}”</p><footer>${esc(a.quoteBy)}</footer></blockquote>
+    ${a.body.slice(2).map(p=>`<p>${esc(p)}</p>`).join("")}
+    <p class="cl-article__back"><a href="#" data-goto="news">← All news</a></p>
+  </article>`);},
+
+meetings: () => frame("meetings","Meetings",["Home","Meetings"],"The Council meets on the second Tuesday of each month at the Village Hall. Members of the public are welcome at every meeting.",`
+  <section class="cl-meetpanel" aria-labelledby="clm-next">
+    <div class="cl-meetpanel__l"><p class="cl-kicker" id="clm-next">Next meeting</p>
+      <h2>${esc(C.nextMeeting.title)}</h2>
+      <p class="cl-meetpanel__w">${esc(C.nextMeeting.date)}, ${esc(C.nextMeeting.time)}<br>${esc(C.nextMeeting.venue)}</p></div>
+    <div class="cl-meetpanel__r"><p>${esc(C.nextMeeting.note)}</p>
+      <p class="cl-meetpanel__cta"><a class="cl-btn cl-btn--brass" href="#">View the agenda (PDF, 184KB)</a></p></div>
+  </section>
+  ${secthead(null,"Forthcoming meetings")}
+  <div class="cl-tablewrap"><table class="cl-table"><caption class="cl-vh">Forthcoming council meetings</caption>
+    <thead><tr><th scope="col">Meeting</th><th scope="col">Date</th><th scope="col">Time</th><th scope="col">Venue</th><th scope="col">Papers</th></tr></thead>
+    <tbody>${C.meetings.map(m=>`<tr><td>${esc(m.t)}</td><td>${esc(m.d)}</td><td>${esc(m.time)}</td><td>${esc(m.v)}</td><td>${m.agenda?`<a href="#">${esc(m.agenda)}</a>`:`<span class="cl-mut">To follow</span>`}</td></tr>`).join("")}</tbody></table></div>
+  ${secthead(null,"Minutes of previous meetings")}
+  <ul class="cl-doclist">${C.pastMeetings.map(m=>`<li class="cl-doc"><span class="cl-doc__ic" aria-hidden="true"><svg viewBox="0 0 20 24" fill="none"><path d="M2 1h11l5 5v17H2z" stroke="#A9793D" stroke-width="1.6"/><path d="M13 1v5h5" stroke="#A9793D" stroke-width="1.6"/></svg></span><span class="cl-doc__b"><a href="#">${esc(m.t)} — ${esc(m.d)}</a><small>${esc(m.minutes)} · ${esc(m.status)}</small></span><a class="cl-doc__dl" href="#">Download</a></li>`).join("")}</ul>`),
+
+documents: () => frame("documents","Documents",["Home","Documents"],"The council's public record — agendas, minutes, policies and accounts.",`
+  <div class="cl-cols">
+    <div>
+      <form class="cl-docsearch" role="search" aria-label="Search documents" onsubmit="return false"><label class="cl-vh" for="cl-dq">Search documents</label><input id="cl-dq" type="search" placeholder="Search documents…"><button type="submit">Search</button></form>
+      <ul class="cl-doclist">${C.docs.map(docRow).join("")}</ul>${pagination}
+    </div>
+    <aside class="cl-aside" aria-label="Document categories"><h2>Categories</h2>
+      <ul class="cl-cats">${C.docCats.map(c=>`<li><a href="#">${esc(c[0])}<span>${c[1]}</span></a></li>`).join("")}</ul>
+      <h2>Assistance</h2><p>Older records may be inspected by appointment with the Clerk. Any document can be supplied in large print on request.</p>
+    </aside>
+  </div>`),
+
+contact: () => frame("contact","Contact the council",["Home","Contact"],"Correspondence is welcome by letter, email or telephone during office hours.",`
+  <div class="cl-cols">
+    <form class="cl-form" onsubmit="return false">
+      <h2>Write to the Clerk</h2>
+      <p class="cl-form__row"><label for="clf-n">Your name</label><input id="clf-n" type="text" autocomplete="name"></p>
+      <p class="cl-form__row"><label for="clf-e">Email address</label><input id="clf-e" type="email" autocomplete="email"><small>Used only to reply to you.</small></p>
+      <p class="cl-form__row"><label for="clf-s">Subject</label><select id="clf-s"><option>General enquiry</option><option>Planning</option><option>Allotments</option><option>Village hall booking</option><option>Report a problem</option></select></p>
+      <p class="cl-form__row"><label for="clf-m">Your message</label><textarea id="clf-m" rows="6"></textarea></p>
+      <button class="cl-btn" type="submit">Send message</button>
+    </form>
+    <aside class="cl-aside" aria-label="Contact details">
+      <h2>The Parish Office</h2><p>${C.contact.addr.map(esc).join("<br>")}</p>
+      <p><b>Telephone</b><br><a href="tel:01865731448">${esc(C.contact.phone)}</a></p>
+      <p><b>Email</b><br><a href="mailto:${C.contact.email}">${C.contact.email}</a></p>
+      <p><b>Office hours</b><br>${esc(C.contact.hours)}</p>
+      <div class="cl-hero__f"><img src="${img("hall")}" alt="Illustration of the Village Hall on Church Lane"></div>
+    </aside>
+  </div>`),
+
+search: () => frame("search","Search",["Home","Search"],null,`
+  <form class="cl-docsearch" role="search" aria-label="Site search" onsubmit="return false"><label class="cl-vh" for="cl-sq">Search this site</label><input id="cl-sq" type="search" value="${esc(C.searchQ)}"><button type="submit">Search</button></form>
+  <p class="cl-mut">${C.searchResults.length} results for <b>“${esc(C.searchQ)}”</b></p>
+  <ol class="cl-results">${C.searchResults.map(r=>`<li><p class="cl-news__meta"><span>${esc(r.type)}</span></p><h2><a href="#">${esc(r.t)}</a></h2><p>${esc(r.x)}</p></li>`).join("")}</ol>${pagination}`),
+
+notfound: () => top("notfound")+`
+<main id="cl-main" class="cl-page"><div class="cl-wrap cl-404">
+  ${crest}
+  <h1>Page not found</h1>
+  <p class="cl-lead">The page you asked for does not exist, or may have been moved when the site was reorganised. You may find it by searching, or from the homepage.</p>
+  <form class="cl-docsearch" role="search" aria-label="Site search" onsubmit="return false"><label class="cl-vh" for="cl-4q">Search this site</label><input id="cl-4q" type="search" placeholder="Search this site"><button type="submit">Search</button></form>
+  <p style="margin-top:20px"><a class="cl-btn" href="#" data-goto="home">Return to the homepage</a></p>
+</div></main>`+bot,
+
+components: () => frame("components","Component sheet",["Home","Components"],"Every reusable part of the Contemporary Classic style on one page.",`
+  <section class="cl-comp">${secthead(null,"Type & colour")}
+    <p class="cl-spec--d">EB Garamond — classical authority in the headings</p>
+    <p>Public Sans 400 body copy at 17px/1.65 — the same body face V3 ships today — with <a href="#">navy links</a> and brass detailing.</p>
+    <div class="cl-swatches">${[["#1C2B3A","Navy"],["#F7F4EC","Parchment"],["#A9793D","Brass"],["#6B5228","Brass dark"],["#46614B","Moss"],["#9E3226","Brick"]].map(s=>`<span><i style="background:${s[0]}"></i>${s[1]}<br><code>${s[0]}</code></span>`).join("")}</div></section>
+  <section class="cl-comp">${secthead(null,"Buttons")}<p class="cl-btnrow"><a class="cl-btn" href="#">Primary action</a><a class="cl-btn cl-btn--brass" href="#">Brass action</a><a class="cl-btn cl-btn--ghost" href="#">Secondary</a><a href="#">Text link</a></p></section>
+  <section class="cl-comp">${secthead(null,"Notices & alerts")}
+    ${noticePanel}
+    <div class="cl-alert cl-alert--ok" role="status"><b>Message sent.</b> The Clerk will reply within five working days.</div>
+    <div class="cl-alert cl-alert--urgent"><b>Urgent notice.</b> The ford on Mill Lane is flooded — please use the Nether End road.</div></section>
+  <section class="cl-comp">${secthead(null,"Cards & documents")}
+    <div class="cl-news3">${C.news.slice(0,2).map(n=>newsCard(n,"h3")).join("")}</div>
+    <ul class="cl-doclist" style="margin-top:20px">${C.docs.slice(0,2).map(docRow).join("")}</ul></section>
+  <section class="cl-comp">${secthead(null,"Table")}<div class="cl-tablewrap"><table class="cl-table"><thead><tr><th scope="col">Service</th><th scope="col">Responsible council</th></tr></thead><tbody>${C.councilPage.respTable.slice(0,3).map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div></section>
+  <section class="cl-comp">${secthead(null,"Form, pagination & breadcrumb")}
+    <form class="cl-form cl-form--bare" onsubmit="return false" style="max-width:400px"><p class="cl-form__row"><label for="clc-a">Text input</label><input id="clc-a" type="text"></p></form>
+    ${pagination}${crumbs(["Home","Documents","Minutes"])}</section>`)
+};
+
+STYLES.classic = {
+label:"Contemporary Classic",
+blurb:"For councils that want to stay recognisably traditional — crest, navy, parchment and brass on V3's existing civic palette — but executed with modern typographic precision. The reassuring option that still looks professionally designed.",
+meta:"EB Garamond & Public Sans · V3's navy / parchment / brass · square corners, brass rules",
+pages,
+css:`
+.clv{--navy:#1C2B3A;--navy-d:#14202C;--parch:#F7F4EC;--navbg:#EDE9DC;--line:#DCD6C5;--brass:#A9793D;--brass-d:#6B5228;--moss:#46614B;--brick:#9E3226;--ink:#22262B;--mut:#5B6570;--footer:#16212C;
+  font-family:"Public Sans",system-ui,sans-serif;color:var(--ink);background:#FDFCF9;font-size:17px;line-height:1.65}
+.clv h1,.clv h2,.clv h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;line-height:1.15;letter-spacing:.002em;text-wrap:balance;margin:0;color:var(--navy)}
+.clv a{color:var(--navy);text-decoration-color:var(--brass);text-decoration-thickness:1px;text-underline-offset:3px}
+.clv a:hover{color:var(--brass-d)}
+.clv :focus-visible{outline:3px solid var(--brass-d);outline-offset:2px}
+.cl-wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.cl-vh{position:absolute!important;clip:rect(0 0 0 0);clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+.cl-skip{position:absolute;left:-9999px;background:var(--navy);color:#fff;padding:10px 16px;font-weight:700;font-size:14px;z-index:50}
+.cl-skip:focus{left:12px;top:12px}
+.cl-topbar{background:var(--parch);border-bottom:1px solid var(--line);font-size:13px}
+.cl-topbar__in{display:flex;justify-content:space-between;gap:14px;padding-top:7px;padding-bottom:7px;flex-wrap:wrap}
+.cl-topbar span:first-child{font-variant:small-caps;letter-spacing:.14em;color:var(--brass-d)}
+.cl-mast{background:var(--parch);text-align:center;padding:30px 24px 24px}
+.cl-brand{display:inline-flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none}
+.cl-crest{width:52px;height:62px;display:inline-block}
+.cl-brand__n{font:600 clamp(26px,3.6vw,36px)/1.1 "EB Garamond",Georgia,serif;color:var(--navy)}
+.cl-brand__s{font:400 12.5px/1 "Public Sans";letter-spacing:.22em;text-transform:uppercase;color:var(--brass-d)}
+.cl-flourish{display:block;width:200px;margin:18px auto 0;border-top:1px solid var(--brass);position:relative}
+.cl-flourish::after{content:"";position:absolute;top:2px;left:24px;right:24px;border-top:1px solid var(--brass)}
+.cl-nav{background:var(--navy)}
+.cl-nav__in{display:flex;align-items:center;justify-content:center;position:relative}
+.cl-nav ul{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;margin:0;padding:0}
+.cl-nav a{display:block;color:#E7EAED;text-decoration:none;font:600 14px/1 "Public Sans";letter-spacing:.04em;padding:16px 14px;border-bottom:3px solid transparent;border-top:3px solid transparent}
+.cl-nav a:hover{color:#fff;background:var(--navy-d)}
+.cl-nav a[aria-current="page"]{color:#fff;border-bottom-color:var(--brass)}
+.cl-navsearch{display:flex;align-items:center;margin-left:16px}
+.cl-navsearch input{font:400 13.5px "Public Sans";background:var(--navy-d);border:1px solid #33465A;color:#fff;padding:8px 10px;width:130px}
+.cl-navsearch input::placeholder{color:#8B98A5}
+.cl-navsearch button{font:700 12.5px "Public Sans";background:var(--brass);border:1px solid var(--brass);color:#1C1405;padding:8px 12px;cursor:pointer}
+.cl-navsearch button:hover{background:#BE8C4C}
+.cl-burger{display:none;font:700 14px "Public Sans";background:none;border:1px solid #33465A;color:#fff;padding:10px 18px;cursor:pointer;margin:8px 0}
+.cl-hero{background:var(--parch);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cl-hero__in{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;padding-top:52px;padding-bottom:56px}
+.cl-kicker{font:700 12px/1 "Public Sans";letter-spacing:.22em;text-transform:uppercase;color:var(--brass-d);margin:0 0 14px}
+.cl-kicker--light{color:#D9B98B}
+.cl-hero__t h1{font-size:clamp(30px,4.2vw,46px);margin-bottom:16px}
+.cl-hero__t p{margin:0 0 12px;max-width:56ch}
+.cl-hero__cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.cl-hero__f{border:1px solid var(--line);padding:10px;background:#fff;box-shadow:0 1px 0 var(--line)}
+.cl-hero__f img{width:100%;display:block}
+.cl-btn{display:inline-block;background:var(--navy);color:#fff!important;text-decoration:none;font:700 14.5px/1 "Public Sans";letter-spacing:.02em;padding:13px 22px;border:1px solid var(--navy);cursor:pointer}
+.cl-btn:hover{background:var(--navy-d)}
+.cl-btn--brass{background:var(--brass);border-color:var(--brass);color:#1C1405!important}
+.cl-btn--brass:hover{background:#BE8C4C;border-color:#BE8C4C}
+.cl-btn--ghost{background:transparent;color:var(--navy)!important;border-color:var(--navy)}
+.cl-btn--ghost:hover{background:rgba(28,43,58,.06)}
+.cl-home{padding-top:40px;padding-bottom:56px;display:flex;flex-direction:column;gap:44px}
+.cl-notice{border:1px solid var(--line);border-left:4px solid var(--brick);background:#fff;padding:16px 20px;display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.cl-notice b{font-variant:small-caps;letter-spacing:.1em;color:var(--brick);font-size:15px;flex:none}
+.cl-notice p{margin:0;flex:1;min-width:240px;font-size:15.5px}
+.cl-notice a{font-size:14.5px;white-space:nowrap}
+.cl-meetpanel{border:1px solid var(--line);border-top:4px solid var(--brass);background:#fff;display:grid;grid-template-columns:1fr 1.2fr;gap:30px;padding:26px 30px}
+.cl-meetpanel h2{font-size:27px;margin-bottom:8px}
+.cl-meetpanel__w{font-size:16.5px;color:var(--mut);margin:0}
+.cl-meetpanel__r p{margin:0 0 14px;font-size:15.5px;color:var(--mut)}
+.cl-meetpanel__cta{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.cl-secthead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--navy);padding-bottom:10px;margin-bottom:22px}
+.cl-secthead h2{font:700 13.5px/1 "Public Sans";letter-spacing:.2em;text-transform:uppercase;color:var(--navy)}
+.cl-secthead a{font-size:14.5px}
+.cl-quick{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cl-quick a{display:block;background:#fff;border:1px solid var(--line);padding:16px 18px;height:100%;text-decoration:none}
+.cl-quick a:hover{border-color:var(--brass)}
+.cl-quick b{display:block;font:600 19px/1.25 "EB Garamond";color:var(--navy);margin-bottom:4px}
+.cl-quick a:hover b{color:var(--brass-d)}
+.cl-quick span{font-size:14px;color:var(--mut)}
+.cl-news3,.cl-newsgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cl-newsgrid{margin-bottom:34px}
+.cl-news{background:#fff;border:1px solid var(--line);display:flex;flex-direction:column}
+.cl-news img,.cl-news__noimg{width:100%;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--line)}
+.cl-news__noimg{background:var(--parch);display:flex;align-items:center;justify-content:center}
+.cl-news__noimg .cl-crest{opacity:.4}
+.cl-news__b{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px;flex:1}
+.cl-news__meta{font:600 12px/1 "Public Sans";letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:0}
+.cl-news__meta span{color:var(--brass-d)}
+.cl-news__b h2 a,.cl-news__b h3 a{font:600 20px/1.3 "EB Garamond";color:var(--navy);text-decoration:none}
+.cl-news__b h2 a:hover,.cl-news__b h3 a:hover{color:var(--brass-d);text-decoration:underline}
+.cl-news__x{font-size:14.5px;color:var(--mut);margin:0}
+.cl-2col{display:grid;grid-template-columns:1fr 1.15fr;gap:44px;align-items:start}
+.cl-evlist{list-style:none;margin:0;padding:0}
+.cl-evlist li{display:flex;gap:18px;padding:13px 2px;border-bottom:1px solid var(--line);font-size:15px}
+.cl-evlist time{flex:none;width:118px;font:600 13.5px/1.5 "Public Sans";color:var(--brass-d);font-variant-numeric:tabular-nums}
+.cl-evlist b{display:block;font-size:15.5px;color:var(--ink)}
+.cl-evlist small{color:var(--mut);font-size:13.5px}
+.cl-doclist{list-style:none;margin:0;padding:0}
+.cl-doc{display:flex;gap:14px;align-items:center;padding:13px 2px;border-bottom:1px solid var(--line)}
+.cl-doc__ic{flex:none;width:22px}
+.cl-doc__b{flex:1;min-width:0}
+.cl-doc__b a{font-weight:600;font-size:15.5px}
+.cl-doc__b small{display:block;color:var(--mut);font-size:13px;margin-top:2px}
+.cl-doc__dl{flex:none;font:700 12.5px "Public Sans";letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:1px solid var(--line);padding:8px 12px}
+.cl-doc__dl:hover{border-color:var(--brass);color:var(--brass-d)}
+.cl-cta{background:var(--navy);color:#fff;padding:40px 0;border-top:4px solid var(--brass)}
+.cl-cta__in{display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap}
+.cl-cta h2{color:#fff;font-size:30px;margin-bottom:8px}
+.cl-cta p{margin:0;color:#C9D2DA;max-width:60ch;font-size:15.5px}
+.cl-foot{background:var(--footer);color:#8B98A5;font-size:14.5px}
+.cl-foot__grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:34px;padding:42px 0 30px}
+.cl-crest--f{width:40px;height:48px;margin-bottom:12px}
+.cl-foot h2{font:600 17px "EB Garamond";color:#E7EAED;margin-bottom:12px}
+.cl-foot__id h2{font-size:20px}
+.cl-foot p{margin:0 0 10px}
+.cl-foot ul{list-style:none;margin:0;padding:0}
+.cl-foot li{margin-bottom:8px}
+.cl-foot a{color:#C9D2DA;text-decoration-color:#4A5A6A}
+.cl-foot a:hover{color:#fff}
+.cl-foot__bar{display:flex;justify-content:space-between;gap:14px;border-top:1px solid #24303C;padding:16px 0 20px;font-size:13px;flex-wrap:wrap}
+.cl-page__body{padding-top:36px;padding-bottom:64px}
+.cl-pagehead{background:var(--parch);border-bottom:1px solid var(--line);padding:24px 0 28px}
+.cl-pagehead h1{font-size:clamp(30px,4vw,42px)}
+.cl-lead{font-size:18px;color:var(--mut);max-width:64ch;margin:12px 0 0}
+.cl-crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;padding:0;font-size:13px}
+.cl-crumbs li+li::before{content:"·";margin-right:6px;color:var(--brass)}
+.cl-crumbs a{color:var(--mut);text-decoration:none}
+.cl-crumbs a:hover{color:var(--brass-d);text-decoration:underline}
+.cl-crumbs [aria-current]{color:var(--ink);font-weight:600}
+.cl-cols{display:grid;grid-template-columns:1fr 290px;gap:52px;align-items:start}
+.cl-prose h2{font-size:26px;margin:32px 0 12px}
+.cl-prose h2:first-child{margin-top:0}
+.cl-prose p{max-width:68ch;margin:0 0 14px}
+.cl-aside{border:1px solid var(--line);border-top:4px solid var(--brass);background:var(--parch);padding:20px 22px;font-size:15px}
+.cl-aside h2{font-size:20px;margin:18px 0 10px}
+.cl-aside h2:first-child{margin-top:0}
+.cl-aside p{margin:0 0 10px}
+.cl-aside ul{list-style:none;margin:0;padding:0}
+.cl-aside li{margin-bottom:9px}
+.cl-tablewrap{overflow-x:auto;margin:6px 0 26px}
+.cl-table{border-collapse:collapse;width:100%;font-size:15px;min-width:480px;background:#fff}
+.cl-table th{text-align:left;font:700 12.5px "Public Sans";letter-spacing:.1em;text-transform:uppercase;background:var(--parch);color:var(--navy);border:1px solid var(--line);border-bottom:2px solid var(--brass);padding:10px 13px}
+.cl-table td{border:1px solid var(--line);padding:11px 13px}
+.cl-people{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cl-people li{background:#fff;border:1px solid var(--line);padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:2px 14px;align-items:center}
+.cl-avatar{grid-row:span 2;width:46px;height:46px;background:var(--parch);border:1px solid var(--brass);color:var(--brass-d);display:flex;align-items:center;justify-content:center;font:600 16px "EB Garamond"}
+.cl-people b{font-size:15.5px}
+.cl-people small{color:var(--mut);font-size:13px}
+.cl-article{max-width:730px}
+.cl-article__meta{font:600 12.5px/1 "Public Sans";letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:0 0 16px}
+.cl-article__meta span{color:var(--brass-d)}
+.cl-article__stand{font:500 21px/1.5 "EB Garamond";color:var(--navy);font-style:italic;margin:0 0 22px}
+.cl-article__f{margin:0 0 24px}
+.cl-article p{margin:0 0 16px}
+.cl-quote{border-top:1px solid var(--brass);border-bottom:1px solid var(--brass);margin:28px 0;padding:20px 6px;text-align:center}
+.cl-quote p{font:500 22px/1.45 "EB Garamond";font-style:italic;color:var(--navy);margin:0 0 8px}
+.cl-quote footer{font:600 12px "Public Sans";letter-spacing:.14em;text-transform:uppercase;color:var(--brass-d)}
+.cl-article__back{border-top:1px solid var(--line);margin-top:30px;padding-top:16px}
+.cl-docsearch{display:flex;margin:0 0 22px;max-width:460px}
+.cl-docsearch input{font:inherit;font-size:16px;padding:11px 13px;border:1px solid var(--navy);border-right:0;flex:1;background:#fff}
+.cl-docsearch button{font:700 14.5px "Public Sans";background:var(--navy);border:1px solid var(--navy);color:#fff;padding:11px 18px;cursor:pointer}
+.cl-docsearch button:hover{background:var(--navy-d)}
+.cl-cats{list-style:none;margin:0;padding:0}
+.cl-cats a{display:flex;justify-content:space-between;padding:9px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-weight:600;font-size:15px}
+.cl-cats span{color:var(--mut);font-weight:400;font-variant-numeric:tabular-nums}
+.cl-results{list-style:none;margin:14px 0 0;padding:0;max-width:760px}
+.cl-results li{border-bottom:1px solid var(--line);padding:18px 0}
+.cl-results h2{font-size:23px;margin:6px 0 6px}
+.cl-results h2 a{text-decoration:none}
+.cl-results h2 a:hover{color:var(--brass-d);text-decoration:underline}
+.cl-results p{margin:0;color:var(--mut);font-size:15px}
+.cl-mut{color:var(--mut)}
+.cl-pgn ul{list-style:none;display:flex;gap:6px;margin:26px 0 0;padding:0}
+.cl-pgn a,.cl-pgn span{display:block;min-width:40px;text-align:center;padding:9px 10px;border:1px solid var(--line);text-decoration:none;font-size:14.5px;background:#fff}
+.cl-pgn a:hover{border-color:var(--brass)}
+.cl-pgn [aria-current]{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:700}
+.cl-404{padding-top:64px;padding-bottom:90px;max-width:620px;text-align:center}
+.cl-404 .cl-crest{width:64px;height:76px;margin-bottom:18px}
+.cl-404 h1{font-size:38px;margin-bottom:12px}
+.cl-404 .cl-lead{margin:0 auto 24px}
+.cl-404 .cl-docsearch{margin:0 auto}
+.cl-form{max-width:560px;background:#fff;border:1px solid var(--line);padding:24px 26px}
+.cl-form--bare{border:0;padding:0;background:none}
+.cl-form h2{font-size:26px;margin-bottom:16px}
+.cl-form__row{margin:0 0 16px;display:flex;flex-direction:column;gap:6px}
+.cl-form label{font-weight:700;font-size:14.5px}
+.cl-form input,.cl-form select,.cl-form textarea{font:inherit;font-size:16px;padding:10px 12px;border:1px solid #9AA4AE;background:#fff;color:var(--ink)}
+.cl-form input:hover,.cl-form select:hover,.cl-form textarea:hover{border-color:var(--navy)}
+.cl-form small{color:var(--mut);font-size:13.5px}
+.cl-comp{margin-bottom:42px}
+.cl-spec--d{font:600 30px/1.25 "EB Garamond";color:var(--navy);margin:0 0 10px}
+.cl-swatches{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;margin-top:14px}
+.cl-swatches i{display:block;width:84px;height:52px;border:1px solid var(--line);margin-bottom:5px}
+.cl-swatches code{color:var(--mut)}
+.cl-btnrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.cl-alert{border:1px solid var(--line);border-left:4px solid var(--moss);background:#fff;padding:13px 16px;margin:14px 0;font-size:15px}
+.cl-alert--ok{border-left-color:var(--moss);background:#F4F7F4}
+.cl-alert--urgent{border-left-color:var(--brick);background:#FBF3F1}
+.cl-comp .cl-notice{margin:14px 0}
+@media (max-width:960px){
+  .cl-hero__in,.cl-cols,.cl-2col,.cl-meetpanel{grid-template-columns:1fr}
+  .cl-news3,.cl-newsgrid,.cl-quick{grid-template-columns:repeat(2,1fr)}
+  .cl-foot__grid{grid-template-columns:1fr 1fr}
+  .cl-nav__in{justify-content:flex-start}
+  .cl-navsearch{display:none}
+  .cl-burger{display:block}
+  .cl-nav ul{display:none;width:100%}
+  .nav-open .cl-nav ul{display:flex;flex-direction:column;padding-bottom:10px}
+  .cl-nav a{border-left:3px solid transparent;border-top:0;border-bottom:0;padding:13px 16px;font-size:15px}
+  .cl-nav a[aria-current="page"]{border-left-color:var(--brass)}
+}
+@media (max-width:620px){
+  .cl-news3,.cl-newsgrid,.cl-quick,.cl-people,.cl-foot__grid{grid-template-columns:1fr}
+  .cl-topbar__c{display:none}
+  .cl-mast{padding:22px 18px 18px}
+}
+`};
+})();
+
+/* ================= gallery landing + router ================= */
+const ORDER = ["modern","community","editorial","minimal","classic"];
+const ROOTCLS = {modern:"mcv",community:"cmv",editorial:"edv",minimal:"mnv",classic:"clv"};
+const PAGES = ["home","council","news","article","meetings","documents","contact","search","notfound","components"];
+const app = document.getElementById("app");
+const styleTag = document.getElementById("activeStyleCSS");
+const pageSel = document.getElementById("pageSel");
+const isEmbed = /(^|[?&])embed=1/.test(location.search);
+const selfURL = () => location.origin + location.pathname;
+
+const state = {style:null, page:"home"}; // style null => gallery landing
+
+function parseHash(){
+  const h = location.hash.replace(/^#/,"");
+  if(!h){ state.style=null; state.page="home"; return; }
+  const [s,p] = h.split("/");
+  state.style = STYLES[s] ? s : null;
+  state.page = PAGES.includes(p) ? p : "home";
+}
+
+function galleryHTML(){
+  return `<div class="gal">
+    <h1>One theme, five faces: the V3 Style Gallery</h1>
+    <p class="lede">Five design directions for the NetWise V3 theme, rendered as real pages with <b>identical content</b> — the same Little Wychford Parish Council, the same news, meetings, documents and councillors throughout. Only the design changes.</p>
+    <p class="lede">Every style includes ten views: homepage, content page, news listing and article, meetings, documents, contact, search, 404 and a component sheet.</p>
+    <div class="gal__hint">Use the <b>Style</b> buttons and <b>Page</b> menu in the top bar to switch instantly — the same page re-renders in the new style, so direct comparison is easy. <b>Mobile preview</b> shows the current page at 390px; resizing the browser window exercises the full responsive behaviour of each design.</div>
+    <div class="gal__grid">${ORDER.map(k=>{const s=STYLES[k];return `
+      <article class="gcard">
+        <div class="gcard__prev"><iframe src="${selfURL()}?embed=1#${k}/home" title="Preview of the ${esc(s.label)} homepage" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="gcard__body">
+          <h2><small>Direction ${String(ORDER.indexOf(k)+1).padStart(2,"0")}</small>${esc(s.label)}</h2>
+          <p>${esc(s.blurb)}</p>
+          <p class="gcard__meta">${esc(s.meta)}</p>
+          <p class="gcard__go"><button data-open="${k}">View ${esc(s.label)}</button></p>
+        </div>
+      </article>`;}).join("")}</div>
+    <div class="gal__foot">
+      <h2>Notes for review</h2>
+      <ul>
+        <li>These are <b>prototypes</b>, not theme code — nothing here touches the production V3 theme. Each direction is specified so it can be implemented through V3's existing token system (<code>nw_styles()</code> registry + colour schemes + header/hero variants).</li>
+        <li>Deliberately awkward content is included: a very long news headline, an article with no image, long document titles and a draft-minutes state.</li>
+        <li>Feedback in any form works — e.g. “I prefer Modern Civic”, “Editorial's typography with Community's homepage”, or notes on any single component from the component sheets.</li>
+      </ul>
+    </div>
+  </div>`;
+}
+
+function render(focusApp){
+  document.querySelectorAll(".shell [data-style]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.style===state.style)));
+  pageSel.value = state.page;
+  if(!state.style){
+    styleTag.textContent = "";
+    document.body.style.background = "#14171b";
+    app.innerHTML = galleryHTML();
+  } else {
+    const s = STYLES[state.style];
+    styleTag.textContent = s.css;
+    app.innerHTML = `<div class="${ROOTCLS[state.style]}">` + s.pages[state.page]() + `</div>`;
+    const m = app.firstElementChild && getComputedStyle(app.firstElementChild).backgroundColor;
+    document.body.style.background = m || "#fff";
+  }
+  window.scrollTo(0,0);
+  if(focusApp) app.focus({preventScroll:true});
+  const mp = document.getElementById("mprev");
+  if(mp.classList.contains("open")) syncMobilePreview();
+}
+
+function goto(style,page,push){
+  state.style = style; state.page = page;
+  const h = style ? `#${style}/${page}` : "#";
+  if(location.hash !== h){ if(push!==false) location.hash = h; else history.replaceState(null,"",h); }
+  render(true);
+}
+
+window.addEventListener("hashchange", ()=>{ parseHash(); render(false); });
+
+document.querySelectorAll(".shell [data-style]").forEach(b=>
+  b.addEventListener("click", ()=> goto(b.dataset.style, state.style ? state.page : "home")));
+pageSel.addEventListener("change", ()=>{ if(!state.style) state.style = "modern"; goto(state.style, pageSel.value); });
+document.getElementById("brandBtn").addEventListener("click", ()=> goto(null,"home"));
+
+/* mobile preview drawer */
+const mprev = document.getElementById("mprev"), mprevBtn = document.getElementById("mprevBtn"), mprevFrame = document.getElementById("mprevFrame");
+function syncMobilePreview(){
+  const target = state.style ? `#${state.style}/${state.page}` : "#modern/home";
+  const want = `${selfURL()}?embed=1${target}`;
+  if(mprevFrame.getAttribute("src")!==want) mprevFrame.setAttribute("src", want);
+}
+mprevBtn.addEventListener("click", ()=>{
+  const open = !mprev.classList.contains("open");
+  mprev.classList.toggle("open", open);
+  mprev.setAttribute("aria-hidden", String(!open));
+  mprevBtn.setAttribute("aria-expanded", String(open));
+  if(open) syncMobilePreview();
+});
+document.getElementById("mprevClose").addEventListener("click", ()=>{
+  mprev.classList.remove("open"); mprev.setAttribute("aria-hidden","true"); mprevBtn.setAttribute("aria-expanded","false"); mprevBtn.focus();
+});
+
+/* delegated interactions inside the rendered demo */
+app.addEventListener("click", e=>{
+  const toggle = e.target.closest("[data-menu-toggle]");
+  if(toggle){
+    const root = app.firstElementChild;
+    const open = !root.classList.contains("nav-open");
+    root.classList.toggle("nav-open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    return;
+  }
+  const open = e.target.closest("[data-open]");
+  if(open){ goto(open.dataset.open,"home"); return; }
+  const go = e.target.closest("[data-goto]");
+  if(go){
+    e.preventDefault();
+    const tgt = go.dataset.goto;
+    if(tgt && tgt!=="#" && PAGES.includes(tgt)) goto(state.style || "modern", tgt);
+    return;
+  }
+  const a = e.target.closest("a[href='#']");
+  if(a) e.preventDefault();
+});
+
+/* boot */
+parseHash();
+if(isEmbed){
+  document.body.classList.add("embed");
+  if(!state.style) state.style = "modern";
+  render(false);
+} else {
+  try{
+    if(!location.hash){
+      const last = localStorage.getItem("v3sg-last");
+      if(last){ const [s,p]=last.split("/"); if(STYLES[s]){ state.style=s; state.page=PAGES.includes(p)?p:"home"; history.replaceState(null,"",`#${s}/${p}`); } }
+    }
+  }catch(err){}
+  render(false);
+  window.addEventListener("hashchange", ()=>{ try{ if(state.style) localStorage.setItem("v3sg-last", `${state.style}/${state.page}`); }catch(err){} });
+}
+</script>
